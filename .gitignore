@@ -1,0 +1,23 @@
+# Kicad
+*.000
+*.bak
+*.bck
+*.kicad_pcb-bak
+*~
+
+# FreeCAD
+*.fcstd1
+
+# GNAT/GPS
+*.db
+*.ali
+*.o
+*.a
+*.xml
+*.cgpr
+*.bexch
+*.lexch
+*.a
+*.ci
+*.cswi
+*~
