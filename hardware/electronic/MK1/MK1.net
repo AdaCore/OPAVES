@@ -1,0 +1,50 @@
+(export (version D)
+  (design
+    (source /home/chouteau/src/OPAVES/github/hardware/electronic/MK1/MK1.sch)
+    (date "mar. 10 janv. 2017 16:23:29 CET")
+    (tool "Eeschema 4.0.4+dfsg1-stable")
+    (sheet (number 1) (name /) (tstamps /)
+      (title_block
+        (title "O'PAVES Mk-I")
+        (company AdaCore)
+        (rev A)
+        (date)
+        (source MK1.sch)
+        (comment (number 1) (value ""))
+        (comment (number 2) (value ""))
+        (comment (number 3) (value ""))
+        (comment (number 4) (value ""))))
+    (sheet (number 2) (name /Motor/) (tstamps /5874F60A/)
+      (title_block
+        (title)
+        (company)
+        (rev)
+        (date)
+        (source motor.sch)
+        (comment (number 1) (value ""))
+        (comment (number 2) (value ""))
+        (comment (number 3) (value ""))
+        (comment (number 4) (value "")))))
+  (components
+    (comp (ref U1)
+      (value TAMIYA_High_Speed_Gearbox)
+      (footprint OPAVES_Footprints:TAMIYA_HIgh_Speed_Gearbox)
+      (libsource (lib OPAVES_components) (part TAMIYA_High_Speed_Gearbox))
+      (sheetpath (names /Motor/) (tstamps /5874F60A/))
+      (tstamp 5874F75F)))
+  (libparts
+    (libpart (lib OPAVES_components) (part TAMIYA_High_Speed_Gearbox)
+      (fields
+        (field (name Reference) U)
+        (field (name Value) TAMIYA_High_Speed_Gearbox))
+      (pins
+        (pin (num 1) (name Blue) (type power_in))
+        (pin (num 2) (name Red) (type power_in)))))
+  (libraries
+    (library (logical OPAVES_components)
+      (uri /home/chouteau/src/OPAVES/github/hardware/electronic/components/OPAVES_components.lib)))
+  (nets
+    (net (code 6) (name "Net-(U1-Pad1)")
+      (node (ref U1) (pin 1)))
+    (net (code 7) (name "Net-(U1-Pad2)")
+      (node (ref U1) (pin 2)))))
