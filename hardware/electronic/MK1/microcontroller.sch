@@ -51,7 +51,7 @@ EELAYER 25 0
 EELAYER END
 $Descr A3 16535 11693
 encoding utf-8
-Sheet 3 4
+Sheet 3 5
 Title "O'PAVES Mk-I"
 Date ""
 Rev "A"
@@ -439,4 +439,48 @@ Text GLabel 8700 2300 1    60   Input ~ 0
 VCCA
 Wire Wire Line
 	7950 2300 8600 2300
+Text GLabel 12900 5300 2    60   Input ~ 0
+ARDU_D15_SCL
+Text GLabel 12900 5400 2    60   Input ~ 0
+ARDU_D14_SDA
+Text GLabel 12900 3300 2    60   Input ~ 0
+ARDU_D13_SCK
+Text GLabel 12900 3400 2    60   Input ~ 0
+ARDU_D12_MISO
+Text GLabel 12900 3500 2    60   Input ~ 0
+ARDU_D11_MOSI
+Text GLabel 12900 5100 2    60   Input ~ 0
+ARDU_D10
+Text GLabel 12900 6900 2    60   Input ~ 0
+ARDU_D9
+Text GLabel 12900 3700 2    60   Input ~ 0
+ARDU_D8
+Text GLabel 12900 3600 2    60   Input ~ 0
+ARDU_D7
+Text GLabel 12900 5500 2    60   Input ~ 0
+ARDU_D6
+Text GLabel 12900 4900 2    60   Input ~ 0
+ARDU_D5
+Text GLabel 12900 5000 2    60   Input ~ 0
+ARDU_D4
+Text GLabel 12900 4800 2    60   Input ~ 0
+ARDU_D3
+Text GLabel 12900 3800 2    60   Input ~ 0
+ARDU_D2
+Text GLabel 12900 3000 2    60   Input ~ 0
+ARDU_D1_TXD
+Text GLabel 12900 3100 2    60   Input ~ 0
+ARDU_D0_RXD
+Text GLabel 12900 2800 2    60   Input ~ 0
+ARDU_A0
+Text GLabel 12900 2900 2    60   Input ~ 0
+ARDU_A1
+Text GLabel 12900 3200 2    60   Input ~ 0
+ARDU_A2
+Text GLabel 12900 4500 2    60   Input ~ 0
+ARDU_A3
+Text GLabel 12900 6300 2    60   Input ~ 0
+ARDU_A4
+Text GLabel 12900 6200 2    60   Input ~ 0
+ARDU_A5
 $EndSCHEMATC

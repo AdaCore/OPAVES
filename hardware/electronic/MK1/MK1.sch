@@ -51,7 +51,7 @@ EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 1 4
+Sheet 1 5
 Title "O'PAVES Mk-I"
 Date ""
 Rev "A"
@@ -83,5 +83,11 @@ S 2900 850  1800 1800
 U 5885EAE0
 F0 "Power" 60
 F1 "power.sch" 60
+$EndSheet
+$Sheet
+S 6000 850  1800 1800
+U 58866A88
+F0 "Interfaces" 60
+F1 "interfaces.sch" 60
 $EndSheet
 $EndSCHEMATC
