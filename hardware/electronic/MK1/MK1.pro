@@ -1,4 +1,4 @@
-update=jeu. 12 janv. 2017 12:40:27 CET
+update=lun. 23 janv. 2017 11:04:11 CET
 version=1
 last_client=kicad
 [pcbnew]
@@ -59,3 +59,20 @@ LibName27=atmel
 LibName28=contrib
 LibName29=valves
 LibName30=/home/chouteau/src/OPAVES/github/hardware/electronic/components/OPAVES_components
+LibName31=stm32
+LibName32=battery_management
+LibName33=logo
+LibName34=motor_drivers
+LibName35=nordicsemi
+LibName36=nxp_armmcu
+LibName37=powerint
+LibName38=Power_Management
+LibName39=references
+LibName40=silabs
+LibName41=stm8
+LibName42=switches
+LibName43=transf
+LibName44=video
+LibName45=Worldsemi
+LibName46=Xicor
+LibName47=Zilog

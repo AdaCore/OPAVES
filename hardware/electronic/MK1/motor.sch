@@ -29,16 +29,33 @@ LIBS:atmel
 LIBS:contrib
 LIBS:valves
 LIBS:OPAVES_components
+LIBS:stm32
+LIBS:battery_management
+LIBS:logo
+LIBS:motor_drivers
+LIBS:nordicsemi
+LIBS:nxp_armmcu
+LIBS:powerint
+LIBS:Power_Management
+LIBS:references
+LIBS:silabs
+LIBS:stm8
+LIBS:switches
+LIBS:transf
+LIBS:video
+LIBS:Worldsemi
+LIBS:Xicor
+LIBS:Zilog
 LIBS:MK1-cache
 EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
-Sheet 2 2
-Title ""
+Sheet 2 4
+Title "O'PAVES Mk-I"
 Date ""
-Rev ""
-Comp ""
+Rev "A"
+Comp "AdaCore"
 Comment1 ""
 Comment2 ""
 Comment3 ""
