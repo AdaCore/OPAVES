@@ -1,6 +1,25 @@
 EESchema-LIBRARY Version 2.3
 #encoding utf-8
 #
+# Pololu_VL53l0X_Carrier
+#
+DEF Pololu_VL53l0X_Carrier S 0 40 Y Y 1 F N
+F0 "S" 50 50 60 H V C CNN
+F1 "Pololu_VL53l0X_Carrier" 550 -100 60 H V C CNN
+F2 "" 0 -50 60 H I C CNN
+F3 "" 0 -50 60 H I C CNN
+DRAW
+S 0 0 1150 -1550 0 1 0 N
+X VDD 1 -200 -250 200 R 50 50 1 1 w
+X VIN 2 -200 -450 200 R 50 50 1 1 W
+X GND 3 -200 -650 200 R 50 50 1 1 W
+X SDA 4 -200 -850 200 R 50 50 1 1 B
+X SCL 5 -200 -1050 200 R 50 50 1 1 B
+X XSHUT 6 -200 -1250 200 R 50 50 1 1 I
+X GPIO1 7 -200 -1450 200 R 50 50 1 1 O
+ENDDRAW
+ENDDEF
+#
 # TAMIYA_High_Speed_Gearbox
 #
 DEF TAMIYA_High_Speed_Gearbox U 0 40 Y Y 1 F N
