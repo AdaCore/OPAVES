@@ -88,6 +88,37 @@ X OUT 3 -200 -700 200 R 50 50 1 1 O
 ENDDRAW
 ENDDEF
 #
+# Pololu_StepUp/Down_Regulator
+#
+DEF Pololu_StepUp/Down_Regulator U 0 40 Y Y 1 F N
+F0 "U" 50 50 60 H V C CNN
+F1 "Pololu_StepUp/Down_Regulator" 750 -100 60 H V C CNN
+F2 "" 0 0 60 H I C CNN
+F3 "" 0 0 60 H I C CNN
+DRAW
+S 0 0 1500 -1300 0 1 0 N
+X VOUT 1 -200 -850 200 R 50 50 1 1 w
+X GND 2 -200 -1150 200 R 50 50 1 1 W
+X VIN 3 -200 -250 200 R 50 50 1 1 W
+X SHDN 4 -200 -550 200 R 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
+# Pololu_StepUp_Regulator
+#
+DEF Pololu_StepUp_Regulator U 0 40 Y Y 1 F N
+F0 "U" 50 50 60 H V C CNN
+F1 "Pololu_StepUp_Regulator" 600 -100 60 H V C CNN
+F2 "" 0 0 60 H I C CNN
+F3 "" 0 0 60 H I C CNN
+DRAW
+S 0 0 1300 -1000 0 1 0 N
+X VIN 1 -200 -250 200 R 50 50 1 1 W
+X GND 2 -200 -850 200 R 50 50 1 1 W
+X VOUT 3 -200 -550 200 R 50 50 1 1 w
+ENDDRAW
+ENDDEF
+#
 # Pololu_VL53l0X_Carrier
 #
 DEF Pololu_VL53l0X_Carrier S 0 40 Y Y 1 F N

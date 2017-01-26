@@ -239,16 +239,12 @@ F 3 "" H 8950 1850 50  0000 C CNN
 	1    8950 1850
 	1    0    0    -1  
 $EndComp
-Text GLabel 7600 1350 0    60   Input ~ 0
-VCC
 Connection ~ 8600 2300
 Connection ~ 8500 2300
 Connection ~ 8400 2300
 Connection ~ 8300 2300
 Connection ~ 8200 2300
 Connection ~ 8100 2300
-Text GLabel 7950 2300 0    60   Input ~ 0
-VCC
 Text Notes 10050 1250 0    60   ~ 0
 VDDA
 Text Notes 8600 1250 0    60   ~ 0
@@ -303,8 +299,6 @@ F 3 "" H 3100 3700 50  0000 C CNN
 	1    3100 3700
 	1    0    0    -1  
 $EndComp
-Text GLabel 3900 3200 0    60   Input ~ 0
-VBAT_MCU
 $Comp
 L Crystal Y1
 U 1 1 588623D7
@@ -401,8 +395,6 @@ F 3 "" H 2700 3450 50  0000 C CNN
 	1    2700 3450
 	1    0    0    -1  
 $EndComp
-Text GLabel 2700 2350 1    60   Input ~ 0
-VCC
 Wire Wire Line
 	3900 2800 2700 2800
 Text GLabel 2700 2800 0    60   Input ~ 0
@@ -411,8 +403,6 @@ Text GLabel 2700 3000 0    60   Input ~ 0
 BOOT0
 Wire Wire Line
 	2700 2800 2700 2650
-Text GLabel 3900 3300 0    60   Input ~ 0
-VCCA
 Wire Wire Line
 	7600 1350 9350 1350
 Wire Wire Line
@@ -431,12 +421,6 @@ F 3 "" H 10800 1350 50  0000 C CNN
 $EndComp
 Wire Wire Line
 	11100 1350 11300 1350
-Text GLabel 11300 1350 2    60   Input ~ 0
-VCC
-Text GLabel 9800 1350 1    60   Input ~ 0
-VCCA
-Text GLabel 8700 2300 1    60   Input ~ 0
-VCCA
 Wire Wire Line
 	7950 2300 8600 2300
 Text GLabel 12900 5300 2    60   Input ~ 0
@@ -483,4 +467,22 @@ Text GLabel 12900 6300 2    60   Input ~ 0
 ARDU_A4
 Text GLabel 12900 6200 2    60   Input ~ 0
 ARDU_A5
+Text HLabel 7600 1350 0    60   Input ~ 0
+MCU_VCC
+Text HLabel 11300 1350 2    60   Input ~ 0
+MCU_VCC
+Text HLabel 7950 2300 0    60   Input ~ 0
+MCU_VCC
+Text HLabel 2700 2350 1    60   Input ~ 0
+MCU_VCC
+Text Label 9800 1350 1    60   ~ 0
+VCCA
+Text Label 8700 2300 1    60   ~ 0
+VCCA
+Text Label 3900 3300 2    60   ~ 0
+VCCA
+Text HLabel 3600 3200 0    60   Input ~ 0
+VBAT_SENSE
+Wire Wire Line
+	3900 3200 3600 3200
 $EndSCHEMATC

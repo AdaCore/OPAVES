@@ -77,12 +77,18 @@ S 2900 2900 1800 1800
 U 5885D1CF
 F0 "microcontroller" 60
 F1 "microcontroller.sch" 60
+F2 "MCU_VCC" I L 2900 3350 60 
+F3 "VBAT_SENSE" I L 2900 3600 60 
 $EndSheet
 $Sheet
 S 2900 850  1800 1800
 U 5885EAE0
 F0 "Power" 60
 F1 "power.sch" 60
+F2 "VBAT_SENSE" O R 4700 2000 60 
+F3 "5V" O R 4700 1450 60 
+F4 "3V3" O R 4700 1650 60 
+F5 "VBAT" O R 4700 2200 60 
 $EndSheet
 $Sheet
 S 6000 850  1800 1800
@@ -105,4 +111,32 @@ F2 "IMU_VCC" I L 9000 1150 60
 F3 "IMU_SCL" I L 9000 1450 60 
 F4 "IMU_SDA" B L 9000 1600 60 
 $EndSheet
+Text Label 4900 1450 0    60   ~ 0
+5V
+Text Label 4900 1650 0    60   ~ 0
+3V3
+Text Label 4900 2000 0    60   ~ 0
+VBAT_SENSE
+Wire Wire Line
+	2900 3350 2300 3350
+Wire Wire Line
+	2900 3600 2300 3600
+Text Label 2300 3600 0    60   ~ 0
+VBAT_SENSE
+Text Label 2300 3350 0    60   ~ 0
+3V3
+Wire Wire Line
+	4700 2200 4900 2200
+Wire Wire Line
+	4700 1450 4900 1450
+Wire Wire Line
+	4700 1650 4900 1650
+Wire Wire Line
+	4700 2000 4900 2000
+Text Label 4900 2200 0    60   ~ 0
+VBAT
+Text Label 2600 5600 0    60   ~ 0
+VBAT
+Wire Wire Line
+	2900 5600 2600 5600
 $EndSCHEMATC
