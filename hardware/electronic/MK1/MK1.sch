@@ -159,7 +159,7 @@ Wire Wire Line
 Text Label 4100 3150 0    60   ~ 0
 3V3
 Text Notes 7150 6350 0    157  ~ 0
-TODO:\n - Servo connection\n - Battery connection\n - Reverse polarity protection\n - Micro USB connector\n - Debug (trace?) port\n - BLE Module\n - Encoder connection
+TODO:\n - Servo connection\n - Reverse polarity protection\n - Micro USB connector\n - Debug (trace?) port\n - BLE Module\n - Encoder connection
 Wire Notes Line
 	6950 6500 6950 4350
 Wire Notes Line
