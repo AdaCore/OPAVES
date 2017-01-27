@@ -128,14 +128,39 @@ Text Label 3400 1650 0    60   ~ 0
 3V3
 Text Label 3400 2000 0    60   ~ 0
 VBAT_SENSE
-Wire Wire Line
-	1400 3350 800  3350
-Wire Wire Line
-	1400 3600 800  3600
 Text Label 800  3600 0    60   ~ 0
 VBAT_SENSE
 Text Label 800  3350 0    60   ~ 0
 3V3
+Text Label 3400 2200 0    60   ~ 0
+VBAT
+Text Label 1100 5600 0    60   ~ 0
+VBAT
+Text Label 1100 5250 0    59   ~ 0
+3V3
+Text Label 4100 3150 0    60   ~ 0
+3V3
+Text Notes 7150 6350 0    157  ~ 0
+TODO:\n - Servo connection\n - Reverse polarity protection\n - Micro USB connector\n - Debug (trace?) port\n - BLE Module\n - Encoder connection
+$Comp
+L CONN_01X03 steering_servo?
+U 1 1 588BDCC9
+P 5900 7150
+F 0 "steering_servo?" H 5950 7400 50  0000 C CNN
+F 1 "CONN_01X03" V 6000 7150 50  0001 C CNN
+F 2 "" H 5900 7150 50  0000 C CNN
+F 3 "" H 5900 7150 50  0000 C CNN
+	1    5900 7150
+	1    0    0    -1  
+$EndComp
+Text Label 5250 7150 0    60   ~ 0
+5V
+Text Label 5250 7250 0    60   ~ 0
+Servo_PWM
+Wire Wire Line
+	1400 3350 800  3350
+Wire Wire Line
+	1400 3600 800  3600
 Wire Wire Line
 	3200 2200 3400 2200
 Wire Wire Line
@@ -144,24 +169,39 @@ Wire Wire Line
 	3200 1650 3400 1650
 Wire Wire Line
 	3200 2000 3400 2000
-Text Label 3400 2200 0    60   ~ 0
-VBAT
-Text Label 1100 5600 0    60   ~ 0
-VBAT
 Wire Wire Line
 	1400 5600 1100 5600
 Wire Wire Line
 	1100 5250 1400 5250
-Text Label 1100 5250 0    59   ~ 0
-3V3
 Wire Wire Line
 	4500 3150 4100 3150
-Text Label 4100 3150 0    60   ~ 0
-3V3
-Text Notes 7150 6350 0    157  ~ 0
-TODO:\n - Servo connection\n - Reverse polarity protection\n - Micro USB connector\n - Debug (trace?) port\n - BLE Module\n - Encoder connection
 Wire Notes Line
 	6950 6500 6950 4350
 Wire Notes Line
 	6950 4350 11200 4350
+Wire Notes Line
+	6950 6550 4550 6550
+Wire Notes Line
+	4550 6550 4550 7750
+Wire Wire Line
+	5250 7150 5700 7150
+Text Notes 5200 6750 0    60   ~ 0
+Steering Servo Motor
+Wire Wire Line
+	5700 7050 5000 7050
+Wire Wire Line
+	5000 7050 5000 7150
+Wire Wire Line
+	5250 7250 5700 7250
+$Comp
+L GND #PWR?
+U 1 1 588C0CF5
+P 5000 7150
+F 0 "#PWR?" H 5000 6900 50  0001 C CNN
+F 1 "GND" H 5000 7000 50  0000 C CNN
+F 2 "" H 5000 7150 50  0000 C CNN
+F 3 "" H 5000 7150 50  0000 C CNN
+	1    5000 7150
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

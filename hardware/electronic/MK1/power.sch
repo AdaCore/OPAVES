@@ -241,7 +241,7 @@ U 1 1 588B953B
 P 1200 2200
 F 0 "Battery1" H 1200 2400 50  0000 C CNN
 F 1 "CONN_01X03" V 1300 2200 50  0001 C CNN
-F 2 "Pin_Headers:Pin_Header_Angled_1x03" H 1200 2200 50  0001 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x03" H 1200 2200 50  0001 C CNN
 F 3 "" H 1200 2200 50  0000 C CNN
 	1    1200 2200
 	-1   0    0    1   
@@ -260,4 +260,5 @@ Wire Wire Line
 Wire Wire Line
 	1500 2450 1650 2450
 Connection ~ 1650 2450
+NoConn ~ 1400 2100
 $EndSCHEMATC
