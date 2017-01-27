@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/chouteau/src/OPAVES/github/hardware/electronic/MK1/MK1.sch)
-    (date "ven. 27 janv. 2017 16:27:05 CET")
+    (date "ven. 27 janv. 2017 18:34:54 CET")
     (tool "Eeschema 4.0.4+dfsg1-stable")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -215,6 +215,7 @@
       (tstamp 58863517))
     (comp (ref L1)
       (value INDUCTOR)
+      (footprint Resistors_SMD:R_0805)
       (libsource (lib device) (part INDUCTOR))
       (sheetpath (names /microcontroller/) (tstamps /5885D1CF/))
       (tstamp 588646BA))
