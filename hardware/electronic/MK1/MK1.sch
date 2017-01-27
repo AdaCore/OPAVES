@@ -143,12 +143,12 @@ Text Label 4100 3150 0    60   ~ 0
 Text Notes 7150 6350 0    157  ~ 0
 TODO:\n - Servo connection\n - Reverse polarity protection\n - Micro USB connector\n - Debug (trace?) port\n - BLE Module\n - Encoder connection
 $Comp
-L CONN_01X03 steering_servo?
+L CONN_01X03 steering_servo1
 U 1 1 588BDCC9
 P 5900 7150
-F 0 "steering_servo?" H 5950 7400 50  0000 C CNN
+F 0 "steering_servo1" H 5950 7400 50  0000 C CNN
 F 1 "CONN_01X03" V 6000 7150 50  0001 C CNN
-F 2 "" H 5900 7150 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x03" H 5900 7150 50  0001 C CNN
 F 3 "" H 5900 7150 50  0000 C CNN
 	1    5900 7150
 	1    0    0    -1  
@@ -194,10 +194,10 @@ Wire Wire Line
 Wire Wire Line
 	5250 7250 5700 7250
 $Comp
-L GND #PWR?
+L GND #PWR01
 U 1 1 588C0CF5
 P 5000 7150
-F 0 "#PWR?" H 5000 6900 50  0001 C CNN
+F 0 "#PWR01" H 5000 6900 50  0001 C CNN
 F 1 "GND" H 5000 7000 50  0000 C CNN
 F 2 "" H 5000 7150 50  0000 C CNN
 F 3 "" H 5000 7150 50  0000 C CNN
