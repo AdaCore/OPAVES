@@ -724,4 +724,6 @@ Wire Notes Line
 	7950 8950 7950 11200
 Text Notes 5550 9200 0    118  ~ 0
 Debug
+Text HLabel 3350 2800 1    60   Input ~ 0
+NRST
 $EndSCHEMATC

@@ -141,14 +141,6 @@ Text GLabel 3550 3000 2    60   Input ~ 0
 ARDU_D1_TXD
 Text GLabel 3550 3100 2    60   Input ~ 0
 ARDU_D0_RXD
-Text GLabel 1550 1750 0    60   Input ~ 0
-ARDU_IOREF
-Text GLabel 1550 1850 0    60   Input ~ 0
-NRST
-Text GLabel 1550 1950 0    60   Input ~ 0
-ARDU_3V3
-Text GLabel 1550 2050 0    60   Input ~ 0
-ARDU_5V
 Text GLabel 1550 2350 0    60   Input ~ 0
 ARDU_VIN
 Text GLabel 1550 2600 0    60   Input ~ 0
@@ -197,4 +189,12 @@ Wire Wire Line
 Wire Wire Line
 	1550 2250 750  2250
 Connection ~ 750  2250
+Text HLabel 1550 1950 0    60   Input ~ 0
+3V3
+Text HLabel 1550 2050 0    60   Input ~ 0
+5V
+Text HLabel 1550 1850 0    60   Input ~ 0
+NRST
+Text HLabel 1550 1750 0    60   Input ~ 0
+3V3
 $EndSCHEMATC
