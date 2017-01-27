@@ -62,100 +62,106 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Sheet
-S 2900 4950 1800 1800
+S 1400 4950 1800 1800
 U 5874F60A
 F0 "Motor" 60
 F1 "motor.sch" 60
-F2 "VMOTOR" I L 2900 5600 60 
-F3 "encoder_a" O R 4700 5550 60 
-F4 "encoder_b" O R 4700 5750 60 
-F5 "PWM" I L 2900 5800 60 
-F6 "IN1" I L 2900 6000 60 
-F7 "IN2" I L 2900 6200 60 
-F8 "Standby" I L 2900 6400 60 
-F9 "VLOGIC" I L 2900 5250 60 
+F2 "VMOTOR" I L 1400 5600 60 
+F3 "encoder_a" O R 3200 5550 60 
+F4 "encoder_b" O R 3200 5750 60 
+F5 "PWM" I L 1400 5800 60 
+F6 "IN1" I L 1400 6000 60 
+F7 "IN2" I L 1400 6200 60 
+F8 "Standby" I L 1400 6400 60 
+F9 "VLOGIC" I L 1400 5250 60 
 $EndSheet
 $Sheet
-S 2900 2900 1800 1800
+S 1400 2900 1800 1800
 U 5885D1CF
 F0 "microcontroller" 60
 F1 "microcontroller.sch" 60
-F2 "MCU_VCC" I L 2900 3350 60 
-F3 "VBAT_SENSE" I L 2900 3600 60 
+F2 "MCU_VCC" I L 1400 3350 60 
+F3 "VBAT_SENSE" I L 1400 3600 60 
 $EndSheet
 $Sheet
-S 2900 850  1800 1800
+S 1400 850  1800 1800
 U 5885EAE0
 F0 "Power" 60
 F1 "power.sch" 60
-F2 "VBAT_SENSE" O R 4700 2000 60 
-F3 "5V" O R 4700 1450 60 
-F4 "3V3" O R 4700 1650 60 
-F5 "VBAT" O R 4700 2200 60 
+F2 "VBAT_SENSE" O R 3200 2000 60 
+F3 "5V" O R 3200 1450 60 
+F4 "3V3" O R 3200 1650 60 
+F5 "VBAT" O R 3200 2200 60 
 $EndSheet
 $Sheet
-S 6000 850  1800 1800
+S 4500 850  1800 1800
 U 58866A88
 F0 "Interfaces" 60
 F1 "interfaces.sch" 60
 $EndSheet
 $Sheet
-S 6000 2900 1800 1800
+S 4500 2900 1800 1800
 U 5886C1BD
 F0 "Sensors" 60
 F1 "sensors.sch" 60
-F2 "SCL" I L 6000 3350 60 
-F3 "SDA" I L 6000 3550 60 
-F4 "VCC" I L 6000 3150 60 
-F5 "Enable_FL" I L 6000 3750 60 
-F6 "Enable_FC" I L 6000 3950 60 
-F7 "Enable_FR" I L 6000 4150 60 
-F8 "Enable_SR" I L 6000 4350 60 
-F9 "Enable_BC" I L 6000 4550 60 
+F2 "SCL" I L 4500 3350 60 
+F3 "SDA" I L 4500 3550 60 
+F4 "VCC" I L 4500 3150 60 
+F5 "Enable_FL" I L 4500 3750 60 
+F6 "Enable_FC" I L 4500 3950 60 
+F7 "Enable_FR" I L 4500 4150 60 
+F8 "Enable_SR" I L 4500 4350 60 
+F9 "Enable_BC" I L 4500 4550 60 
 $EndSheet
 $Sheet
-S 9000 850  1800 1800
+S 7500 850  1800 1800
 U 5886ECF0
 F0 "IMU" 60
 F1 "imu.sch" 60
-F2 "IMU_VCC" I L 9000 1150 60 
-F3 "IMU_SCL" I L 9000 1450 60 
-F4 "IMU_SDA" B L 9000 1600 60 
+F2 "IMU_VCC" I L 7500 1150 60 
+F3 "IMU_SCL" I L 7500 1450 60 
+F4 "IMU_SDA" B L 7500 1600 60 
 $EndSheet
-Text Label 4900 1450 0    60   ~ 0
+Text Label 3400 1450 0    60   ~ 0
 5V
-Text Label 4900 1650 0    60   ~ 0
+Text Label 3400 1650 0    60   ~ 0
 3V3
-Text Label 4900 2000 0    60   ~ 0
+Text Label 3400 2000 0    60   ~ 0
 VBAT_SENSE
 Wire Wire Line
-	2900 3350 2300 3350
+	1400 3350 800  3350
 Wire Wire Line
-	2900 3600 2300 3600
-Text Label 2300 3600 0    60   ~ 0
+	1400 3600 800  3600
+Text Label 800  3600 0    60   ~ 0
 VBAT_SENSE
-Text Label 2300 3350 0    60   ~ 0
+Text Label 800  3350 0    60   ~ 0
 3V3
 Wire Wire Line
-	4700 2200 4900 2200
+	3200 2200 3400 2200
 Wire Wire Line
-	4700 1450 4900 1450
+	3200 1450 3400 1450
 Wire Wire Line
-	4700 1650 4900 1650
+	3200 1650 3400 1650
 Wire Wire Line
-	4700 2000 4900 2000
-Text Label 4900 2200 0    60   ~ 0
+	3200 2000 3400 2000
+Text Label 3400 2200 0    60   ~ 0
 VBAT
-Text Label 2600 5600 0    60   ~ 0
+Text Label 1100 5600 0    60   ~ 0
 VBAT
 Wire Wire Line
-	2900 5600 2600 5600
+	1400 5600 1100 5600
 Wire Wire Line
-	2600 5250 2900 5250
-Text Label 2600 5250 0    59   ~ 0
+	1100 5250 1400 5250
+Text Label 1100 5250 0    59   ~ 0
 3V3
 Wire Wire Line
-	6000 3150 5600 3150
-Text Label 5600 3150 0    60   ~ 0
+	4500 3150 4100 3150
+Text Label 4100 3150 0    60   ~ 0
 3V3
+Text Notes 7150 6350 0    157  ~ 0
+TODO:\n - Servo connection\n - Battery connection\n - Reverse polarity protection\n - Micro USB connector\n - Debug (trace?) port\n - BLE Module\n - Encoder connection
+Wire Notes Line
+	6950 6500 6950 4350
+Wire Notes Line
+	6950 4350 11200 4350
 $EndSCHEMATC
