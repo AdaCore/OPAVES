@@ -104,6 +104,14 @@ S 6000 2900 1800 1800
 U 5886C1BD
 F0 "Sensors" 60
 F1 "sensors.sch" 60
+F2 "SCL" I L 6000 3350 60 
+F3 "SDA" I L 6000 3550 60 
+F4 "VCC" I L 6000 3150 60 
+F5 "Enable_FL" I L 6000 3750 60 
+F6 "Enable_FC" I L 6000 3950 60 
+F7 "Enable_FR" I L 6000 4150 60 
+F8 "Enable_SR" I L 6000 4350 60 
+F9 "Enable_BC" I L 6000 4550 60 
 $EndSheet
 $Sheet
 S 9000 850  1800 1800
@@ -145,5 +153,9 @@ Wire Wire Line
 Wire Wire Line
 	2600 5250 2900 5250
 Text Label 2600 5250 0    59   ~ 0
+3V3
+Wire Wire Line
+	6000 3150 5600 3150
+Text Label 5600 3150 0    60   ~ 0
 3V3
 $EndSCHEMATC
