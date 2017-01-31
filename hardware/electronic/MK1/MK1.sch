@@ -82,7 +82,7 @@ F0 "microcontroller" 60
 F1 "microcontroller.sch" 60
 F2 "MCU_VCC" I L 1400 3350 60 
 F3 "VBAT_SENSE" I L 1400 3600 60 
-F4 "NRST" O R 3200 3350 60 
+F4 "MCU_NRST" O R 3200 3350 60 
 $EndSheet
 $Sheet
 S 1400 850  1800 1800
@@ -99,9 +99,14 @@ S 4500 850  1800 1800
 U 58866A88
 F0 "Interfaces" 60
 F1 "interfaces.sch" 60
-F2 "5V" I L 4500 1300 60 
-F3 "3V3" I L 4500 1450 60 
-F4 "NRST" I L 4500 1800 60 
+F2 "5V" I L 4500 1000 60 
+F3 "3V3" I L 4500 1150 60 
+F4 "MCU_NRST" I L 4500 2500 60 
+F5 "Radio_VCC" I L 4500 1400 60 
+F6 "Radio_UART_CTS" I L 4500 1550 60 
+F7 "Radio_UART_RTS" O L 4500 1700 60 
+F8 "Radio_UART_RX" I L 4500 1850 60 
+F9 "Radio_UART_TX" O L 4500 2000 60 
 $EndSheet
 $Sheet
 S 4500 2900 1800 1800
@@ -209,25 +214,29 @@ F 3 "" H 5000 7150 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4500 1300 4250 1300
+	4500 1000 4250 1000
 Wire Wire Line
-	4500 1450 4250 1450
-Text Label 4250 1300 0    60   ~ 0
+	4500 1150 4250 1150
+Text Label 4250 1000 0    60   ~ 0
 5V
-Text Label 4250 1450 0    60   ~ 0
+Text Label 4250 1150 0    60   ~ 0
 3V3
 Text Label 7150 1150 0    60   ~ 0
 3V3
 Wire Wire Line
 	7500 1150 7150 1150
 Wire Wire Line
-	4500 1800 4200 1800
-Wire Wire Line
-	4200 1800 4200 2700
-Wire Wire Line
 	4200 2700 3500 2700
 Wire Wire Line
 	3500 2700 3500 3350
 Wire Wire Line
 	3500 3350 3200 3350
+Wire Wire Line
+	4200 2700 4200 2500
+Wire Wire Line
+	4200 2500 4500 2500
+Wire Wire Line
+	4500 1400 4250 1400
+Text Label 4250 1400 0    60   ~ 0
+3V3
 $EndSCHEMATC

@@ -725,5 +725,5 @@ Wire Notes Line
 Text Notes 5550 9200 0    118  ~ 0
 Debug
 Text HLabel 3350 2800 1    60   Input ~ 0
-NRST
+MCU_NRST
 $EndSCHEMATC
