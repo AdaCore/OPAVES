@@ -73,10 +73,10 @@ F 3 "" H 8400 5300 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR11
+L GND #PWR06
 U 1 1 58860055
 P 8400 8300
-F 0 "#PWR11" H 8400 8050 50  0001 C CNN
+F 0 "#PWR06" H 8400 8050 50  0001 C CNN
 F 1 "GND" H 8400 8150 50  0000 C CNN
 F 2 "" H 8400 8300 50  0000 C CNN
 F 3 "" H 8400 8300 50  0000 C CNN
@@ -172,10 +172,10 @@ F 3 "" H 10100 1550 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR12
+L GND #PWR07
 U 1 1 58860A74
 P 8950 1850
-F 0 "#PWR12" H 8950 1600 50  0001 C CNN
+F 0 "#PWR07" H 8950 1600 50  0001 C CNN
 F 1 "GND" H 8950 1700 50  0000 C CNN
 F 2 "" H 8950 1850 50  0000 C CNN
 F 3 "" H 8950 1850 50  0000 C CNN
@@ -211,10 +211,10 @@ F 3 "" H 3500 3600 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR8
+L GND #PWR08
 U 1 1 588614A2
 P 3100 3700
-F 0 "#PWR8" H 3100 3450 50  0001 C CNN
+F 0 "#PWR08" H 3100 3450 50  0001 C CNN
 F 1 "GND" H 3100 3550 50  0000 C CNN
 F 2 "" H 3100 3700 50  0000 C CNN
 F 3 "" H 3100 3700 50  0000 C CNN
@@ -255,10 +255,10 @@ F 3 "" H 2600 4750 50  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L GND #PWR6
+L GND #PWR09
 U 1 1 58862898
 P 2750 4900
-F 0 "#PWR6" H 2750 4650 50  0001 C CNN
+F 0 "#PWR09" H 2750 4650 50  0001 C CNN
 F 1 "GND" H 2750 4750 50  0000 C CNN
 F 2 "" H 2750 4900 50  0000 C CNN
 F 3 "" H 2750 4900 50  0000 C CNN
@@ -288,10 +288,10 @@ F 3 "" H 2700 3300 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR5
+L GND #PWR010
 U 1 1 588635DD
 P 2700 3450
-F 0 "#PWR5" H 2700 3200 50  0001 C CNN
+F 0 "#PWR010" H 2700 3200 50  0001 C CNN
 F 1 "GND" H 2700 3300 50  0000 C CNN
 F 2 "" H 2700 3450 50  0000 C CNN
 F 3 "" H 2700 3450 50  0000 C CNN
@@ -315,11 +315,11 @@ Text GLabel 12900 3600 2    60   Input ~ 0
 ARDU_D15_SCL
 Text GLabel 12900 7100 2    60   Input ~ 0
 ARDU_D14_SDA
-Text GLabel 12900 3300 2    60   Input ~ 0
+Text GLabel 12900 7200 2    60   Input ~ 0
 ARDU_D13_SCK
-Text GLabel 12900 3400 2    60   Input ~ 0
+Text GLabel 12900 7300 2    60   Input ~ 0
 ARDU_D12_MISO
-Text GLabel 12900 3500 2    60   Input ~ 0
+Text GLabel 12900 7400 2    60   Input ~ 0
 ARDU_D11_MOSI
 Text GLabel 13950 4800 2    60   Input ~ 0
 ARDU_D10
@@ -329,11 +329,11 @@ Text GLabel 12900 3700 2    60   Input ~ 0
 ARDU_D8
 Text GLabel 13950 4650 2    60   Input ~ 0
 ARDU_D7
-Text GLabel 12900 5700 2    60   Input ~ 0
+Text GLabel 13950 5100 2    60   Input ~ 0
 ARDU_D6
-Text GLabel 12900 4900 2    60   Input ~ 0
+Text GLabel 13950 4900 2    60   Input ~ 0
 ARDU_D5
-Text GLabel 12900 5000 2    60   Input ~ 0
+Text GLabel 13950 5000 2    60   Input ~ 0
 ARDU_D4
 Text GLabel 13950 4500 2    60   Input ~ 0
 ARDU_D3
@@ -343,17 +343,17 @@ Text GLabel 12900 6800 2    60   Input ~ 0
 ARDU_D1_TXD
 Text GLabel 12900 6900 2    60   Input ~ 0
 ARDU_D0_RXD
-Text GLabel 12900 2800 2    60   Input ~ 0
-ARDU_A0
-Text GLabel 12900 2900 2    60   Input ~ 0
-ARDU_A1
-Text GLabel 12900 3200 2    60   Input ~ 0
-ARDU_A2
-Text GLabel 12900 4500 2    60   Input ~ 0
-ARDU_A3
-Text GLabel 12900 6300 2    60   Input ~ 0
-ARDU_A4
 Text GLabel 12900 6200 2    60   Input ~ 0
+ARDU_A0
+Text GLabel 12900 6300 2    60   Input ~ 0
+ARDU_A1
+Text GLabel 12900 2800 2    60   Input ~ 0
+ARDU_A2
+Text GLabel 12900 2900 2    60   Input ~ 0
+ARDU_A3
+Text GLabel 12900 3200 2    60   Input ~ 0
+ARDU_A4
+Text GLabel 12900 4500 2    60   Input ~ 0
 ARDU_A5
 Text HLabel 7600 1350 0    60   Input ~ 0
 MCU_VCC
@@ -383,10 +383,10 @@ F 3 "" V 2900 9900 50  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L GND #PWR7
+L GND #PWR011
 U 1 1 588C279B
 P 3050 10450
-F 0 "#PWR7" H 3050 10200 50  0001 C CNN
+F 0 "#PWR011" H 3050 10200 50  0001 C CNN
 F 1 "GND" H 3050 10300 50  0000 C CNN
 F 2 "" H 3050 10450 50  0000 C CNN
 F 3 "" H 3050 10450 50  0000 C CNN
@@ -592,10 +592,10 @@ Connection ~ 4550 10750
 Connection ~ 4550 10850
 NoConn ~ 4650 10150
 $Comp
-L GND #PWR9
+L GND #PWR012
 U 1 1 588C6DA9
 P 4550 10900
-F 0 "#PWR9" H 4550 10650 50  0001 C CNN
+F 0 "#PWR012" H 4550 10650 50  0001 C CNN
 F 1 "GND" H 4550 10750 50  0000 C CNN
 F 2 "" H 4550 10900 50  0000 C CNN
 F 3 "" H 4550 10900 50  0000 C CNN
@@ -710,10 +710,10 @@ SWO
 Wire Wire Line
 	7600 10150 7600 10300
 $Comp
-L GND #PWR10
+L GND #PWR013
 U 1 1 588CD2A5
 P 7600 10300
-F 0 "#PWR10" H 7600 10050 50  0001 C CNN
+F 0 "#PWR013" H 7600 10050 50  0001 C CNN
 F 1 "GND" H 7600 10150 50  0000 C CNN
 F 2 "" H 7600 10300 50  0000 C CNN
 F 3 "" H 7600 10300 50  0000 C CNN
@@ -812,4 +812,26 @@ Text HLabel 10350 10450 3    60   Input ~ 0
 Distance_SCL
 Text HLabel 10650 10450 3    60   Input ~ 0
 Distance_SDA
+Text HLabel 3900 5400 0    60   Input ~ 0
+Encoder_A
+Text HLabel 3900 5600 0    60   Input ~ 0
+Encoder_B
+Text HLabel 12900 3400 2    60   Input ~ 0
+Motor_PWM
+Text HLabel 12900 6600 2    60   Input ~ 0
+Motor_IN1
+Text HLabel 12900 3500 2    60   Input ~ 0
+Motor_IN2
+Text HLabel 12900 3300 2    60   Input ~ 0
+Motor_Standby
+Text HLabel 12900 7600 2    60   Input ~ 0
+Enable_FR
+Text HLabel 12900 7700 2    60   Input ~ 0
+Enable_FC
+Text HLabel 12900 7500 2    60   Input ~ 0
+Enable_FL
+Text HLabel 3900 5700 0    60   Input ~ 0
+Enable_BC
+Text HLabel 12900 5700 2    60   Input ~ 0
+Enable_SR
 $EndSCHEMATC
