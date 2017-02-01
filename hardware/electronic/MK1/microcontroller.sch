@@ -319,23 +319,23 @@ Text GLabel 12900 7300 2    60   Input ~ 0
 ARDU_D12_MISO
 Text GLabel 12900 7400 2    60   Input ~ 0
 ARDU_D11_MOSI
-Text GLabel 13950 4800 2    60   Input ~ 0
-ARDU_D10
-Text GLabel 14250 6450 2    60   Input ~ 0
-ARDU_D9
 Text GLabel 12900 3700 2    60   Input ~ 0
+ARDU_D10
+Text GLabel 12900 7000 2    60   Input ~ 0
+ARDU_D9
+Text GLabel 3900 7700 0    60   Input ~ 0
 ARDU_D8
-Text GLabel 13950 4650 2    60   Input ~ 0
+Text GLabel 3900 7600 0    60   Input ~ 0
 ARDU_D7
-Text GLabel 13950 5100 2    60   Input ~ 0
+Text GLabel 3900 7500 0    60   Input ~ 0
 ARDU_D6
-Text GLabel 13950 4900 2    60   Input ~ 0
+Text GLabel 3900 7400 0    60   Input ~ 0
 ARDU_D5
-Text GLabel 13950 5000 2    60   Input ~ 0
+Text GLabel 12900 6000 2    60   Input ~ 0
 ARDU_D4
-Text GLabel 13950 4500 2    60   Input ~ 0
+Text GLabel 3900 7300 0    60   Input ~ 0
 ARDU_D3
-Text GLabel 12900 4600 2    60   Input ~ 0
+Text GLabel 3900 7200 0    60   Input ~ 0
 ARDU_D2
 Text GLabel 12900 6800 2    60   Input ~ 0
 ARDU_D1_TXD
