@@ -52,10 +52,10 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 7 7
-Title ""
+Title "O'PAVES Mk-I"
 Date ""
-Rev ""
-Comp ""
+Rev "A"
+Comp "AdaCore"
 Comment1 ""
 Comment2 ""
 Comment3 ""
@@ -340,4 +340,6 @@ Text Notes 7850 1050 0    157  ~ 0
 Breakout backup
 Text Notes 7550 1550 0    59   ~ 0
 If for some reason it's not possible to use the on-board \nIMU (bad circuit, too difficult to solder, etc) we will use \na breakout board from AdaFruit.
+Text Notes 3100 1400 0    394  ~ 0
+IMU
 $EndSCHEMATC

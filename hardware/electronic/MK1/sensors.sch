@@ -52,10 +52,10 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 6 7
-Title ""
+Title "O'PAVES Mk-I"
 Date ""
-Rev ""
-Comp ""
+Rev "A"
+Comp "AdaCore"
 Comment1 ""
 Comment2 ""
 Comment3 ""
@@ -108,12 +108,12 @@ $EndComp
 $Comp
 L Pololu_VL53l0X_Carrier distance_side_right1
 U 1 1 5886C9C5
-P 6500 1200
-F 0 "distance_side_right1" H 6950 1250 60  0000 C CNN
-F 1 "Pololu_VL53l0X_Carrier" H 7050 1100 60  0000 C CNN
-F 2 "OPAVES_Footprints:Pololu_VL53L0x_Carrier" H 6500 1150 60  0001 C CNN
-F 3 "" H 6500 1150 60  0001 C CNN
-	1    6500 1200
+P 6500 1650
+F 0 "distance_side_right1" H 6950 1700 60  0000 C CNN
+F 1 "Pololu_VL53l0X_Carrier" H 7050 1550 60  0000 C CNN
+F 2 "OPAVES_Footprints:Pololu_VL53L0x_Carrier" H 6500 1600 60  0001 C CNN
+F 3 "" H 6500 1600 60  0001 C CNN
+	1    6500 1650
 	1    0    0    -1  
 $EndComp
 Text HLabel 1550 2150 0    60   Input ~ 0
@@ -122,19 +122,19 @@ Text HLabel 1550 3850 0    60   Input ~ 0
 VCC
 Text HLabel 1550 5600 0    60   Input ~ 0
 VCC
-Text HLabel 6300 1650 0    60   Input ~ 0
+Text HLabel 6300 2100 0    60   Input ~ 0
 VCC
 Text HLabel 9100 3550 0    60   Input ~ 0
 VCC
 NoConn ~ 9100 3350
-NoConn ~ 6300 1450
+NoConn ~ 6300 1900
 NoConn ~ 1550 1950
 NoConn ~ 1550 3650
 NoConn ~ 1550 5400
 NoConn ~ 1550 4850
 NoConn ~ 1550 6600
 NoConn ~ 1550 3150
-NoConn ~ 6300 2650
+NoConn ~ 6300 3100
 NoConn ~ 9100 4550
 Text HLabel 1550 6000 0    60   Input ~ 0
 SDA
@@ -193,23 +193,23 @@ F 3 "" H 1050 2400 50  0000 C CNN
 	1    1050 2400
 	1    0    0    -1  
 $EndComp
-Text HLabel 6300 2050 0    60   Input ~ 0
+Text HLabel 6300 2500 0    60   Input ~ 0
 SDA
-Text HLabel 6300 2250 0    60   Input ~ 0
+Text HLabel 6300 2700 0    60   Input ~ 0
 SCL
 Wire Wire Line
-	6300 1850 5800 1850
+	6300 2300 5800 2300
 Wire Wire Line
-	5800 1850 5800 1900
+	5800 2300 5800 2350
 $Comp
 L GND #PWR027
 U 1 1 588B483E
-P 5800 1900
-F 0 "#PWR027" H 5800 1650 50  0001 C CNN
-F 1 "GND" H 5800 1750 50  0000 C CNN
-F 2 "" H 5800 1900 50  0000 C CNN
-F 3 "" H 5800 1900 50  0000 C CNN
-	1    5800 1900
+P 5800 2350
+F 0 "#PWR027" H 5800 2100 50  0001 C CNN
+F 1 "GND" H 5800 2200 50  0000 C CNN
+F 2 "" H 5800 2350 50  0000 C CNN
+F 3 "" H 5800 2350 50  0000 C CNN
+	1    5800 2350
 	1    0    0    -1  
 $EndComp
 Text HLabel 9100 3950 0    60   Input ~ 0
@@ -237,8 +237,10 @@ Text HLabel 1550 4650 0    60   Input ~ 0
 Enable_FC
 Text HLabel 1550 6400 0    60   Input ~ 0
 Enable_FR
-Text HLabel 6300 2450 0    60   Input ~ 0
+Text HLabel 6300 2900 0    60   Input ~ 0
 Enable_SR
 Text HLabel 9100 4350 0    60   Input ~ 0
 Enable_BC
+Text Notes 4400 950  0    236  ~ 0
+Distance sensors
 $EndSCHEMATC

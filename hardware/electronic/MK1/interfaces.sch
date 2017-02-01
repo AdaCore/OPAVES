@@ -350,4 +350,6 @@ F 3 "" H 6100 3350 50  0000 C CNN
 $EndComp
 Text HLabel 3900 1500 2    60   Input ~ 0
 3V3
+Text Notes 6700 950  0    157  ~ 0
+Radio
 $EndSCHEMATC
