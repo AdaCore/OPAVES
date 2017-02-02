@@ -155,7 +155,7 @@ L Pololu_StepUp/Down_Regulator StepUp_StepDown_5V0
 U 1 1 588A675B
 P 7700 1350
 F 0 "StepUp_StepDown_5V0" H 8200 1400 60  0000 C CNN
-F 1 "Pololu_StepUp/Down_Regulator" H 8450 1250 60  0000 C CNN
+F 1 "Pololu_StepUp/Down_Regulator + MOLEX 22-28-5044" H 8450 1250 60  0000 C CNN
 F 2 "OPAVES_Footprints:Pololu_StepUp_StepDown_Regulator" H 7700 1350 60  0001 C CNN
 F 3 "" H 7700 1350 60  0001 C CNN
 	1    7700 1350
@@ -200,7 +200,7 @@ L Pololu_StepUp/Down_Regulator StepUp_StepDown_3V3
 U 1 1 588A6FCC
 P 7450 4550
 F 0 "StepUp_StepDown_3V3" H 7950 4600 60  0000 C CNN
-F 1 "Pololu_StepUp/Down_Regulator" H 8200 4450 60  0000 C CNN
+F 1 "Pololu_StepUp/Down_Regulator + MOLEX 22-28-5044" H 8200 4450 60  0000 C CNN
 F 2 "OPAVES_Footprints:Pololu_StepUp_StepDown_Regulator" H 7450 4550 60  0001 C CNN
 F 3 "" H 7450 4550 60  0001 C CNN
 	1    7450 4550
@@ -240,7 +240,7 @@ L CONN_01X03 Battery1
 U 1 1 588B953B
 P 1200 1950
 F 0 "Battery1" H 1200 2150 50  0000 C CNN
-F 1 "CONN_01X03" V 1300 1950 50  0001 C CNN
+F 1 "MOLEX 22-28-4033" V 1300 1950 50  0001 C CNN
 F 2 "Pin_Headers:Pin_Header_Straight_1x03" H 1200 1950 50  0001 C CNN
 F 3 "" H 1200 1950 50  0000 C CNN
 	1    1200 1950
