@@ -459,6 +459,27 @@ X A 2 200 0 150 L 40 40 1 1 P
 ENDDRAW
 ENDDEF
 #
+# Led_Small
+#
+DEF Led_Small D 0 10 N N 1 F N
+F0 "D" -50 125 50 H V L CNN
+F1 "Led_Small" -175 -100 50 H V L CNN
+F2 "" 0 0 50 V V C CNN
+F3 "" 0 0 50 V V C CNN
+$FPLIST
+ LED-*
+ LED_*
+$ENDFPLIST
+DRAW
+P 2 0 1 0 -30 -40 -30 40 N
+P 4 0 1 0 30 -40 -30 0 30 40 30 -40 F
+P 5 0 1 0 0 30 -20 50 -10 50 -20 50 -20 40 N
+P 5 0 1 0 20 50 0 70 10 70 0 70 0 60 N
+X K 1 -100 0 70 R 40 40 1 1 P
+X A 2 100 0 70 L 40 40 1 1 P
+ENDDRAW
+ENDDEF
+#
 # Pololu_StepUp/Down_Regulator
 #
 DEF Pololu_StepUp/Down_Regulator U 0 40 Y Y 1 F N
