@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/chouteau/src/OPAVES/github/hardware/electronic/MK1/MK1.sch)
-    (date "jeu. 02 févr. 2017 12:52:17 CET")
+    (date "jeu. 02 févr. 2017 15:49:49 CET")
     (tool "Eeschema 4.0.4+dfsg1-stable")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -203,7 +203,7 @@
       (tstamp 58861365))
     (comp (ref Y1)
       (value 8MHz)
-      (footprint Crystals:Crystal_HC50-U_Vertical)
+      (footprint Crystals:Crystal_HC49-U_Vertical)
       (libsource (lib device) (part Crystal))
       (sheetpath (names /microcontroller/) (tstamps /5885D1CF/))
       (tstamp 588623D7))
@@ -460,7 +460,7 @@
       (tstamp 5886F317))
     (comp (ref Y2)
       (value 32kHz)
-      (footprint Crystals:Crystal_HC50-U_Vertical)
+      (footprint Crystals:Crystal_MC-306)
       (libsource (lib device) (part Crystal))
       (sheetpath (names /IMU/) (tstamps /5886ECF0/))
       (tstamp 5886F6E7))
