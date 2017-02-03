@@ -105,14 +105,14 @@ F23 "Enable_BC" O R 6500 3550 60
 F24 "Enable_SR" O R 6500 3400 60 
 $EndSheet
 $Sheet
-S 900  700  1800 1800
+S 900  1700 1800 1800
 U 5885EAE0
 F0 "Power" 60
 F1 "power.sch" 60
-F2 "VBAT_SENSE" O R 2700 1850 60 
-F3 "5V" O R 2700 1300 60 
-F4 "3V3" O R 2700 1500 60 
-F5 "VBAT" O R 2700 2050 60 
+F2 "VBAT_SENSE" O R 2700 2850 60 
+F3 "5V" O R 2700 2300 60 
+F4 "3V3" O R 2700 2500 60 
+F5 "VBAT" O R 2700 3050 60 
 $EndSheet
 $Sheet
 S 8200 4600 1800 1800
@@ -151,13 +151,13 @@ F2 "IMU_VCC" I L 8200 2900 60
 F3 "IMU_SCL" B L 8200 3350 60 
 F4 "IMU_SDA" B L 8200 3200 60 
 $EndSheet
-Text Label 2900 1300 0    60   ~ 0
+Text Label 2900 2300 0    60   ~ 0
 5V
-Text Label 2900 1500 0    60   ~ 0
+Text Label 2900 2500 0    60   ~ 0
 3V3
 Text Label 4400 3000 0    60   ~ 0
 3V3
-Text Label 2900 2050 0    60   ~ 0
+Text Label 2900 3050 0    60   ~ 0
 VBAT
 Text Label 1450 5950 0    60   ~ 0
 VBAT
@@ -183,11 +183,11 @@ Servo_PWM
 Wire Wire Line
 	4700 3000 4400 3000
 Wire Wire Line
-	2700 2050 2900 2050
+	2700 3050 2900 3050
 Wire Wire Line
-	2700 1300 2900 1300
+	2700 2300 2900 2300
 Wire Wire Line
-	2700 1500 2900 1500
+	2700 2500 2900 2500
 Wire Wire Line
 	1750 5950 1450 5950
 Wire Wire Line
@@ -355,9 +355,9 @@ Wire Wire Line
 Wire Wire Line
 	4700 3250 3750 3250
 Wire Wire Line
-	3750 3250 3750 1850
+	3750 3250 3750 2850
 Wire Wire Line
-	3750 1850 2700 1850
+	3750 2850 2700 2850
 Wire Wire Line
 	7900 3950 6500 3950
 Wire Wire Line
@@ -386,4 +386,10 @@ F 3 "" H 5550 6300 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 NoConn ~ 5350 6300
+Text Notes 650  1000 0    60   ~ 0
+TODO:\n - Kill switch\n - Switch to only turn on the MCU and not the motor\n - VBAT, 5V and 3V3 status LEDs
+Wire Notes Line
+	550  1350 3500 1350
+Wire Notes Line
+	3500 1350 3500 500 
 $EndSCHEMATC
