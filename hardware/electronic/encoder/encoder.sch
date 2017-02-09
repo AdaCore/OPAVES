@@ -347,4 +347,10 @@ Wire Wire Line
 	6950 1750 7300 1750
 Wire Wire Line
 	7200 1950 7300 1950
+Text Notes 600  7450 0    157  ~ 0
+Known problems:\n - SMD hall effect sensors are not close \n    enough to the magnet to work\n - B sensor GND is not connected to common GND\n - Too much noise from the motor
+Wire Notes Line
+	500  6100 6950 6100
+Wire Notes Line
+	6950 6100 6950 6550
 $EndSCHEMATC
