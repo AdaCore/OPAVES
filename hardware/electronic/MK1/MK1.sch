@@ -103,6 +103,7 @@ F21 "Enable_FC" O R 6500 3100 60
 F22 "Enable_FL" O R 6500 2950 60 
 F23 "Enable_BC" O R 6500 3550 60 
 F24 "Enable_SR" O R 6500 3400 60 
+F25 "Steering_PWM" I L 4700 4400 60 
 $EndSheet
 $Sheet
 S 900  1700 1800 1800
@@ -392,4 +393,14 @@ Wire Notes Line
 	550  1350 3500 1350
 Wire Notes Line
 	3500 1350 3500 500 
+Wire Wire Line
+	4700 4400 3950 4400
+Text Label 3950 4400 0    60   ~ 0
+Servo_PWM
+Text Notes 3600 850  0    60   ~ 0
+Known Problems:\n - Steering servo PWM signal is not connected\n\n
+Wire Notes Line
+	3550 1350 6500 1350
+Wire Notes Line
+	6500 1350 6500 500 
 $EndSCHEMATC

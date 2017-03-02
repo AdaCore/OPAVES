@@ -2370,6 +2370,11 @@
       (solder_mask_margin 0.1) (clearance 0.5))
     (pad 4 np_thru_hole circle (at 30 8 270) (size 3.4 3.4) (drill 3.4) (layers *.Cu *.Mask)
       (solder_mask_margin 0.1) (clearance 0.5))
+    (model ../../../../../home/chouteau/src/OPAVES/github/hardware/3D_models/for_kicad/steering_assembly.wrl
+      (at (xyz 0.58 -0.15 0))
+      (scale (xyz 0.39 0.39 0.39))
+      (rotate (xyz 0 0 180))
+    )
   )
 
   (module Capacitors_SMD:C_0805 (layer F.Cu) (tedit 5415D6EA) (tstamp 58909140)

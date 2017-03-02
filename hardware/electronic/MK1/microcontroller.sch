@@ -945,4 +945,6 @@ F 3 "" H 14950 6800 50  0000 C CNN
 	1    14950 6800
 	1    0    0    -1  
 $EndComp
+Text HLabel 12900 3000 2    60   Input ~ 0
+Steering_PWM
 $EndSCHEMATC
