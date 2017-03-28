@@ -56,7 +56,7 @@ Title "O'PAVES Mk-I"
 Date ""
 Rev "A"
 Comp "AdaCore"
-Comment1 ""
+Comment1 "Licensed under CERN OHL v.1.2 or later"
 Comment2 ""
 Comment3 ""
 Comment4 ""
@@ -387,8 +387,8 @@ F 3 "" H 5550 6300 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 NoConn ~ 5350 6300
-Text Notes 650  1000 0    60   ~ 0
-TODO:\n - Kill switch\n - Switch to only turn on the MCU and not the motor\n - VBAT, 5V and 3V3 status LEDs
+Text Notes 650  1050 0    60   ~ 0
+TODO:\n - Kill switch\n - Switch to only turn on the MCU and not the motor\n - VBAT, 5V and 3V3 status LEDs\n - Buzzer
 Wire Notes Line
 	550  1350 3500 1350
 Wire Notes Line
