@@ -80,6 +80,28 @@ X COM1_SCL/RX 19 -200 -1950 200 R 50 50 1 1 B
 ENDDRAW
 ENDDEF
 #
+# DP3T_switch
+#
+DEF DP3T_switch U 0 40 Y Y 1 F N
+F0 "U" 0 0 60 H V C CNN
+F1 "DP3T_switch" 0 0 60 H V C CNN
+F2 "" 0 0 60 H I C CNN
+F3 "" 0 0 60 H I C CNN
+DRAW
+S -200 -150 200 -800 0 1 0 N
+S -100 -250 -50 -400 0 1 0 N
+S 50 -250 100 -400 0 1 0 N
+X ~ 1 350 -250 200 L 50 50 1 1 I
+X ~ 2 350 -400 200 L 50 50 1 1 I
+X ~ 3 350 -550 200 L 50 50 1 1 I
+X ~ 4 350 -700 200 L 50 50 1 1 I
+X ~ 5 -350 -250 200 R 50 50 1 1 I
+X ~ 6 -350 -400 200 R 50 50 1 1 I
+X ~ 7 -350 -550 200 R 50 50 1 1 I
+X ~ 8 -350 -700 200 R 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
 # Digital_Latch_Hall_Effect_Sensor
 #
 DEF Digital_Latch_Hall_Effect_Sensor U 0 40 Y Y 1 F N

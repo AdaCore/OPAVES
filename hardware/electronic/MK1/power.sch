@@ -143,13 +143,13 @@ Wire Wire Line
 Wire Wire Line
 	7500 1900 7350 1900
 Wire Wire Line
-	7500 2200 7250 2200
+	6600 2200 7500 2200
 Wire Wire Line
-	7400 2500 7400 2600
+	7400 2500 7400 2800
 Wire Wire Line
 	7500 2500 7400 2500
 Wire Wire Line
-	7500 1600 7250 1600
+	7000 1600 7500 1600
 $Comp
 L Pololu_StepUp/Down_Regulator StepUp_StepDown_5V0
 U 1 1 588A675B
@@ -165,19 +165,17 @@ Text Notes 9350 2700 0    60   ~ 0
 At some point this should be directly \nin the project rather than relying on \nan external board.  For the moment\nit's the more convenient solution.
 Text Notes 6800 1100 0    157  ~ 0
 5V step up / step down regulator
-Text HLabel 7250 1600 0    60   Input ~ 0
-VBAT
-Text HLabel 7250 2200 0    60   Input ~ 0
+Text HLabel 6600 2200 0    60   Input ~ 0
 5V
 $Comp
 L GND #PWR018
 U 1 1 588A1F16
-P 7400 2600
-F 0 "#PWR018" H 7400 2350 50  0001 C CNN
-F 1 "GND" H 7400 2450 50  0000 C CNN
-F 2 "" H 7400 2600 50  0000 C CNN
-F 3 "" H 7400 2600 50  0000 C CNN
-	1    7400 2600
+P 7400 2800
+F 0 "#PWR018" H 7400 2550 50  0001 C CNN
+F 1 "GND" H 7400 2650 50  0000 C CNN
+F 2 "" H 7400 2800 50  0000 C CNN
+F 3 "" H 7400 2800 50  0000 C CNN
+	1    7400 2800
 	1    0    0    -1  
 $EndComp
 Text Notes 7800 5400 0    60   ~ 0
@@ -188,13 +186,13 @@ Wire Wire Line
 Wire Wire Line
 	7250 5100 7100 5100
 Wire Wire Line
-	7250 5400 7000 5400
+	6450 5400 7250 5400
 Wire Wire Line
-	7150 5700 7150 5800
+	7150 5700 7150 6050
 Wire Wire Line
 	7250 5700 7150 5700
 Wire Wire Line
-	7250 4800 7000 4800
+	6700 4800 7250 4800
 $Comp
 L Pololu_StepUp/Down_Regulator StepUp_StepDown_3V3
 U 1 1 588A6FCC
@@ -210,19 +208,17 @@ Text Notes 9100 5900 0    60   ~ 0
 At some point this should be directly \nin the project rather than relying on \nan external board.  For the moment\nit's the more convenient solution.
 Text Notes 6550 4100 0    157  ~ 0
 3.3V step up / step down regulator
-Text HLabel 7000 4800 0    60   Input ~ 0
-VBAT
-Text HLabel 7000 5400 0    60   Input ~ 0
+Text HLabel 6450 5400 0    60   Input ~ 0
 3V3
 $Comp
 L GND #PWR019
 U 1 1 588A6FD6
-P 7150 5800
-F 0 "#PWR019" H 7150 5550 50  0001 C CNN
-F 1 "GND" H 7150 5650 50  0000 C CNN
-F 2 "" H 7150 5800 50  0000 C CNN
-F 3 "" H 7150 5800 50  0000 C CNN
-	1    7150 5800
+P 7150 6050
+F 0 "#PWR019" H 7150 5800 50  0001 C CNN
+F 1 "GND" H 7150 5900 50  0000 C CNN
+F 2 "" H 7150 6050 50  0000 C CNN
+F 3 "" H 7150 6050 50  0000 C CNN
+	1    7150 6050
 	1    0    0    -1  
 $EndComp
 Wire Notes Line
@@ -230,7 +226,7 @@ Wire Notes Line
 Wire Notes Line
 	5750 550  5750 6550
 Wire Notes Line
-	5750 6550 6950 6550
+	500  6550 6950 6550
 Wire Wire Line
 	1650 2150 1650 2350
 Wire Wire Line
@@ -263,4 +259,101 @@ Connection ~ 1650 2200
 NoConn ~ 1400 1850
 Text Notes 700  3150 0    118  ~ 0
 TODO: Reverse polarity protection (maybe)
+$Comp
+L Led_Small D4
+U 1 1 58DB4328
+P 6850 2350
+F 0 "D4" H 6800 2475 50  0000 L CNN
+F 1 "Red" H 6800 2250 50  0000 L CNN
+F 2 "LEDs:LED_0805" V 6850 2350 50  0001 C CNN
+F 3 "" V 6850 2350 50  0000 C CNN
+	1    6850 2350
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R R15
+U 1 1 58DB4330
+P 6850 2600
+F 0 "R15" V 6930 2600 50  0000 C CNN
+F 1 "330" V 6850 2600 50  0000 C CNN
+F 2 "Resistors_SMD:R_0805" V 6780 2600 50  0001 C CNN
+F 3 "" H 6850 2600 50  0000 C CNN
+	1    6850 2600
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7400 2750 6850 2750
+Connection ~ 7400 2750
+Wire Wire Line
+	6850 2250 6850 2200
+Connection ~ 6850 2200
+$Comp
+L Led_Small D5
+U 1 1 58DB4F4F
+P 6850 5550
+F 0 "D5" H 6800 5675 50  0000 L CNN
+F 1 "Green" H 6750 5450 50  0000 L CNN
+F 2 "LEDs:LED_0805" V 6850 5550 50  0001 C CNN
+F 3 "" V 6850 5550 50  0000 C CNN
+	1    6850 5550
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R R16
+U 1 1 58DB4F57
+P 6850 5800
+F 0 "R16" V 6930 5800 50  0000 C CNN
+F 1 "330" V 6850 5800 50  0000 C CNN
+F 2 "Resistors_SMD:R_0805" V 6780 5800 50  0001 C CNN
+F 3 "" H 6850 5800 50  0000 C CNN
+	1    6850 5800
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6850 5450 6850 5400
+Connection ~ 6850 5400
+Wire Wire Line
+	7150 5950 6850 5950
+Connection ~ 7150 5950
+$Comp
+L DP3T_switch U7
+U 1 1 58DB8591
+P 3000 4500
+F 0 "U7" H 3000 4500 60  0000 C CNN
+F 1 "0S203013MT8QN1" H 3000 4400 60  0000 C CNN
+F 2 "OPAVES_Footprints:DP3T_switch" H 3000 4500 60  0001 C CNN
+F 3 "" H 3000 4500 60  0001 C CNN
+	1    3000 4500
+	1    0    0    -1  
+$EndComp
+NoConn ~ 3350 4750
+Text Notes 2150 4850 0    60   ~ 0
+Off
+Text Notes 1850 5000 0    60   ~ 0
+MCU only
+Text Notes 1600 5150 0    60   ~ 0
+All circuits on
+NoConn ~ 2650 4750
+Text HLabel 2650 5200 0    60   Input ~ 0
+VMOTOR
+Text HLabel 2650 5050 0    60   Input ~ 0
+VBAT
+Text HLabel 3350 5050 2    60   Input ~ 0
+VBAT
+Wire Wire Line
+	3350 4900 4050 4900
+Wire Wire Line
+	3700 4900 3700 5200
+Wire Wire Line
+	3700 5200 3350 5200
+NoConn ~ 2650 4900
+Connection ~ 3700 4900
+Text Label 4050 4900 0    60   ~ 0
+VCTRL
+Text Label 7000 1600 0    60   ~ 0
+VCTRL
+Text Label 6700 4800 0    60   ~ 0
+VCTRL
+Text Notes 2150 3850 0    157  ~ 0
+Master switch
 $EndSCHEMATC
