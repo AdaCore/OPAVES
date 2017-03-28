@@ -54,7 +54,7 @@ encoding utf-8
 Sheet 4 7
 Title "O'PAVES Mk-I"
 Date ""
-Rev "A"
+Rev "B"
 Comp "AdaCore"
 Comment1 "Licensed under CERN OHL v.1.2 or later"
 Comment2 ""

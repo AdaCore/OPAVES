@@ -54,7 +54,7 @@ encoding utf-8
 Sheet 1 7
 Title "O'PAVES Mk-I"
 Date ""
-Rev "A"
+Rev "B"
 Comp "AdaCore"
 Comment1 "Licensed under CERN OHL v.1.2 or later"
 Comment2 ""
@@ -397,8 +397,8 @@ Wire Wire Line
 	4700 4400 3950 4400
 Text Label 3950 4400 0    60   ~ 0
 Servo_PWM
-Text Notes 3600 850  0    60   ~ 0
-Known Problems:\n - Steering servo PWM signal is not connected\n\n
+Text Notes 3600 1050 0    60   ~ 0
+Known Problems:\n\nFIxed:\n - Steering servo PWM signal is not connected\n\n
 Wire Notes Line
 	3550 1350 6500 1350
 Wire Notes Line

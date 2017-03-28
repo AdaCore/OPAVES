@@ -54,7 +54,7 @@ encoding utf-8
 Sheet 3 7
 Title "O'PAVES Mk-I"
 Date ""
-Rev "A"
+Rev "B"
 Comp "AdaCore"
 Comment1 "Licensed under CERN OHL v.1.2 or later"
 Comment2 ""
@@ -945,6 +945,6 @@ F 3 "" H 14950 6800 50  0000 C CNN
 	1    14950 6800
 	1    0    0    -1  
 $EndComp
-Text HLabel 12900 3000 2    60   Input ~ 0
+Text HLabel 12900 5000 2    60   Input ~ 0
 Steering_PWM
 $EndSCHEMATC
