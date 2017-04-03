@@ -363,27 +363,27 @@ Wire Wire Line
 $Comp
 L TEST_1P FRONT_MH1
 U 1 1 5897E746
-P 4900 6300
-F 0 "FRONT_MH1" H 4900 6570 50  0000 C CNN
-F 1 "TEST_1P" H 4900 6500 50  0000 C CNN
-F 2 "Mounting_Holes:MountingHole_3.2mm_M3_Pad" H 5100 6300 50  0001 C CNN
-F 3 "" H 5100 6300 50  0000 C CNN
-	1    4900 6300
+P 5850 6300
+F 0 "FRONT_MH1" H 5850 6570 50  0000 C CNN
+F 1 "TEST_1P" H 5850 6500 50  0000 C CNN
+F 2 "Mounting_Holes:MountingHole_3.2mm_M3_Pad" H 6050 6300 50  0001 C CNN
+F 3 "" H 6050 6300 50  0000 C CNN
+	1    5850 6300
 	1    0    0    -1  
 $EndComp
-NoConn ~ 4900 6300
+NoConn ~ 5850 6300
 $Comp
 L TEST_1P FRONT_MH2
 U 1 1 5897F207
-P 5350 6300
-F 0 "FRONT_MH2" H 5350 6570 50  0000 C CNN
-F 1 "TEST_1P" H 5350 6500 50  0000 C CNN
-F 2 "Mounting_Holes:MountingHole_3.2mm_M3_Pad" H 5550 6300 50  0001 C CNN
-F 3 "" H 5550 6300 50  0000 C CNN
-	1    5350 6300
+P 6300 6300
+F 0 "FRONT_MH2" H 6300 6570 50  0000 C CNN
+F 1 "TEST_1P" H 6300 6500 50  0000 C CNN
+F 2 "Mounting_Holes:MountingHole_3.2mm_M3_Pad" H 6500 6300 50  0001 C CNN
+F 3 "" H 6500 6300 50  0000 C CNN
+	1    6300 6300
 	1    0    0    -1  
 $EndComp
-NoConn ~ 5350 6300
+NoConn ~ 6300 6300
 Text Notes 650  1200 0    60   ~ 0
 TODO:\n - Kill switch\n - Buzzer\n\nDONE:\n - 5V and 3V3 status LEDs\n - Switch to only turn on the MCU and not the motor\n
 Wire Notes Line
@@ -408,4 +408,28 @@ Wire Wire Line
 	3550 6050 4100 6050
 Wire Wire Line
 	4100 6050 4100 4700
+$Comp
+L TEST_1P BACK_MH1
+U 1 1 58DCD285
+P 4900 6300
+F 0 "BACK_MH1" H 4900 6570 50  0000 C CNN
+F 1 "TEST_1P" H 4900 6500 50  0000 C CNN
+F 2 "Mounting_Holes:MountingHole_3.2mm_M3_Pad" H 5100 6300 50  0001 C CNN
+F 3 "" H 5100 6300 50  0000 C CNN
+	1    4900 6300
+	1    0    0    -1  
+$EndComp
+NoConn ~ 4900 6300
+$Comp
+L TEST_1P BACK_MH2
+U 1 1 58DCD28C
+P 5350 6300
+F 0 "BACK_MH2" H 5350 6570 50  0000 C CNN
+F 1 "TEST_1P" H 5350 6500 50  0000 C CNN
+F 2 "Mounting_Holes:MountingHole_3.2mm_M3_Pad" H 5550 6300 50  0001 C CNN
+F 3 "" H 5550 6300 50  0000 C CNN
+	1    5350 6300
+	1    0    0    -1  
+$EndComp
+NoConn ~ 5350 6300
 $EndSCHEMATC
