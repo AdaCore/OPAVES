@@ -29,7 +29,7 @@ To use the car to its maximum performance while keeping it in a safe state, the
 O'PAVES platform will provide three active safety subsystems operating between
 the driver and the car.
 
-`insert diagram here`
+![](media/demonstrator_requirements/safety_subsystems.png)
 
 
 These systems will make sure to keep the car in a safe and controlled state,
@@ -155,7 +155,7 @@ This task is best achieved with proximity sensors that deliver a distance
 measurement. The platform will need, at least, one proximity sensor to the
 front, one to the back and one to the right for autonomous parking.
 
-`insert diagram here`
+![](media/demonstrator_requirements/range_sensors.png)
 
 There are different types of proximity sensors (infrared, ultra-sound, laser
 time-of-flight). They all offer different performance, price, and integration
@@ -191,7 +191,7 @@ using a logic analyzer branched on a Crazyflie GPIO that is set to HIGH (3.3V)
 loop task is called every 2 ms and our measurements indicated that it was
 spending approximatively 1ms to execute (when compiled with debug flags).
 
-`Example of CPU usage measurement using Saleae Logic`
+![Example of CPU usage measurement using Saleae Logic](media/demonstrator_requirements/cpu_usage.png)
 
 For the memory usage, we combined two different static analysis approaches: the
 ld linker --print-memory-usage switch that outputs the statically computed
@@ -199,8 +199,8 @@ memory usage for each defined memory region; an AdaCore tool called GNATstack
 which can predict the maximum size of the memory stack required to host an
 embedded software application.
 
-
-`GNAT Programming Studio screenshot of the Memory Usage view for the Crazyflie firmware`
+![GNAT Programming Studio screenshot of the Memory Usage view for the Crazyflie
+ firmware](media/demonstrator_requirements/memory_usage.png)
 
 By combining these two different approaches, we were able to measure the memory
 usage of both ROM (~34%) and RAM (~54%).
