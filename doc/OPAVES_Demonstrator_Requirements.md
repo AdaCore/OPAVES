@@ -23,14 +23,13 @@ addressing them. However, we do not plan to actually implement lane following
 and obstacle avoidance as part of this one year project, the time frame being
 too short.
 
-## Active Safety Subsystems
+## Advanced Driver Assistance System (ADAS)
 
 To use the car to its maximum performance while keeping it in a safe state, the
 O'PAVES platform will provide three active safety subsystems operating between
 the driver and the car.
 
 ![](media/demonstrator_requirements/safety_subsystems.png)
-
 
 These systems will make sure to keep the car in a safe and controlled state,
 potentially by overriding the driver's commands. The driver could be a human
