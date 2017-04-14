@@ -56,7 +56,7 @@ blockage.
 
 ### Traction Control System
 
-While ABS avoids loss of traction during braking, Traction Control System (TCF)
+While ABS avoids loss of traction during braking, Traction Control System (TCS)
 does the same during acceleration. This allows for maximum performance while
 keeping fine control of the vehicle's trajectory.
 
