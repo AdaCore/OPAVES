@@ -55,6 +55,6 @@ build: off
 
 # Build the main application
 # We don't have test script(s) yet
-test_script: off
+test_script:
 - cmd: gprbuild -j0 -p -P software/OPAVES_MkI.gpr -XPLATFORM_BUILD=Debug
 - cmd: gprbuild -j0 -p -P software/OPAVES_MkI.gpr -XPLATFORM_BUILD=Production
