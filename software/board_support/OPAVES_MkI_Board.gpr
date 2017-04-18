@@ -1,0 +1,23 @@
+aggregate library project OPAVES_MkI_Board Is
+
+   Build := external ("BUILD", "Debug");
+
+   type RTS_Type is ("ravenscar-sfp", "ravenscar-full");
+   RTS : RTS_Type := External ("RTS", "ravenscar-sfp");
+
+   for Target use "arm-eabi";
+
+   for Runtime ("Ada") use RTS & "-stm32f4";
+
+   for Project_Path use (".",
+
+                         --  FIXME: Temporary workaround for the bad project
+                         --  paths in some Ada_Drivers_Library projects.
+                         "../Ada_Drivers_Library/arch/ARM");
+
+   for Project_Files use ("board.gpr");
+
+   for Library_Dir use "lib/" & RTS & "/" & Build;
+   for Library_Name use "OPAVES_Board";
+
+end OPAVES_MkI_Board;

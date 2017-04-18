@@ -1,0 +1,16 @@
+abstract project Config extends "../Ada_Drivers_Library/boards/common_config.gpr" is
+
+   type RTS_Type is ("ravenscar-sfp", "ravenscar-full");
+   RTS : RTS_Type := External ("RTS", "ravenscar-sfp");
+
+   Build := Common_Config.Build;
+
+   Object_Subdir := "board/" & RTS & "/" & Build;
+
+   --  Need that for abstract projects
+   for Source_Dirs use ();
+
+   package Compiler renames Common_Config.Compiler;
+   package Builder renames Common_Config.Builder;
+
+end Config;

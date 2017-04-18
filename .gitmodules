@@ -1,0 +1,3 @@
+[submodule "software/Ada_Drivers_Library"]
+	path = software/Ada_Drivers_Library
+	url = https://github.com/AdaCore/Ada_Drivers_Library.git
