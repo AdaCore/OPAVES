@@ -50,10 +50,11 @@ install:
 # Check that we can run the compiler (also display the version)
 - ps: arm-eabi-gnatls -v
 
-# Build the main application
-build:
-- cmd: gprbuild -j0 -p -P software/OPAVES_MkI.gpr -XPLATFORM_BUILD=Debug
-- cmd: gprbuild -j0 -p -P software/OPAVES_MkI.gpr -XPLATFORM_BUILD=Production
+# We don't use the build section
+build: off
 
+# Build the main application
 # We don't have test script(s) yet
 test_script: off
+- cmd: gprbuild -j0 -p -P software/OPAVES_MkI.gpr -XPLATFORM_BUILD=Debug
+- cmd: gprbuild -j0 -p -P software/OPAVES_MkI.gpr -XPLATFORM_BUILD=Production
