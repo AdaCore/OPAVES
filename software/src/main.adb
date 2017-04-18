@@ -18,5 +18,5 @@
 
 procedure Main is
 begin
-   error
+   null;
 end Main;
