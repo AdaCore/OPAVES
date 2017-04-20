@@ -1,6 +1,15 @@
 
 # Demonstrator requirements
 
+
+> The requirements in this document are indentified by a tag with the following
+>  format: `#DR-<CATEGORY>[-<NUMBER>]`
+> - `DR` stands for Demonstrator Requirement
+> - `<CATEGORY>` is a text identifier common to a group of requirements in the
+>   same category.
+> - `<NUMBER>` is a optional number identifier used when a category has more than
+>   one requirement.
+
 ## Autonomous vehicle challenges
 
 O'PAVES aims at providing an open source/open hardware platform for the
@@ -36,7 +45,7 @@ potentially by overriding the driver's commands. The driver could be a human
 operator or an artificial intelligence, both will benefit from this extra
 safety and control.
 
-### Anti-lock Braking System
+### Anti-lock Braking System (#DR-ADAS-1)
 
 During an emergency braking, the force applied to the brake discs might be so
 strong that the wheels stop turning while the car is still in movement. The
@@ -53,7 +62,7 @@ To implement ABS in our platform, we have to be able to control the braking
 force applied to the wheels and measure the rotation speed to detect a
 blockage.
 
-### Traction Control System
+### Traction Control System (#DR-ADAS-2)
 
 While ABS avoids loss of traction during braking, Traction Control System (TCS)
 does the same during acceleration. This allows for maximum performance while
@@ -65,7 +74,7 @@ To implement TCS in our platform, we have to be able to control the
 acceleration force applied to the wheels and measure the rotation speed of the
 wheels.
 
-### Emergency braking
+### Emergency braking (#DR-ADAS-3)
 
 Emergency braking is a safety system detects an imminent collision and
 automatically brakes to avoid the collision. The detection is done by measuring
@@ -78,7 +87,7 @@ to know the distance of obstacles to the front and rear of the car.
 
 ## Hardware requirements
 
-### Frame
+### Frame (#DR-FRAME)
 
 For the O'PAVES project we want to develop a platform that is as close as
 possible to a consumer car to demonstrate the relevance of the tools and
@@ -90,7 +99,7 @@ To satisfy those two very different constraints, we will use a scale model car
 Whether we will use an off-the-shelf remote controlled car or use 3D printed
 parts is to be determined during the hardware development phase.
 
-### Drivetrain and encoders
+### Drivetrain and encoders (#DR-DRIVE)
 
 #### Direct drive, no differential
 
@@ -137,14 +146,14 @@ An alternative would be to attach a coding wheel to the drivetrain.
 
 ### Sensors
 
-#### Inertial Measurement Unit (IMU)
+#### Inertial Measurement Unit (IMU) (#DR-SENSOR-1)
 
 An IMU is a integrated sub-system that measures linear and angular motion
 usually with multiple internal sensors (accelerometers, gyroscopes,
 magnetometers). With the development of Micro-Electro-Mechanical-System (MEMS)
 sensors, IMUs are getting smaller and cheaper.
 
-#### Proximity/Range
+#### Proximity/Range (#DR-SENSOR-2)
 
 To achieve the challenges of autonomous parking, obstacle avoidance and
 emergency braking, the platform needs to know the distance of potential objects
@@ -163,7 +172,13 @@ options.
 The type, number, and location of sensors will be selected as part of the hardware
 platform definition task (WP2).
 
-### Processing
+#### Wheels speed (#DR-SENSOR-3)
+
+To achieve the requirements of ABS and TCS, the platform needs to know the
+speed of the wheels. Depending on the drive train selected this could be
+achieved by different means (see section `Drivetrain and encoders`).
+
+### Processing (#DR-PROCESSING)
 
 Regarding processing, we want to use an easily extendable microcontroller that
 provides sufficient computation power and, ideally, that is well-known from the
@@ -208,7 +223,7 @@ CPU and memory usage measurements made on the reimplemented Crazyflie firmware
 showed us that a similar microcontroller should perfectly fit the needs of the
 OPAVES project.
 
-### Communication
+### Communication (#DR-COMS)
 
 A communication link is needed to remotely control the car: general direction,
 urgent stop, manual control.. The main requirements are price, bandwidth,
