@@ -16,7 +16,28 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Real_Time; use Ada.Real_Time;
+with STM32.Device;  use STM32.Device;
+with STM32.GPIO;
+with HAL.GPIO;      use HAL.GPIO;
+
 procedure Main is
+   Red   : STM32.GPIO.GPIO_Point renames PC2;
+   Green : STM32.GPIO.GPIO_Point renames PC3;
+   Unref : Boolean with Unreferenced;
 begin
-   null;
+
+   Enable_Clock (Red);
+   Enable_Clock (Green);
+   Unref := Red.Set_Mode (Output);
+   Unref := Green.Set_Mode (Output);
+
+   Red.Set;
+   Green.Clear;
+
+   loop
+      Red.Toggle;
+      Green.Toggle;
+      delay until Clock + Milliseconds (500);
+   end loop;
 end Main;
