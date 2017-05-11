@@ -16,18 +16,29 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Real_Time; use Ada.Real_Time;
-with Board.LEDs;    use Board.LEDs;
+private with STM32.GPIO;
+private with STM32.Device;
 
-procedure Main is
-begin
+package Board.LEDs is
 
-   Board.LEDs.Initialize;
+   type LED_Id is (Red, Green);
 
-   Turn_On (Green);
+   procedure Initialize
+     with Post => Initialized;
+   --  Initialize hardware for LEDs
 
-   loop
-      Toggle (Green);
-      delay until Clock + Milliseconds (500);
-   end loop;
-end Main;
+   function Initialized return Boolean;
+   --  Return True if the hardware is initialized
+
+   procedure Turn_On (LED : LED_Id)
+     with Pre => Initialized;
+   procedure Turn_Off (LED : LED_Id)
+     with Pre => Initialized;
+   procedure Toggle (LED : LED_Id)
+     with Pre => Initialized;
+
+private
+   LED_Pins : array (LED_Id) of STM32.GPIO.GPIO_Point :=
+     (Red   => STM32.Device.PC2,
+      Green => STM32.Device.PC3);
+end Board.LEDs;

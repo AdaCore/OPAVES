@@ -16,18 +16,65 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Real_Time; use Ada.Real_Time;
-with Board.LEDs;    use Board.LEDs;
+with STM32.GPIO;   use STM32.GPIO;
+with STM32.Device; use STM32.Device;
 
-procedure Main is
-begin
+package body Board.LEDs is
 
-   Board.LEDs.Initialize;
+   Init_Done : Boolean := False;
 
-   Turn_On (Green);
+   ----------------
+   -- Initialize --
+   ----------------
 
-   loop
-      Toggle (Green);
-      delay until Clock + Milliseconds (500);
-   end loop;
-end Main;
+   procedure Initialize is
+      IO_Conf : GPIO_Port_Configuration;
+   begin
+      IO_Conf.Mode        := Mode_Out;
+      IO_Conf.Output_Type := Push_Pull;
+      IO_Conf.Speed       := Speed_Low;
+      IO_Conf.Resistors   := Floating;
+
+      for Pin of LED_Pins loop
+         Enable_Clock (Pin);
+         Pin.Configure_IO (IO_Conf);
+         Pin.Clear;
+      end loop;
+
+      Init_Done := True;
+   end Initialize;
+
+   -----------------
+   -- Initialized --
+   -----------------
+
+   function Initialized return Boolean
+   is (Init_Done);
+
+   -------------
+   -- Turn_On --
+   -------------
+
+   procedure Turn_On (LED : LED_Id) is
+   begin
+      LED_Pins (LED).Set;
+   end Turn_On;
+
+   --------------
+   -- Turn_Off --
+   --------------
+
+   procedure Turn_Off (LED : LED_Id) is
+   begin
+      LED_Pins (LED).Clear;
+   end Turn_Off;
+
+   ------------
+   -- Toggle --
+   ------------
+
+   procedure Toggle (LED : LED_Id) is
+   begin
+      LED_Pins (LED).Toggle;
+   end Toggle;
+end Board.LEDs;
