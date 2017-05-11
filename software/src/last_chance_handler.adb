@@ -16,24 +16,28 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Last_Chance_Handler;
-with System;
+with Board.LEDs; use Board.LEDs;
 
-with Ada.Real_Time; use Ada.Real_Time;
-with Board.LEDs;    use Board.LEDs;
+package body Last_Chance_Handler is
 
-procedure Main is
-begin
+   -------------------------
+   -- Last_Chance_Handler --
+   -------------------------
 
-   Board.LEDs.Initialize;
+   procedure Last_Chance_Handler (Msg : System.Address; Line : Integer) is
+      pragma Unreferenced (Msg, Line);
+   begin
 
-   Turn_On (Green);
+      --  Initialize hardware in case it wasn't done before
+      Board.LEDs.Initialize;
 
-   for Cnt in 1 .. 1_000 loop
-      Toggle (Green);
-      delay until Clock + Milliseconds (500);
-   end loop;
+      loop
+         Toggle (Red);
+         for Cnt in 1 .. 1_000_000 loop
+            --  Busy loop...
+            null;
+         end loop;
+      end loop;
+   end Last_Chance_Handler;
 
-   Last_Chance_Handler.Last_Chance_Handler (Msg  => System.Null_Address,
-                                            Line => 0);
-end Main;
+end Last_Chance_Handler;
