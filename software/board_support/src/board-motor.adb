@@ -19,6 +19,7 @@
 with HAL;          use HAL;
 with STM32.GPIO;   use STM32.GPIO;
 with STM32.Timers; use STM32.Timers;
+with STM32.PWM;    use STM32.PWM;
 with STM32.Device; use STM32.Device;
 
 package body Board.Motor is
@@ -32,7 +33,7 @@ package body Board.Motor is
    procedure Initialize is
       IO_Conf : GPIO_Port_Configuration;
    begin
-      --  GPIOs
+      --  GPIOs  --
       Enable_Clock (In1_Pin);
       Enable_Clock (In2_Pin);
       Enable_Clock (Standby_Pin);
@@ -51,35 +52,16 @@ package body Board.Motor is
       Standby_Pin.Configure_IO (IO_Conf);
       Standby_Pin.Clear;
 
-      IO_Conf.Mode := Mode_AF;
-      PWM_Pin.Configure_IO (IO_Conf);
-      PWM_Pin.Configure_Alternate_Function (PWM_Pin_AF);
+      --  Timer  --
+      Configure_PWM_Timer (PWM_Timer'Access, PWM_Frequency);
 
-      --  Timer
-      Enable_Clock (PWM_Timer);
+      Modulator.Attach_PWM_Channel
+        (PWM_Timer'Access,
+         PWM_Channel,
+         PWM_Pin,
+         PWM_Pin_AF);
 
-      Reset (PWM_Timer);
-
-      Configure
-        (PWM_Timer,
-         Prescaler     => 200,
-         Period        => PWM_Period,
-         Clock_Divisor => Div1,
-         Counter_Mode  => Up);
-
-      Configure_Channel_Output
-        (PWM_Timer,
-         Channel  => PWM_Channel,
-         Mode     => PWM1,
-         State    => Enable,
-         Pulse    => 0,
-         Polarity => High);
-
-      Set_Autoreload_Preload (PWM_Timer, True);
-
-      Enable_Channel (PWM_Timer, PWM_Channel);
-
-      Enable (PWM_Timer);
+      Modulator.Enable_Output;
 
       Init_Done := True;
 
@@ -143,9 +125,7 @@ package body Board.Motor is
 
    procedure Set_Throttle (Throt : Throttle) is
    begin
-      Set_Compare_Value (PWM_Timer,
-                         PWM_Channel,
-                         UInt16 (Throt * Float (PWM_Period)));
+      Modulator.Set_Duty_Cycle (Percentage (Throt * 100.0));
    end Set_Throttle;
 
 end Board.Motor;
