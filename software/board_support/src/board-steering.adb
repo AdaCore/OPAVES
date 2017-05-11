@@ -29,6 +29,11 @@ package body Board.Steering is
 
    procedure Initialize is
    begin
+      --  Check if already initialized
+      if Initialized then
+         return;
+      end if;
+
       Configure_PWM_Timer (PWM_Timer'Access, PWM_Frequency);
 
       Modulator.Attach_PWM_Channel

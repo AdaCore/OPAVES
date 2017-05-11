@@ -33,6 +33,11 @@ package body Board.Motor is
    procedure Initialize is
       IO_Conf : GPIO_Port_Configuration;
    begin
+      --  Check if already initialized
+      if Initialized then
+         return;
+      end if;
+
       --  GPIOs  --
       Enable_Clock (In1_Pin);
       Enable_Clock (In2_Pin);

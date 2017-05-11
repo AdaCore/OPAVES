@@ -30,6 +30,11 @@ package body Board.LEDs is
    procedure Initialize is
       IO_Conf : GPIO_Port_Configuration;
    begin
+      --  Check if already initialized
+      if Initialized then
+         return;
+      end if;
+
       IO_Conf.Mode        := Mode_Out;
       IO_Conf.Output_Type := Push_Pull;
       IO_Conf.Speed       := Speed_Low;
