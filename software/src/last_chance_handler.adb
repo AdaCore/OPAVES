@@ -16,7 +16,9 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Board.LEDs; use Board.LEDs;
+with Board.Motor;
+with Board.Steering;
+with Board.LEDs;     use Board.LEDs;
 
 package body Last_Chance_Handler is
 
@@ -28,7 +30,17 @@ package body Last_Chance_Handler is
       pragma Unreferenced (Msg, Line);
    begin
 
-      --  Initialize hardware in case it wasn't done before
+      --  Turn off the motor
+      if Board.Motor.Initialized then
+         Board.Motor.Disable;
+      end if;
+
+      --  Turn off steering
+      if Board.Steering.Initialized then
+         Board.Steering.Disable;
+      end if;
+
+      --  Initialize LED hardware in case it wasn't done before
       Board.LEDs.Initialize;
 
       loop
