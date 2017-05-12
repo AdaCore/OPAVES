@@ -1,0 +1,8 @@
+with "boards/stm32f405_mk1";
+with "boards/stm32f405_mk1/config";
+
+project blink is
+  for Main use ("blink.adb");
+  for target use "arm-eabi";
+  for Runtime ("Ada") use Stm32f405_mk1'Runtime("Ada");
+end blink;
