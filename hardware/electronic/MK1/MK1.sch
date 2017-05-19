@@ -88,8 +88,8 @@ F6 "Radio_UART_RX" O R 6500 4650 60
 F7 "Radio_UART_TX" I R 6500 4800 60 
 F8 "Radio_UART_CTS" O R 6500 4350 60 
 F9 "Radio_UART_RTS" I R 6500 4500 60 
-F10 "IMU_SDA" B R 6500 3800 60 
-F11 "IMU_SCL" B R 6500 3950 60 
+F10 "IMU_SDA" B R 6500 3700 60 
+F11 "IMU_SCL" B R 6500 3850 60 
 F12 "Distance_SCL" B R 6500 2650 60 
 F13 "Distance_SDA" B R 6500 2800 60 
 F14 "Encoder_A" I L 4700 4550 60 
@@ -104,6 +104,7 @@ F22 "Enable_FL" O R 6500 2950 60
 F23 "Enable_BC" O R 6500 3550 60 
 F24 "Enable_SR" O R 6500 3400 60 
 F25 "Steering_PWM" I L 4700 4400 60 
+F26 "IMU_NRST" B R 6500 4000 60 
 $EndSheet
 $Sheet
 S 900  1700 1800 1800
@@ -152,6 +153,7 @@ F1 "imu.sch" 60
 F2 "IMU_VCC" I L 8200 2900 60 
 F3 "IMU_SCL" B L 8200 3350 60 
 F4 "IMU_SDA" B L 8200 3200 60 
+F5 "IMU_NRST" B L 8200 3500 60 
 $EndSheet
 Text Label 2900 2300 0    60   ~ 0
 5V
@@ -211,10 +213,10 @@ Wire Wire Line
 Wire Wire Line
 	5200 7250 5650 7250
 $Comp
-L GND #PWR1
+L GND #PWR01
 U 1 1 588C0CF5
 P 4950 7150
-F 0 "#PWR1" H 4950 6900 50  0001 C CNN
+F 0 "#PWR01" H 4950 6900 50  0001 C CNN
 F 1 "GND" H 4950 7000 50  0000 C CNN
 F 2 "" H 4950 7150 50  0000 C CNN
 F 3 "" H 4950 7150 50  0000 C CNN
@@ -307,14 +309,6 @@ Wire Wire Line
 Wire Wire Line
 	7350 1850 8200 1850
 Wire Wire Line
-	7850 3200 7850 3800
-Wire Wire Line
-	7850 3200 8200 3200
-Wire Wire Line
-	8000 3350 8000 3950
-Wire Wire Line
-	8000 3350 8200 3350
-Wire Wire Line
 	7650 2250 7650 3550
 Wire Wire Line
 	7650 2250 8200 2250
@@ -356,10 +350,6 @@ Wire Wire Line
 	3750 3250 3750 2850
 Wire Wire Line
 	3750 2850 2700 2850
-Wire Wire Line
-	8000 3950 6500 3950
-Wire Wire Line
-	7850 3800 6500 3800
 Text Notes 650  1200 0    60   ~ 0
 TODO:\n - Kill switch\n - Buzzer\n\nDONE:\n - 5V and 3V3 status LEDs\n - Switch to only turn on the MCU and not the motor\n
 Wire Notes Line
@@ -370,8 +360,8 @@ Wire Wire Line
 	4700 4400 3950 4400
 Text Label 3950 4400 0    60   ~ 0
 Servo_PWM
-Text Notes 3600 1050 0    60   ~ 0
-Known Problems:\n\nFIxed:\n - Steering servo PWM signal is not connected\n\n
+Text Notes 3600 1200 0    60   ~ 0
+Known Problems:\n\n - connect Reset  pin of IMU and breakout board\n\nFIxed:\n - Steering servo PWM signal is not connected\n\n
 Wire Notes Line
 	3550 1350 6500 1350
 Wire Notes Line
@@ -384,4 +374,22 @@ Wire Wire Line
 	3550 6050 4100 6050
 Wire Wire Line
 	4100 6050 4100 4700
+Wire Wire Line
+	8200 3200 7800 3200
+Wire Wire Line
+	7800 3200 7800 3700
+Wire Wire Line
+	7800 3700 6500 3700
+Wire Wire Line
+	6500 3850 7950 3850
+Wire Wire Line
+	7950 3850 7950 3350
+Wire Wire Line
+	7950 3350 8200 3350
+Wire Wire Line
+	8200 3500 8100 3500
+Wire Wire Line
+	8100 3500 8100 4000
+Wire Wire Line
+	8100 4000 6500 4000
 $EndSCHEMATC
