@@ -16,10 +16,10 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
+with HAL;                  use HAL;
 private with STM32.GPIO;
 private with STM32.Timers;
 private with STM32.Device;
-with HAL;
 
 package Board.Motor_Encoder is
 
@@ -31,10 +31,11 @@ package Board.Motor_Encoder is
    --  Return True if the hardware is initialized and motor encoder ready to
    --  use.
 
-   function Encoder_Count return HAL.UInt32
-     with Pre => Initialized;
-
    type Direction is (Forward, Backward);
+   type Encoder_Count is new UInt16;
+
+   function Current_Count return Encoder_Count
+     with Pre => Initialized;
 
    function Current_Direction return Direction
      with Pre => Initialized;

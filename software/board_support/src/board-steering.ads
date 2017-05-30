@@ -37,10 +37,12 @@ package Board.Steering is
    --  Return True if steering is enabled
 
    procedure Enable
-     with Pre => Initialized;
+     with Pre  => Initialized,
+          Post => Enabled;
 
    procedure Disable
-     with Pre => Initialized;
+     with Pre  => Initialized,
+          Post => not Enabled;
 
    procedure Set_Steering (Value : Steering_Value);
 private

@@ -16,10 +16,9 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with HAL;          use HAL;
-with STM32.GPIO;   use STM32.GPIO;
-with STM32.Device; use STM32.Device;
-with STM32.Timers; use STM32.Timers;
+with STM32.GPIO;       use STM32.GPIO;
+with STM32.Device;     use STM32.Device;
+with STM32.Timers;     use STM32.Timers;
 
 package body Board.Motor_Encoder is
 
@@ -37,6 +36,7 @@ package body Board.Motor_Encoder is
 
       Enable_Clock (Encoder_Timer);
 
+      --  I/Os configuration
       Configuration.Mode        := Mode_AF;
       Configuration.Output_Type := Push_Pull;
       Configuration.Resistors   := Pull_Up;
@@ -47,6 +47,14 @@ package body Board.Motor_Encoder is
 
       Configure_IO (Encoder_Tach2, Configuration);
       Configure_Alternate_Function (Encoder_Tach2, Encoder_AF);
+
+
+      --  Timer configuration
+
+      --  We expect a 16bit timer
+      if Has_32bit_CC_Values (Encoder_Timer) then
+         raise Program_Error with "Invalid timer for encoder count";
+      end if;
 
       Configure_Encoder_Interface
         (Encoder_Timer,
@@ -108,12 +116,12 @@ package body Board.Motor_Encoder is
    end Current_Direction;
 
    -------------------
-   -- Encoder_Count --
+   -- Current_Count --
    -------------------
 
-   function Encoder_Count return UInt32 is
+   function Current_Count return Encoder_Count is
    begin
-      return Current_Counter (Encoder_Timer);
-   end Encoder_Count;
+      return Encoder_Count (Current_Counter (Encoder_Timer));
+   end Current_Count;
 
 end Board.Motor_Encoder;
