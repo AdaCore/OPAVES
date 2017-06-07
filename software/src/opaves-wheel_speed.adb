@@ -85,6 +85,10 @@ package body OPAVES.Wheel_Speed is
       Elapsed  : Dimension_Types.Time;
 
       Diff  : Encoder_Count;
+      Dir   : Direction;
+      Tmp_Wheel_Speed : Car_Speed;
+      Tmp_Wheel_RPS : Wheel_Revolution_Per_Second;
+      Tmp_Motor_RPS : Motor_Revolution_Per_Second;
    begin
 
       --  Read encoder values and dates
@@ -102,18 +106,33 @@ package body OPAVES.Wheel_Speed is
 
       Diff := Count - Last_Count;
 
-      if Dimentionless (Diff) > Encoder_Count_Wrap_Threshold then
+      --  If the count difference is above a given threshold, we consider that
+      --  the counter went backwards. This can only be true if the time between
+      --  two consecutive read of the counter is below a safe amount of time
+      --  defined by the constant Max_Encoder_Read_Interval (see check above).
+      if Dimensionless (Diff) > Encoder_Count_Wrap_Threshold then
          Diff := Last_Count - Count;
+         Dir := Backward;
+      else
+         Dir := Forward;
       end if;
 
-      --  TODO: Handling of wheels direction (Forward, backwards)
+      Tmp_Motor_RPS :=
+        Dimensionless (Diff) / Encoder_Tick_Per_Revolution / Elapsed;
 
-      Saved_Motor_RPS :=
-        Dimentionless (Diff) / Encoder_Tick_Per_Revolution / Elapsed;
+      Tmp_Wheel_RPS := Tmp_Motor_RPS / Motor_To_Wheel_Gear_Ratio;
 
-      Saved_Wheel_RPS := Motor_RPS / Motor_To_Wheel_Gear_Ratio;
+      Tmp_Wheel_Speed := Tmp_Wheel_RPS * Wheel_Circumference;
 
-      Saved_Wheel_Speed := Wheel_RPS * Wheel_Circumference;
+      if Dir = Forward then
+         Saved_Wheel_Speed := Tmp_Wheel_Speed;
+         Saved_Wheel_RPS   := Tmp_Wheel_RPS;
+         Saved_Motor_RPS   := Tmp_Motor_RPS;
+      else
+         Saved_Wheel_Speed := -Tmp_Wheel_Speed;
+         Saved_Wheel_RPS   := -Tmp_Wheel_RPS;
+         Saved_Motor_RPS   := -Tmp_Motor_RPS;
+      end if;
    end Capture;
 
    -----------------
