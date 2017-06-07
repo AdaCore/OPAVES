@@ -34,14 +34,14 @@ package OPAVES.Parameters is
 
    Wheel_Circumference : constant Length := Ada.Numerics.Pi * Wheel_Diameter;
 
-   Motor_To_Wheel_Gear_Ratio : constant Dimentionless :=
-     Dimentionless (Board.Parameters.Motor_To_Wheel_Gear_Ratio);
+   Motor_To_Wheel_Gear_Ratio : constant Dimensionless :=
+     Dimensionless (Board.Parameters.Motor_To_Wheel_Gear_Ratio);
 
-   Encoder_Tick_Per_Revolution : constant Dimentionless :=
-     Dimentionless (Board.Parameters.Encoder_Tick_Per_Revolution);
+   Encoder_Tick_Per_Revolution : constant Dimensionless :=
+     Dimensionless (Board.Parameters.Encoder_Tick_Per_Revolution);
 
-   Encoder_Count_Wrap_Threshold : constant Dimentionless :=
-     Dimentionless (Board.Parameters.Encoder_Count_Wrap_Threshold);
+   Encoder_Count_Wrap_Threshold : constant Dimensionless :=
+     Dimensionless (Board.Parameters.Encoder_Count_Wrap_Threshold);
 
    ----------------------
    -- Speed Boundaries --

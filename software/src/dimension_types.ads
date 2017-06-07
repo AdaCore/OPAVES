@@ -20,7 +20,7 @@
 
 package Dimension_Types is
 
-   type Mks_Type is new Float
+   type Dimensionless is new Float
      with
        Dimension_System => (
         (Unit_Name => Meter,    Unit_Symbol => 'm',   Dim_Symbol => 'L'),
@@ -31,32 +31,36 @@ package Dimension_Types is
         (Unit_Name => Mole,     Unit_Symbol => "mol", Dim_Symbol => 'N'),
         (Unit_Name => Candela,  Unit_Symbol => "cd",  Dim_Symbol => 'J'));
 
-   subtype Length is Mks_Type
+   subtype Length is Dimensionless
      with
        Dimension => (Symbol => 'm',
                      Meter  => 1,
                      others => 0);
 
-   subtype Speed is Mks_Type
+   Meter : constant Length := Length (1.0);
+
+   subtype Speed is Dimensionless
      with
       Dimension => (Symbol => "m/s",
                     Meter  => 1,
                     Second => -1,
                     others => 0);
 
-   subtype Time is Mks_Type
+   subtype Time is Dimensionless
      with
        Dimension => (Symbol => "s",
                      Second => 1,
                      others => 0);
 
-   subtype Dimentionless is Mks_Type;
+   Second : constant Time := Time (1.0);
 
-   subtype Frequency is Mks_Type
+   subtype Frequency is Dimensionless
      with
        Dimension => (Symbol => "Hz",
                      Second => -1,
                      others => 0);
+
+   Hz : constant Frequency := Frequency (1.0);
 
    subtype Revolution_Per_Second is Frequency;
 
