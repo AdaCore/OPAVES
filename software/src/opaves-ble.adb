@@ -14,6 +14,14 @@ package body OPAVES.BLE is
    procedure To_Bytes (S : String; Arr : out UInt8_Array; Valid : out Boolean);
    --  Convert an hexadecimal string S to its value ARR
 
+   procedure Setup_4871;
+   --  Setup the BLE 4871 chip: set name and services
+
+   type Rx_State_Type is (Data_Unsync, Data_Sync, Command);
+
+   procedure Send (S : String);
+   --  Send a string to the BLE
+
    protected Prot is
       pragma Interrupt_Priority;
 
@@ -23,18 +31,30 @@ package body OPAVES.BLE is
 
       procedure Handler;
       pragma Attach_Handler (Handler, BLE_UART_Interrupt_Id);
+
+      procedure Set_Command_Mode;
+      procedure Set_Data_Mode;
+      --  Set internal mode for the receiver mechanism (but send nothing)
+
+      entry Wait;
+      --  Wait until a prompt was received
+
+      procedure Read_Reply (S : out String; Len : out Natural);
    private
-      Msg : String (1 .. 40);
+      Msg : String (1 .. 60);
       Len : Natural := 0;
       --  Input buffer
 
-      Sync : Boolean := True;
+      Rx_State : Rx_State_Type := Data_Unsync;
       --  True if waiting for '%' (start of message)
+
+      Wait_Flag : Boolean := False;
+      --  Flag for barrier
 
       Speed : Speed_Msg_Type := (0, Time_First);
       --  Result
 
-      Tx_Buf : String (1 .. 20);
+      Tx_Buf : String (1 .. 64);
       --  Output buffer
       Tx_In : Natural := 1;
       Tx_Out : Natural := 1;
@@ -151,35 +171,79 @@ package body OPAVES.BLE is
          end if;
       end Handle_Message;
 
+      entry Wait when Wait_Flag is
+      begin
+         Wait_Flag := False;
+      end Wait;
+
+      procedure Read_Reply (S : out String; Len : out Natural) is
+      begin
+         Len := Prot.Len;
+         if Len > S'Length then
+            S := Msg (Msg'First .. Msg'First + S'Length - 1);
+         else
+            S (S'First .. S'First + Len - 1) :=
+              Msg (Msg'First .. Msg'First + Len - 1);
+         end if;
+         Prot.Len := 0;
+      end Read_Reply;
+
+      procedure Set_Command_Mode is
+      begin
+         Len := 0;
+         Rx_State := Command;
+         Wait_Flag := False;
+      end Set_Command_Mode;
+
+      procedure Set_Data_Mode is
+      begin
+         Len := 0;
+         Rx_State := Data_Unsync;
+         Wait_Flag := False;
+      end Set_Data_Mode;
+
+      procedure Tx_Add (C : Character) is
+      begin
+         --  Add to buffer
+         Len := Len + 1;
+         if Len < Msg'Last then
+            Msg (Len) := C;
+         end if;
+      end Tx_Add;
+
       procedure Receive (C : Character) is
       begin
-         if Sync then
-            if C = '%' then
-               --  Start of message
-               Len := 0;
-               Sync := False;
-            else
-               --  Discard character
-               null;
-            end if;
-         else
-            if C = '%' then
-               if Len = 0 then
-                  --  Two in a raw, that's a real start
-                  null;
+         case Rx_State is
+            when Data_Unsync =>
+               if C = '%' then
+                  --  Start of message
+                  Len := 0;
+                  Rx_State := Data_Sync;
                else
-                  --  End of message
-                  Handle_Message;
-                  Sync := True;
+                  --  Discard character
+                  null;
                end if;
-            else
-               --  Add to buffer
-               Len := Len + 1;
-               if Len < Msg'Last then
-                  Msg (Len) := C;
+            when Data_Sync =>
+               if C = '%' then
+                  if Len = 0 then
+                     --  Two in a raw, that's a real start
+                     null;
+                  else
+                     --  End of message
+                     Handle_Message;
+                     Rx_State := Data_Unsync;
+                  end if;
+               else
+                  Tx_Add (C);
                end if;
-            end if;
-         end if;
+            when Command =>
+               Tx_Add (C);
+               if C = '>' and then Len > 3
+                 and then Msg (Len - 3 .. Len - 1) = "CMD"
+               then
+                  Wait_Flag := True;
+               end if;
+         end case;
       end Receive;
 
       function Inc_Tx (V : Natural) return Natural is
@@ -244,11 +308,86 @@ package body OPAVES.BLE is
       end Send;
    end Prot;
 
+   procedure Send (S : String) is
+   begin
+      --  Assuming the string S is small enough
+      for I in S'Range loop
+         Prot.Send (S (I));
+      end loop;
+   end Send;
+
+   procedure Setup_4871 is
+      T : Time;
+      Reply : String (1 .. 80);
+      Reply_Len : Natural;
+   begin
+      --  Switch to data mode if already in command mode
+      Prot.Send (ASCII.CR);
+      Send ("---" & ASCII.CR);
+
+      --  Enter command mode
+      T := Clock;
+      delay until T + Milliseconds (400);
+      Prot.Set_Command_Mode;
+      Send ("$$$");
+
+      --  Wait prompt
+      Prot.Wait;
+      Prot.Read_Reply (Reply, Reply_Len);
+
+      --  Get name
+      Send ("GN" & ASCII.CR);
+
+      Prot.Wait;
+      Prot.Read_Reply (Reply, Reply_Len);
+      if Reply_Len >= 11
+        and then Reply (1 .. 11) = " Crazyflie" & ASCII.CR
+      then
+         if False then
+            --  Factory reset
+            Send ("SF,1" & ASCII.CR);
+            return;
+         end if;
+
+         --  Already configured
+         Send ("---" & ASCII.CR);
+         Prot.Set_Data_Mode;
+
+         return;
+      end if;
+
+      Send ("SS,00" & ASCII.CR);
+      Prot.Wait;
+      Prot.Read_Reply (Reply, Reply_Len);
+
+      Send ("PS,000002011C7F4F9E947B43B7C00A9A08" & ASCII.CR);
+      Prot.Wait;
+      Prot.Read_Reply (Reply, Reply_Len);
+      Send ("PC,000002021C7F4F9E947B43B7C00A9A08,1A,14" & ASCII.CR);
+      Prot.Wait;
+      Prot.Read_Reply (Reply, Reply_Len);
+      Send ("PC,000002031C7F4F9E947B43B7C00A9A08,14,14" & ASCII.CR);
+      Prot.Wait;
+      Prot.Read_Reply (Reply, Reply_Len);
+      Send ("PC,000002041C7F4F9E947B43B7C00A9A08,12,14" & ASCII.CR);
+      Prot.Wait;
+      Prot.Read_Reply (Reply, Reply_Len);
+      Send ("SN,Crazyflie" & ASCII.CR);
+      Prot.Wait;
+      Prot.Read_Reply (Reply, Reply_Len);
+
+      --  Reboot
+      Send ("R,1" & ASCII.CR);
+      Prot.Set_Data_Mode;
+   end Setup_4871;
+
    procedure Initialize is
    begin
       Initialize_BLE_UART;
+      Clear_Status (BLE_UART, Read_Data_Register_Not_Empty);
       Enable_Interrupts (BLE_UART, Source => Received_Data_Not_Empty);
       Prot.Send ('I');
+      Setup_4871;
    end Initialize;
 
    function Get_Speed return Speed_Msg_Type is
