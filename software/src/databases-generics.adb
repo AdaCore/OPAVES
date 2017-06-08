@@ -16,9 +16,13 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Text_IO;       use Ada.Text_IO;
+with Ada.Strings;       use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+
 package body Databases.Generics is
 
-   New_Data_ID : Data_ID_Type := 1;
+   New_Data_ID : Data_ID_Type := Data_ID_Type'First;
 
    protected Database_PO is
 
@@ -113,7 +117,8 @@ package body Databases.Generics is
       Data_ID  : Data_ID_Type;
       Raw_Data : UInt8_Array)
    is
-      Data : Data_Type with Address => Raw_Data'Address;
+      Data : Data_Type with Address => Raw_Data'Address, Warnings => Off;
+
    begin
       Database.Set
         (Data_ID => Data_ID,
@@ -130,10 +135,39 @@ package body Databases.Generics is
    is
       Data_Size : constant Natural := Data_Type'Size / 8;
       Data      : constant Data_Type := Database.Get (Data_ID);
-      Raw_Data  : UInt8_Array (1 .. Data_Size) with Address => Data'Address;
+      Raw_Data  : UInt8_Array (1 .. Data_Size)
+        with Address => Data'Address, Warnings => Off;
    begin
       return Raw_Data;
    end Get;
+
+   ------------------
+   -- Log_All_Data --
+   ------------------
+
+   overriding procedure Log_All_Data (Database : Database_Type) is
+   begin
+      if New_Data_ID = Data_ID_Type'First then
+         Put_Line ("No data registered");
+      else
+         for Data_ID in Database.Data_Objects_Map'First .. New_Data_ID - 1 loop
+            Put_Line
+              (Trim (Database.Data_Names (Data_ID), Right) & ": "
+               & Image (Database.Data_Objects_Map (Data_ID).Data));
+         end loop;
+      end if;
+
+      Ada.Text_IO.New_Line;
+   end Log_All_Data;
+
+   --------
+   -- ID --
+   --------
+
+   function ID (Database : Database_Type) return Database_ID_Type is
+   begin
+      return Database.ID;
+   end ID;
 
    ---------
    -- Get --

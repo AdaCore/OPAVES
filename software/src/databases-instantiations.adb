@@ -15,8 +15,11 @@
 -- COPYING3.  If not, go to http://www.gnu.org/licenses for a complete copy --
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
+with Ada.Real_Time; use Ada.Real_Time;
 
 package body Databases.Instantiations is
+
+   LOGGING_TASK_PERIOD : constant Time_Span := Seconds (2);
 
    ------------------
    -- Set_Raw_Data --
@@ -44,5 +47,22 @@ package body Databases.Instantiations is
    begin
       return Databases (Database_ID).Get (Data_ID);
    end Get_Raw_Data;
+
+   task body Logging_Task is
+      Next_Period : Time;
+   begin
+      Next_Period := Clock + LOGGING_TASK_PERIOD;
+
+      loop
+         delay until Next_Period;
+
+         for Database of Databases loop
+            Database.Log_All_Data;
+         end loop;
+
+         Next_Period := Next_Period + LOGGING_TASK_PERIOD;
+      end loop;
+   end Logging_Task;
+
 
 end Databases.Instantiations;

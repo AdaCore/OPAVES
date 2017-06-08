@@ -23,6 +23,11 @@ package Databases is
    subtype Data_Name_Type is String (1 .. 16);
    --  16-Characters names used to register the data stored in databases
 
+   function Create (Name : String) return Data_Name_Type;
+   --  Used to create a 16-character name to register data in databases.
+   --  Name should have between 1 and 16 characters: an exception will be
+   --  raised otherwise.
+
    type Database_ID_Type is private;
    --  Non-string based IDs for databases.
    --  Created when creating a new database instance.
@@ -52,6 +57,9 @@ package Databases is
       Data_ID  : Data_ID_Type;
       Raw_Data : UInt8_Array) is abstract;
    --  Set a raw data value for the given Data_ID
+
+   procedure Log_All_Data (Database : Root_Database_Type) is abstract;
+   --  Log all the data contained in the Database
 
 private
 

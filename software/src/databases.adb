@@ -20,6 +20,27 @@ package body Databases is
 
    New_DB_ID : Database_ID_Type := 1;
 
+   ------------
+   -- Create --
+   ------------
+
+   function Create (Name : String) return Data_Name_Type is
+   begin
+      if Name'Length in 1 .. 16 then
+         declare
+            Data_Name : Data_Name_Type := (others => ' ');
+         begin
+            Data_Name (Data_Name'First .. Data_Name'First + Name'Length -1) :=
+              Name;
+
+            return Data_Name;
+         end;
+      else
+         raise Constraint_Error
+           with "Name should have between 1 and 16 characters";
+      end if;
+   end Create;
+
    -------------------------
    -- Get_New_Database_ID --
    -------------------------

@@ -29,6 +29,8 @@ generic
    Max_Nb_Data : Positive;
    --  The maximun number of data that can be stored in the database
 
+   with function Image (Data : Data_Type) return String;
+
 package Databases.Generics is
 
    type Database_Type is new Root_Database_Type with private;
@@ -38,6 +40,9 @@ package Databases.Generics is
    function Get_Database_Instance return Database_Access;
    --  Return the unique database instance for this package.
    --  Use this function in order to get/set values of the given Data_Type.
+
+   function ID (Database : Database_Type) return Database_ID_Type;
+   --  Return the ID of the database
 
    function Get
      (Database : Database_Type;
@@ -66,6 +71,8 @@ package Databases.Generics is
      (Database : in out Database_Type;
       Data_ID  : Data_ID_Type;
       Raw_Data : UInt8_Array);
+
+   overriding procedure Log_All_Data (Database : Database_Type);
 
 private
 

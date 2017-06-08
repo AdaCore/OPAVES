@@ -31,14 +31,21 @@ package Databases.Instantiations is
       Data_ID     : Data_ID_Type) return UInt8_Array;
    --  Should be used by the Communication module
 
+   task Logging_Task;
+   --  A task used to log all the data contained in all the instantiated
+   --  databases.
+
    package Integer_Databases is new Databases.Generics
      (Integer,
+      Image       => Integer'Image,
       Init_Data   => 0,
       Max_Nb_Data => 10);
    package Float_Databases is new Databases.Generics
      (Float,
+      Image       => Float'Image,
       Init_Data   => 0.0,
       Max_Nb_Data => 10);
+
 
 private
    First_ID : constant Database_ID_Type := Database_ID_Type'First;
