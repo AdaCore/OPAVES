@@ -100,7 +100,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory rev_A/gerber/))
+      (outputdirectory rev_B/gerber/))
   )
 
   (net 0 "")

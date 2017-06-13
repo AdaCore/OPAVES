@@ -1,4 +1,4 @@
-update=mer. 01 févr. 2017 12:53:36 CET
+update=jeu. 08 juin 2017 13:23:49 CEST
 version=1
 last_client=kicad
 [cvpcb]
@@ -57,16 +57,6 @@ LibName44=video
 LibName45=Worldsemi
 LibName46=Xicor
 LibName47=Zilog
-[schematic_editor]
-version=1
-PageLayoutDescrFile=
-PlotDirectoryName=
-SubpartIdSeparator=0
-SubpartFirstId=65
-NetFmtName=
-SpiceForceRefPrefix=0
-SpiceUseNetNumbers=0
-LabSize=60
 [pcbnew]
 version=1
 PageLayoutDescrFile=
@@ -86,3 +76,13 @@ SolderMaskMinWidth=0
 DrawSegmentWidth=0.2
 BoardOutlineThickness=0.15
 ModuleOutlineThickness=0.15
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
