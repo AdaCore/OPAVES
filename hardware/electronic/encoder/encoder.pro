@@ -1,4 +1,4 @@
-update=mer. 25 janv. 2017 13:23:52 CET
+update=jeu. 08 juin 2017 13:44:10 CEST
 version=1
 last_client=kicad
 [pcbnew]
@@ -110,3 +110,13 @@ LibName78=video
 LibName79=Worldsemi
 LibName80=Xicor
 LibName81=Zilog
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=rev_B/
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60

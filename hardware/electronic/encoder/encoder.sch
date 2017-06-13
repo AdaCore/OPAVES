@@ -273,8 +273,8 @@ Wire Wire Line
 	4100 1800 4450 1800
 Wire Wire Line
 	4350 2000 4450 2000
-Text Notes 550  6700 0    157  ~ 0
-Known problems:\n - Too much noise from the motor
+Text Notes 550  6350 0    157  ~ 0
+Known problems:\n
 Wire Notes Line
 	500  6100 6950 6100
 Wire Notes Line
