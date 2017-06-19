@@ -1,4 +1,3 @@
---  with STM32.Board; use STM32.Board;
 with Board.BLE; use Board.BLE;
 with STM32.USARTs; use STM32.USARTs;
 with HAL; use HAL;
@@ -20,14 +19,53 @@ package body OPAVES.BLE is
    type Rx_State_Type is (Data_Unsync, Data_Sync, Command);
 
    procedure Send (S : String);
-   --  Send a string to the BLE
+   --  Send a string to the BLE. Blocking operation.
+
+   protected Tx_Prot is
+      pragma Interrupt_Priority;
+
+      procedure Send (C : Character);
+      --  Send one character on the UART
+
+      entry Wait;
+      --  Wait until the character is sent. Must be called after Send.
+
+      procedure Tx_Interrupt;
+      --  Called in case of interrupt
+   private
+      Ready : Boolean := False;
+   end Tx_Prot;
+
+   protected body Tx_Prot is
+      procedure Tx_Interrupt is
+      begin
+         --  A character has been sent. Ack interrupt.
+         Clear_Status (BLE_UART, Transmit_Data_Register_Empty);
+
+         Disable_Interrupts (BLE_UART, Transmit_Data_Register_Empty);
+
+         Ready := True;
+      end Tx_Interrupt;
+
+      procedure Send (C : Character) is
+      begin
+         pragma Assert (Ready = False);
+
+         --  Start to transmit
+         Transmit (BLE_UART, Character'Pos (C));
+         Enable_Interrupts (BLE_UART, Transmit_Data_Register_Empty);
+      end Send;
+
+      entry Wait when Ready is
+      begin
+         Ready := False;
+      end Wait;
+   end Tx_Prot;
 
    protected Prot is
       pragma Interrupt_Priority;
 
       function Get_Speed return Speed_Msg_Type;
-
-      procedure Send (C : Character);
 
       procedure Handler;
       pragma Attach_Handler (Handler, BLE_UART_Interrupt_Id);
@@ -53,14 +91,6 @@ package body OPAVES.BLE is
 
       Speed : Speed_Msg_Type := (0, Time_First);
       --  Result
-
-      Tx_Buf : String (1 .. 64);
-      --  Output buffer
-      Tx_In : Natural := 1;
-      Tx_Out : Natural := 1;
-      --  Next character to be sent is at TX_OUT, first free place is at TX_IN.
-      --  TX_IN = TX_OUT means the buffer is empty, TX_IN + 1 = TX_OUT means
-      --  the buffer is full.
    end Prot;
 
    function Hex2Byte (C : Character) return UInt8 is
@@ -103,15 +133,6 @@ package body OPAVES.BLE is
    end To_Bytes;
 
    protected body Prot is
-      procedure Send_Hex (N : Natural) is
-      begin
-         if N < 10 then
-            Prot.Send (Character'Val (Character'Pos ('0') + N));
-         elsif N < 16 then
-            Prot.Send (Character'Val (Character'Pos ('A') + N - 10));
-         end if;
-      end Send_Hex;
-
       procedure Handle_Packet is
          --  Packet like: WV,0072,300000000000000080000000000000
          --  uint8_t header;  (0x30)
@@ -123,48 +144,33 @@ package body OPAVES.BLE is
          Ok : Boolean;
       begin
          if Len /= 38 then
-            Send ('L');
             return;
          end if;
          To_Bytes (Msg (9 .. 38), Res, Ok);
          if not Ok then
-            Send ('E');
             return;
          end if;
          if Res (1) /= 16#30# then
-            Send ('H');
             return;
          end if;
 
          Speed := (Speed => Natural (Res (15)) * 256 + Natural (Res (14)),
                    Timestamp => Clock);
-
-         if True then
-            Send_Hex ((Speed.Speed / 2**12) mod 16);
-            Send_Hex ((Speed.Speed / 2**8) mod 16);
-            Send_Hex ((Speed.Speed / 2**4) mod 16);
-            Send_Hex ((Speed.Speed / 2**0) mod 16);
-            Prot.Send (ASCII.CR);
-            Prot.Send (ASCII.LF);
-         end if;
       end Handle_Packet;
 
       procedure Handle_Message is
       begin
          if Len > 7 and then Msg (1 .. 7) = "CONNECT" then
             --  Connected
-            Send ('C');
             null;
          elsif Len > 3 and then Msg (1 .. 3) = "WC," then
             --  Start/end notification request
-            Send ('N');
             null;
          elsif Len > 3 and then Msg (1 .. 3) = "WV," then
             --  Write request
             Handle_Packet;
          elsif Len > 10 and then Msg (1 .. 10) = "DISCONNECT" then
             --  Connected
-            Send ('D');
             null;
          else
             null;
@@ -202,14 +208,14 @@ package body OPAVES.BLE is
          Wait_Flag := False;
       end Set_Data_Mode;
 
-      procedure Tx_Add (C : Character) is
+      procedure Rx_Add (C : Character) is
       begin
          --  Add to buffer
          Len := Len + 1;
          if Len < Msg'Last then
             Msg (Len) := C;
          end if;
-      end Tx_Add;
+      end Rx_Add;
 
       procedure Receive (C : Character) is
       begin
@@ -234,10 +240,10 @@ package body OPAVES.BLE is
                      Rx_State := Data_Unsync;
                   end if;
                else
-                  Tx_Add (C);
+                  Rx_Add (C);
                end if;
             when Command =>
-               Tx_Add (C);
+               Rx_Add (C);
                if C = '>' and then Len > 3
                  and then Msg (Len - 3 .. Len - 1) = "CMD"
                then
@@ -245,15 +251,6 @@ package body OPAVES.BLE is
                end if;
          end case;
       end Receive;
-
-      function Inc_Tx (V : Natural) return Natural is
-      begin
-         if V = Tx_Buf'Last then
-            return Tx_Buf'First;
-         else
-            return V + 1;
-         end if;
-      end Inc_Tx;
 
       procedure Handler is
       begin
@@ -269,18 +266,7 @@ package body OPAVES.BLE is
          if Status (BLE_UART, Transmit_Data_Register_Empty)
            and then Interrupt_Enabled (BLE_UART, Transmit_Data_Register_Empty)
          then
-            --  A character has been sent. Ack interrupt.
-            Clear_Status (BLE_UART, Transmit_Data_Register_Empty);
-
-            --  Next character
-            Tx_Out := Inc_Tx (Tx_Out);
-
-            if Tx_Out = Tx_In then
-               --  No next character
-               Disable_Interrupts (BLE_UART, Transmit_Data_Register_Empty);
-            else
-               Transmit (BLE_UART, Character'Pos (Tx_Buf (Tx_Out)));
-            end if;
+            Tx_Prot.Tx_Interrupt;
          end if;
       end Handler;
 
@@ -288,31 +274,13 @@ package body OPAVES.BLE is
       begin
          return Speed;
       end Get_Speed;
-
-      procedure Send (C : Character) is
-         Next : constant Natural := Inc_Tx (Tx_In);
-      begin
-         if Next = Tx_Out then
-            --  Buffer is full
-            return;
-         end if;
-         Tx_Buf (Tx_In) := C;
-
-         if Tx_In = Tx_Out then
-            --  Buffer was empty, start to transmit
-            Transmit (BLE_UART, Character'Pos (C));
-            Enable_Interrupts (BLE_UART, Transmit_Data_Register_Empty);
-         end if;
-
-         Tx_In := Next;
-      end Send;
    end Prot;
 
    procedure Send (S : String) is
    begin
-      --  Assuming the string S is small enough
       for I in S'Range loop
-         Prot.Send (S (I));
+         Tx_Prot.Send (S (I));
+         Tx_Prot.Wait;
       end loop;
    end Send;
 
@@ -322,12 +290,12 @@ package body OPAVES.BLE is
       Reply_Len : Natural;
    begin
       --  Switch to data mode if already in command mode
-      Prot.Send (ASCII.CR);
+      Send ((1 => ASCII.CR));
       Send ("---" & ASCII.CR);
 
       --  Enter command mode
       T := Clock;
-      delay until T + Milliseconds (400);
+      delay until T + Milliseconds (200);
       Prot.Set_Command_Mode;
       Send ("$$$");
 
@@ -386,7 +354,6 @@ package body OPAVES.BLE is
       Initialize_BLE_UART;
       Clear_Status (BLE_UART, Read_Data_Register_Not_Empty);
       Enable_Interrupts (BLE_UART, Source => Received_Data_Not_Empty);
-      Prot.Send ('I');
       Setup_4871;
    end Initialize;
 
