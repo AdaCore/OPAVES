@@ -22,7 +22,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
 package body Databases.Generics is
 
-   New_Data_ID : Data_ID_Type := Data_ID_Type'First;
+   New_Data_ID : Data_ID_Type := First_Data_ID;
 
    protected Database_PO is
 
@@ -107,6 +107,23 @@ package body Databases.Generics is
 
       return Data_ID;
    end Register;
+
+   -----------------
+   -- Get_Data_ID --
+   -----------------
+
+   overriding function Get_Data_ID
+     (Database  : Database_Type;
+      Data_Name : Data_Name_Type) return Data_ID_Type is
+   begin
+      for Data_ID in Database.Data_Names'Range loop
+         if Data_Name = Database.Data_Names (Data_ID) then
+            return Data_ID;
+         end if;
+      end loop;
+
+      return Null_Data_ID;
+   end Get_Data_ID;
 
    ---------
    -- Set --

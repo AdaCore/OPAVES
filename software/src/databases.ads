@@ -32,9 +32,11 @@ package Databases is
    --  Non-string based IDs for databases.
    --  Created when creating a new database instance.
 
-   type Data_ID_Type is new Positive;
+   type Data_ID_Type is new Integer;
    --  Non-string based IDs for data stored in databases.
    --  Created when registering data in databases.
+
+   Null_Data_ID : constant Data_ID_Type;
 
    type Root_Database_Type is interface;
    type Root_Database_Access is access all Root_Database_Type'Class;
@@ -46,6 +48,12 @@ package Databases is
    --  Register data to store in the given Database, associating it with
    --  Data_Name.
    --  The returned ID should be used for later transactions.
+
+   function Get_Data_ID
+     (Database  : Root_Database_Type;
+      Data_Name : Data_Name_Type) return Data_ID_Type is abstract;
+   --  Return the Data_ID associated with the given name or Null_Data_ID if
+   --  not found.
 
    function Get
      (Database : Root_Database_Type;
@@ -62,13 +70,14 @@ package Databases is
    --  Log all the data contained in the Database
 
 private
+   Null_Data_ID  : constant Data_ID_Type := -1;
+
+   First_Data_ID : constant Data_ID_Type := 1;
 
    type Database_ID_Type is new Positive;
 
    type Root_Database_Array is
      array (Database_ID_Type range <>) of Root_Database_Access;
-
-   type Data_Name_Array is array (Data_ID_Type'First .. 16) of Data_Name_Type;
 
    function Get_New_Database_ID return Database_ID_Type;
    --  Used to get a new database ID each time a databse is instantiated

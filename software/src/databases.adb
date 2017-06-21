@@ -30,7 +30,7 @@ package body Databases is
          declare
             Data_Name : Data_Name_Type := (others => ' ');
          begin
-            Data_Name (Data_Name'First .. Data_Name'First + Name'Length -1) :=
+            Data_Name (Data_Name'First .. Data_Name'First + Name'Length - 1) :=
               Name;
 
             return Data_Name;

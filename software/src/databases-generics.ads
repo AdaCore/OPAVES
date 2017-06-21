@@ -63,6 +63,10 @@ package Databases.Generics is
      (Database  : in out Database_Type;
       Data_Name : Data_Name_Type) return Data_ID_Type;
 
+   overriding function Get_Data_ID
+     (Database  : Database_Type;
+      Data_Name : Data_Name_Type) return Data_ID_Type;
+
    overriding function Get
      (Database : Database_Type;
       Data_ID  : Data_ID_Type) return UInt8_Array;
@@ -82,7 +86,10 @@ private
    end record;
 
    type Data_Object_Array is
-     array (Data_ID_Type'First .. Data_ID_Type (Max_Nb_Data)) of Data_Object;
+     array (First_Data_ID .. Data_ID_Type (Max_Nb_Data)) of Data_Object;
+
+   type Data_Name_Array is
+     array (First_Data_ID .. Data_ID_Type (Max_Nb_Data)) of Data_Name_Type;
 
    type Database_Type is new Root_Database_Type with record
       ID               : Database_ID_Type := Get_New_Database_ID;
