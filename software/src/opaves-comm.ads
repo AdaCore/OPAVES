@@ -16,16 +16,8 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Real_Time; use Ada.Real_Time;
-
-package OPAVES.BLE is
+package OPAVES.Comm is
    procedure Initialize;
 
-   type Speed_Msg_Type is record
-      Speed : Natural; --  0 .. 16#cccc#
-      Dir : Integer; -- -100 .. 100
-      Timestamp : Time;
-   end record;
-
-   function Get_Speed return Speed_Msg_Type;
-end OPAVES.BLE;
+   procedure Write (S : String);
+end OPAVES.Comm;

@@ -1,6 +1,28 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                                  O'PAVES                                 --
+--                                                                          --
+--                        Copyright (C) 2017, AdaCore                       --
+--                                                                          --
+-- This program is free software; you can redistribute it and/or modify it  --
+-- under terms of the GNU General Public License as published by the  Free  --
+-- Software  Foundation;  either version 3,  or (at your option) any later  --
+-- version. This software is distributed in the hope that it will be useful --
+-- but WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHAN- --
+-- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
+-- License for  more details.  You should have  received  a copy of the GNU --
+-- General  Public  License  distributed  with  this  software;   see  file --
+-- COPYING3.  If not, go to http://www.gnu.org/licenses for a complete copy --
+-- of the license.                                                          --
+------------------------------------------------------------------------------
+
 with Board.BLE; use Board.BLE;
 with STM32.USARTs; use STM32.USARTs;
 with HAL; use HAL;
+with Ada.Unchecked_Conversion;
+with Interfaces;
+with Databases.Instantiations;
+--  with OPAVES.Comm;
 
 package body OPAVES.BLE is
    function Hex2Byte (C : Character) return UInt8;
@@ -20,6 +42,12 @@ package body OPAVES.BLE is
 
    procedure Send (S : String);
    --  Send a string to the BLE. Blocking operation.
+
+   Db_Int : Databases.Instantiations.Integer_Databases.Database_Access;
+
+   Db_Speed_Id : Databases.Data_ID_Type;
+   Db_Dir_Id : Databases.Data_ID_Type;
+   --  Database identifiers
 
    protected Tx_Prot is
       pragma Interrupt_Priority;
@@ -89,7 +117,7 @@ package body OPAVES.BLE is
       Wait_Flag : Boolean := False;
       --  Flag for barrier
 
-      Speed : Speed_Msg_Type := (0, Time_First);
+      Speed : Speed_Msg_Type := (0, 0, Time_First);
       --  Result
    end Prot;
 
@@ -134,14 +162,24 @@ package body OPAVES.BLE is
 
    protected body Prot is
       procedure Handle_Packet is
+         use Interfaces;
+
          --  Packet like: WV,0072,300000000000000080000000000000
-         --  uint8_t header;  (0x30)
-         --  float roll;
-         --  float pitch;
-         --  float yaw;
-         --  uint16_t thrust;
+         --  uint8_t header;  (0x30)  [1]
+         --  float roll;              [2 - 5]
+         --  float pitch;             [6 - 9]
+         --  float yaw;               [10 - 13]
+         --  uint16_t thrust;         [14 - 15]
+
+         subtype Uint8_Array_4 is UInt8_Array (1 .. 4);
+         function To_Float32 is new Ada.Unchecked_Conversion
+           (Uint8_Array_4, IEEE_Float_32);
          Res : UInt8_Array (1 .. 15);
+         Yaw : IEEE_Float_32;
          Ok : Boolean;
+
+         Speed_Int : Natural;
+         Dir_Int : Integer;
       begin
          if Len /= 38 then
             return;
@@ -154,8 +192,22 @@ package body OPAVES.BLE is
             return;
          end if;
 
-         Speed := (Speed => Natural (Res (15)) * 256 + Natural (Res (14)),
-                   Timestamp => Clock);
+         --  Assuming same endianness (LE)
+         Yaw := To_Float32 (Res (10 .. 13));
+         if not Yaw'Valid or else Yaw not in -100.0 .. 100.0 then
+            return;
+         end if;
+
+--         OPAVES.Comm.Write (IEEE_Float_32'Image (Yaw));
+
+         Speed_Int := Natural (Res (15)) * 256 + Natural (Res (14));
+         Dir_Int := Integer (Yaw);
+
+         Speed := (Speed => Speed_Int, Dir => Dir_Int, Timestamp => Clock);
+
+         --  Write to the database
+         Db_Int.Set (Db_Dir_Id, Dir_Int);
+         Db_Int.Set (Db_Speed_Id, Speed_Int);
       end Handle_Packet;
 
       procedure Handle_Message is
@@ -350,7 +402,13 @@ package body OPAVES.BLE is
    end Setup_4871;
 
    procedure Initialize is
+      use Databases.Instantiations;
    begin
+      --  Allocate database entries
+      Db_Int := Integer_Databases.Get_Database_Instance;
+      Db_Dir_Id := Db_Int.Register ("RC_DIR          ");
+      Db_Speed_Id := Db_Int.Register ("RC_SPEED        ");
+
       Initialize_BLE_UART;
       Clear_Status (BLE_UART, Read_Data_Register_Not_Empty);
       Enable_Interrupts (BLE_UART, Source => Received_Data_Not_Empty);
