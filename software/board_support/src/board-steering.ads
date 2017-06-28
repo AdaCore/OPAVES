@@ -44,17 +44,14 @@ package Board.Steering is
      with Pre  => Initialized,
           Post => not Enabled;
 
-   procedure Set_Steering (Value : Steering_Value);
+   procedure Set_Steering (Value : Steering_Value)
+     with Pre => Initialized;
 private
 
-   --  These are value for O'PAVES Mk-I rev-A which has a error in steering
-   --  servo connection. We temporarly use one pin of the Arduino header to
-   --  control the servo
+   PWM_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PB5;
+   PWM_Pin_AF  : STM32.GPIO_Alternate_Function renames STM32.Device.GPIO_AF_TIM3_2;
 
-   PWM_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PD13;
-   PWM_Pin_AF  : STM32.GPIO_Alternate_Function renames STM32.Device.GPIO_AF_TIM4_2;
-
-   PWM_Timer   : STM32.Timers.Timer            renames STM32.Device.Timer_4;
+   PWM_Timer   : STM32.Timers.Timer            renames STM32.Device.Timer_3;
    PWM_Channel : STM32.Timers.Timer_Channel         := STM32.Timers.Channel_2;
    PWM_Period  : constant                           := 1000;
 
