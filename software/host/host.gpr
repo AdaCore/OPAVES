@@ -1,0 +1,10 @@
+project Host is
+
+   for Main use ("main.adb");
+
+   package Compiler is
+      for Switches ("ada") use ("-gnatwae", "-gnaty3IM79Sabcdefhiklnprstux", "-O");
+   end Compiler;
+
+end Host;
+
