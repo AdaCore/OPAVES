@@ -98,6 +98,16 @@ package body Databases.Generics is
    is
       Data_ID : constant Data_ID_Type := New_Data_ID;
    begin
+      --  Verify that no data has been registered with the same name
+
+      for Name of Database.Data_Names loop
+         if Data_Name = Name then
+            raise Constraint_Error
+              with "Data has already been registered with the given name: "
+              & Data_Name;
+         end if;
+      end loop;
+
       Database.Data_Names (Data_ID) := Data_Name;
       Database.Data_Objects_Map (Data_ID) := Data_Object'
         (Data      => Init_Data,

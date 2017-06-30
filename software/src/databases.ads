@@ -48,6 +48,8 @@ package Databases is
    --  Register data to store in the given Database, associating it with
    --  Data_Name.
    --  The returned ID should be used for later transactions.
+   --  An exception is raised when attempting to register a Data_Name that
+   --  already exists in the Database.
 
    function Get_Data_ID
      (Database  : Root_Database_Type;
