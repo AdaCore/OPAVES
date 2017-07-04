@@ -24,4 +24,9 @@ project OPAVES_MkI is
       for Connection_Tool use "st-util";
    end IDE;
 
+  package Gnattest is
+     for Harness_Dir use "../tests_database";
+     for Gnattest_Switches use ("-r");
+  end Gnattest;
+
 end OPAVES_MkI;

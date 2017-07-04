@@ -71,6 +71,9 @@ package Databases is
    procedure Log_All_Data (Database : Root_Database_Type) is abstract;
    --  Log all the data contained in the Database
 
+   procedure Clear_All_Data (Database : in out Root_Database_Type) is abstract;
+   --  Clear all the data contained in the database
+
 private
    Null_Data_ID  : constant Data_ID_Type := -1;
 

@@ -1,0 +1,15 @@
+with "aunit";
+with "gnattest_common.gpr";
+with "../OPAVES_MkI.gpr";
+project test_OPAVES_MkI is
+
+   for Source_Dirs use
+     ("../obj/gnattest/tests",
+      "common");
+
+   for Languages use Gnattest_Common'Languages & ("Ada");
+   package Compiler renames Gnattest_Common.Compiler;
+
+   package Ide renames OPAVES_MkI.Ide;
+
+end test_OPAVES_MkI;

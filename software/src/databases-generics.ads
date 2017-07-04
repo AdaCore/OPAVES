@@ -78,6 +78,8 @@ package Databases.Generics is
 
    overriding procedure Log_All_Data (Database : Database_Type);
 
+   overriding procedure Clear_All_Data (Database : in out Database_Type);
+
 private
 
    type Data_Object is record

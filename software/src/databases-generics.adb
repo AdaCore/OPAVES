@@ -187,6 +187,22 @@ package body Databases.Generics is
       Ada.Text_IO.New_Line;
    end Log_All_Data;
 
+   --------------------
+   -- Clear_All_Data --
+   --------------------
+
+   overriding procedure Clear_All_Data (Database : in out Database_Type) is
+   begin
+      for Data_ID in Database.Data_Objects_Map'First .. New_Data_ID - 1 loop
+         Database.Data_Objects_Map (Data_ID) := Data_Object'
+           (Data      => Init_Data,
+            Timestamp => Time_First);
+         Database.Data_Names (Data_ID) := (others => ' ');
+      end loop;
+
+      New_Data_ID := First_Data_ID;
+   end Clear_All_Data;
+
    --------
    -- ID --
    --------
