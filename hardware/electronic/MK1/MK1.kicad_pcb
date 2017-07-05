@@ -3,7 +3,7 @@
   (general
     (links 255)
     (no_connects 0)
-    (area 9.224999 17.15 303.275001 168.450001)
+    (area 37.524999 51.424999 273.575001 141.575001)
     (thickness 1.6)
     (drawings 105)
     (tracks 1242)
@@ -44,7 +44,7 @@
   )
 
   (setup
-    (last_trace_width 0.16)
+    (last_trace_width 0.25)
     (user_trace_width 0.16)
     (user_trace_width 0.2)
     (user_trace_width 0.3)
@@ -2063,7 +2063,7 @@
       (net 85 /Motor/MOTOR_B))
     (pad "" np_thru_hole circle (at 23 -6 270) (size 3 3) (drill 3) (layers *.Cu *.Mask))
     (pad 21 np_thru_hole circle (at -22 -6 270) (size 3 3) (drill 3) (layers *.Cu *.Mask))
-    (model ${KIPRJMOD}/../../3D_models/for_kicad/TAMIYA_HIgh_Speed_Gear_Box.wrl
+    (model ../../../../../home/chouteau/src/OPAVES/github/hardware/3D_models/for_kicad/rear_assembly.wrl
       (at (xyz 0.787402 0 0.551181))
       (scale (xyz 0.393701 0.393701 0.393701))
       (rotate (xyz -90 0 -90))
@@ -2342,9 +2342,9 @@
       (solder_mask_margin 0.1) (clearance 0.5))
     (pad 4 np_thru_hole circle (at 30 8 270) (size 3.4 3.4) (drill 3.4) (layers *.Cu *.Mask)
       (solder_mask_margin 0.1) (clearance 0.5))
-    (model ../../../../../home/chouteau/src/OPAVES/github/hardware/3D_models/for_kicad/steering_assembly.wrl
-      (at (xyz 0.58 -0.15 0))
-      (scale (xyz 0.39 0.39 0.39))
+    (model ../../../../../home/chouteau/src/OPAVES/github/hardware/3D_models/for_kicad/front_assembly.wrl
+      (at (xyz 0.58 -0.15 -0.181102))
+      (scale (xyz 0.393701 0.393701 0.393701))
       (rotate (xyz 0 0 180))
     )
   )
@@ -2811,6 +2811,11 @@
     (fp_circle (center 0 0) (end 3.45 0) (layer F.CrtYd) (width 0.05))
     (pad 1 thru_hole circle (at 0 0) (size 6.4 6.4) (drill 3.2) (layers *.Cu *.Mask F.SilkS)
       (net 136 "Net-(FRONT_MH2-Pad1)"))
+    (model ../../../../../home/chouteau/src/OPAVES/github/hardware/3D_models/for_kicad/front_bumper.wrl
+      (at (xyz 0 -0.5511 0))
+      (scale (xyz 0.393701 0.393701 0.393701))
+      (rotate (xyz 0 0 -90))
+    )
   )
 
   (module OPAVES_Footprints:AdaCore_LOGO (layer F.Cu) (tedit 0) (tstamp 5891FCE5)
