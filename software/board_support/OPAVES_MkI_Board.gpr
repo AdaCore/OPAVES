@@ -1,23 +1,31 @@
-aggregate library project OPAVES_MkI_Board Is
+with "../Ada_Drivers_Library/boards/config";
+with "../Ada_Drivers_Library/arch/ARM/STM32/stm32f40x";
+with "../Ada_Drivers_Library/components/components";
+with "../Ada_Drivers_Library/middleware/middleware";
+with "../Ada_Drivers_Library/middleware/ravenscar_support";
 
-   Build := external ("BUILD", "Debug");
+library project OPAVES_MkI_Board is
 
-   type RTS_Type is ("ravenscar-sfp", "ravenscar-full");
-   RTS : RTS_Type := External ("RTS", "ravenscar-sfp");
+   RTS_Profile := "ravenscar-full";
 
    for Target use "arm-eabi";
+   for Runtime ("Ada") use RTS_Profile & "-stm32f4";
 
-   for Runtime ("Ada") use RTS & "-stm32f4";
+   Obj_Suffix := Project'Runtime ("Ada");
 
-   for Project_Path use (".",
-
-                         --  FIXME: Temporary workaround for the bad project
-                         --  paths in some Ada_Drivers_Library projects.
-                         "../Ada_Drivers_Library/arch/ARM");
-
-   for Project_Files use ("board.gpr");
-
-   for Library_Dir use "lib/" & RTS & "/" & Build;
+   for Create_Missing_Dirs use "True";
    for Library_Name use "OPAVES_Board";
+   for Library_Dir use "lib/" & Obj_Suffix;
+   for Object_Dir use "obj/" & Obj_Suffix;
+
+   for Source_Dirs use
+     ("src");
+
+   package Builder is
+      for Switches ("Ada") use ("-s");
+   end Builder;
+
+   package Compiler renames Config.Compiler;
 
 end OPAVES_MkI_Board;
+

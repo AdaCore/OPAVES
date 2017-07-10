@@ -1,5 +1,4 @@
 with "board_support/OPAVES_MkI_Board.gpr";
-with "board_support/config.gpr";
 
 project OPAVES_MkI is
 
@@ -13,7 +12,7 @@ project OPAVES_MkI is
    for Runtime ("Ada") use "ravenscar-full-stm32f4";
    for Main use ("main.adb");
 
-   package Compiler renames Config.Compiler;
+   package Compiler renames OPAVES_MkI_Board.Compiler;
 
    package Builder is
       case Mode is
@@ -21,7 +20,8 @@ project OPAVES_MkI is
             --  rename attributes from Config.Builder if needed
          when "Analyze" =>
             for Global_Configuration_Pragmas use "prove/spark.adc";
-            for Global_Compilation_Switches ("Ada") use ("-gnateT=" & OPAVES_MkI'Project_Dir & "/prove/target.atp");
+            for Global_Compilation_Switches ("Ada") use
+              ("-gnateT=" & OPAVES_MkI'Project_Dir & "/prove/target.atp");
       end case;
    end Builder;
 
