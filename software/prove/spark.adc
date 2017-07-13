@@ -1,1 +1,4 @@
 pragma Partition_Elaboration_Policy (Sequential);
+
+-- Ignore warnings about absence of Global contract on runtime
+pragma Warnings (Off, "no Global contract available");

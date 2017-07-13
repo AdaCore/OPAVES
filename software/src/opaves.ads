@@ -16,5 +16,5 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-package OPAVES is
+package OPAVES with SPARK_Mode is
 end OPAVES;

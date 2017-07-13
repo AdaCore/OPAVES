@@ -24,14 +24,24 @@ with Dimension_Types;     use Dimension_Types;
 with Ada.Real_Time;       use Ada.Real_Time;
 with System;
 
-package body OPAVES.Wheel_Speed is
+package body OPAVES.Wheel_Speed with SPARK_Mode is
 
    Saved_Motor_RPS   : Motor_Revolution_Per_Second := Frequency (0.0);
    Saved_Wheel_RPS   : Wheel_Revolution_Per_Second := Frequency (0.0);
    Saved_Wheel_Speed : Car_Speed := Speed (0.0);
 
+   function To_Float (D : Duration) return Float;
+   --  Use a function to convert from a fixed-point to a floating-point, as this
+   --  conversion is not yet allowed in SPARK. Mark the body of this function as
+   --  not in SPARK.
+
+   function To_Float (D : Duration) return Float is
+     (Float (D))
+   with SPARK_Mode => Off;
+
    --  We use a protected object at maximum priority to ensure atomic read of
    --  time and encoder value.
+
    protected Atomic_Reading
      with Priority => System.Priority'Last
    is
@@ -67,7 +77,7 @@ package body OPAVES.Wheel_Speed is
 
          --  Get values for new reading
          Read.Now := Ada.Real_Time.Clock;
-         Read.Count := Board.Motor_Encoder.Current_Count;
+         Read.Count := 0; -- Board.Motor_Encoder.Current_Count;
 
          --  Update stored values
          Atomic_Reading.Timestamp := Read.Now;
@@ -98,7 +108,8 @@ package body OPAVES.Wheel_Speed is
                            Count);
 
       --  How much time between the two readings
-      Elapsed := Dimension_Types.Time (To_Duration (Now - Last_Date));
+      Elapsed :=
+        Dimension_Types.Time (To_Float (To_Duration (Now - Last_Date)));
 
       if Elapsed > Max_Encoder_Read_Interval then
          raise Program_Error with "Encoder read interval time exceeded";

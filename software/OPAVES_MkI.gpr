@@ -27,9 +27,7 @@ project OPAVES_MkI is
    end Builder;
 
    package Prove is
-      --  Do not generate globals, to avoid errors related to violations
-      --  of Liskov Substitution Principle in the Ada Driver Library.
-      for Switches use ("--no-global-generation");
+      for Switches use ("-j0", "-u", "opaves-wheel_speed.adb");
    end Prove;
 
    package Linker is

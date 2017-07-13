@@ -20,7 +20,7 @@ with OPAVES.Parameters; use OPAVES.Parameters;
 
 with Dimension_Types;   use Dimension_Types;
 
-package OPAVES.Types is
+package OPAVES.Types with SPARK_Mode is
 
    subtype Car_Speed is Speed range
      -Max_Absolute_Car_Speed .. Max_Absolute_Car_Speed;

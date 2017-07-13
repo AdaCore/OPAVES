@@ -22,7 +22,7 @@ with Dimension_Types; use Dimension_Types;
 
 with Ada.Numerics;
 
-package OPAVES.Parameters is
+package OPAVES.Parameters with SPARK_Mode is
 
    ----------------------
    -- Board Parameters --

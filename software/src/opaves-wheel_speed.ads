@@ -19,7 +19,7 @@
 with Board.Motor_Encoder;
 with OPAVES.Types;        use OPAVES.Types;
 
-package OPAVES.Wheel_Speed is
+package OPAVES.Wheel_Speed with SPARK_Mode is
 
    procedure Capture
      with Pre => Board.Motor_Encoder.Initialized;
