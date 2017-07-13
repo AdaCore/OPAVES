@@ -113,6 +113,8 @@ package body OPAVES.Wheel_Speed with SPARK_Mode is
 
       if Elapsed > Max_Encoder_Read_Interval then
          raise Program_Error with "Encoder read interval time exceeded";
+         pragma Annotate (GNATprove, Intentional, "exception might be raised",
+                          "raising an exception is expected here");
       end if;
 
       Diff := Count - Last_Count;
