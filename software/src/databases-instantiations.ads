@@ -44,8 +44,7 @@ package Databases.Instantiations is
      (Float,
       Image       => Float'Image,
       Init_Data   => 0.0,
-      Max_Nb_Data => 10);
-
+      Max_Nb_Data => 20);
 
 private
    First_ID : constant Database_ID_Type := Database_ID_Type'First;
