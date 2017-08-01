@@ -3,6 +3,7 @@ with "../Ada_Drivers_Library/arch/ARM/STM32/stm32f40x";
 with "../Ada_Drivers_Library/components/components";
 with "../Ada_Drivers_Library/middleware/middleware";
 with "../Ada_Drivers_Library/middleware/ravenscar_support";
+with "vl53l0x/vl53l0x";
 
 library project OPAVES_MkI_Board is
 
@@ -28,4 +29,3 @@ library project OPAVES_MkI_Board is
    package Compiler renames Config.Compiler;
 
 end OPAVES_MkI_Board;
-

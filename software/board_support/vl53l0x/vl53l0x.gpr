@@ -1,0 +1,29 @@
+with "../../Ada_Drivers_Library/arch/ARM/STM32/stm32f40x";
+
+project VL53L0x is
+
+   for Languages use ("C");
+
+   for Target use "arm-eabi";
+   for Runtime ("Ada") use "ravenscar-sfp-stm32f4";
+
+   for Source_Dirs use ("c_driver", "platform");
+
+   for Library_Name use "vl53l0x";
+   for Library_Kind use "static";
+
+   for Object_Dir use "obj";
+   for Library_Dir use "lib";
+   for Create_Missing_Dirs use "True";
+
+   package Builder is
+      for Switches ("C") use ("-s");
+   end Builder;
+
+   package Compiler is
+      for Switches ("C") use
+        ("-mlittle-endian", "-mhard-float", "-mthumb",
+         "-mcpu=cortex-m4", "-mfpu=fpv4-sp-d16", "-g", "-O2");
+   end Compiler;
+
+end VL53L0x;

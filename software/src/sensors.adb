@@ -18,7 +18,7 @@
 
 with Ada.Real_Time; use Ada.Real_Time;
 with Board.LEDs;    use Board.LEDs;
-with Board.Time_Of_Flight;     use Board.Time_Of_Flight;
+with Board.Ranging; use Board.Ranging;
 with Board.IMU;     use Board.IMU;
 
 with Ada.Text_IO;
@@ -149,23 +149,23 @@ package body Sensors is
          --  Clear the screen
          Put (ASCII.ESC & "[2J" & ASCII.ESC & "[H");
          Put ("FL: ");
-         Put (The_Distances (Front_Left));
+         Put (Natural (The_Distances (Front_Left)));
          Put ("mm");
          New_Line;
          Put ("FC: ");
-         Put (The_Distances (Front));
+         Put (Natural (The_Distances (Front)));
          Put ("mm");
          New_Line;
          Put ("FR: ");
-         Put (The_Distances (Front_Right));
+         Put (Natural (The_Distances (Front_Right)));
          Put ("mm");
          New_Line;
          Put ("SR: ");
-         Put (The_Distances (Side_Right));
+         Put (Natural (The_Distances (Side_Right)));
          Put ("mm");
          New_Line;
          Put ("RC: ");
-         Put (The_Distances (Rear));
+         Put (Natural (The_Distances (Rear)));
          Put ("mm");
          New_Line;
          Put ("Euler X: ");
@@ -193,7 +193,7 @@ package body Sensors is
    task body Sensor_Reader
    is
       ToF_Read_Time   : Time;
-      ToF_Next_Sensor : Sensor_Id;
+      ToF_Next_Sensor : Range_Sensor_Id;
       Distance        : Millimeter;
 
       IMU_Read_Time   : Time;
@@ -202,7 +202,7 @@ package body Sensors is
       Print_Time      : Time;
 
    begin
-      Board.Time_Of_Flight.Initialize;
+      Board.Ranging.Initialize;
       Board.IMU.Initialize;
 
       Initialized := True;
@@ -231,7 +231,7 @@ package body Sensors is
             Distance := Read (ToF_Next_Sensor);
             Database.Set_Distance_Value (ToF_Next_Sensor, Distance);
 
-            Board.Time_Of_Flight.Next (ToF_Next_Sensor, ToF_Read_Time);
+            Board.Ranging.Next (ToF_Next_Sensor, ToF_Read_Time);
 
          else
             Database.Print_Values;
