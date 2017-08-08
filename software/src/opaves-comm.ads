@@ -17,7 +17,5 @@
 ------------------------------------------------------------------------------
 
 package OPAVES.Comm is
-   procedure Initialize;
-
    procedure Write (S : String);
 end OPAVES.Comm;

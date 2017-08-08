@@ -205,14 +205,4 @@ package body OPAVES.Comm is
          end if;
       end Handler;
    end Prot;
-
-   procedure Initialize is
-   begin
-      Initialize_Comm_UART;
-      Clear_Status (Comm_UART, Read_Data_Register_Not_Empty);
-      Enable_Interrupts (Comm_UART, Source => Received_Data_Not_Empty);
-
-      Write ("Toto");
-   end Initialize;
-
 end OPAVES.Comm;

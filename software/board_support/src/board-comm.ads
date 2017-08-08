@@ -18,13 +18,36 @@
 
 with STM32.Device;
 with STM32.USARTs;
-with Ada.Interrupts.Names; use Ada.Interrupts;
+with STM32.GPIO;
+with Ada.Interrupts;
+with Ada.Interrupts.Names;
+with Interfaces;
 
-package Board.Comm is
+package Board.Comm
+with Elaborate_Body
+is
+   Max_Message_Lenght : constant := 1024;
 
-   Comm_UART_Interrupt_Id : constant Interrupt_ID :=
+   subtype Message_Priority is Interfaces.Unsigned_8;
+   procedure Send (Str  : String;
+                   Prio : Message_Priority)
+     with Pre => Str'Length <= Max_Message_Lenght;
+
+   procedure Receive (Str : out String);
+private
+
+   Message_Queue_Length : constant := 20;
+
+   Baud_Rate : constant STM32.USARTs.Baud_Rates := 115_200;
+   Device : STM32.USARTs.USART renames STM32.Device.USART_6;
+
+   TX_Pin : STM32.GPIO.GPIO_Point renames STM32.Device.PC6;
+   RX_Pin : STM32.GPIO.GPIO_Point renames STM32.Device.PC7;
+
+   Transceiver_Interrupt_Id : Ada.Interrupts.Interrupt_ID renames
      Ada.Interrupts.Names.USART6_Interrupt;
-   Comm_UART : STM32.USARTs.USART renames STM32.Device.USART_6;
 
-   procedure Initialize_Comm_UART;
+   Transceiver_AF : STM32.GPIO_Alternate_Function renames
+     STM32.Device.GPIO_AF_USART6_8;
+
 end Board.Comm;
