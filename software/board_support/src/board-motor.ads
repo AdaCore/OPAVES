@@ -24,7 +24,7 @@ private with STM32.Device;
 package Board.Motor is
 
    type Direction is (Forward, Backward);
-   subtype Throttle is Float range 0.0 .. 1.0;
+   subtype Throttle is Float range 0.0 .. 100.0;
 
    procedure Initialize
      with Post => Initialized and then not Enabled;

@@ -23,7 +23,7 @@ private with STM32.Device;
 
 package Board.Steering is
 
-   subtype Steering_Value is Float range -1.0 .. 1.0;
+   subtype Steering_Value is Float range -100.0 .. 100.0;
 
    procedure Initialize
      with Post => Initialized and then not Enabled;

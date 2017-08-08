@@ -130,7 +130,7 @@ package body Board.Motor is
 
    procedure Set_Throttle (Throt : Throttle) is
    begin
-      Modulator.Set_Duty_Cycle (Percentage (Throt * 100.0));
+      Modulator.Set_Duty_Cycle (Percentage (Throt));
    end Set_Throttle;
 
 end Board.Motor;

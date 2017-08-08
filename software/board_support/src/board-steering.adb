@@ -87,7 +87,7 @@ package body Board.Steering is
 
    procedure Set_Steering (Value : Steering_Value) is
       Ms : constant Float := Center_Pulse_MS +
-        Float (Value) * Range_Pulse_MS / 2.0;
+        (Float (Value) / 100.0) * Range_Pulse_MS / 2.0;
    begin
       Modulator.Set_Duty_Time (Microseconds (Ms * 1000.0));
    end Set_Steering;
