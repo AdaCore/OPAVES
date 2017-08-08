@@ -21,11 +21,11 @@ with Ada.Real_Time; use Ada.Real_Time;
 package OPAVES.BLE is
    procedure Initialize;
 
-   type Speed_Msg_Type is record
-      Speed : Natural; --  0 .. 16#cccc#
-      Dir : Integer; -- -100 .. 100
+   type Remote_Command_Data is record
+      Speed     : Integer; -- -100 .. 100
+      Steering  : Integer; -- -100 .. 100
       Timestamp : Time;
    end record;
 
-   function Get_Speed return Speed_Msg_Type;
+   function Last_Command return Remote_Command_Data;
 end OPAVES.BLE;

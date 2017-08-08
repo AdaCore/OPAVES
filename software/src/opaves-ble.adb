@@ -16,13 +16,14 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Board.BLE; use Board.BLE;
-with STM32.USARTs; use STM32.USARTs;
-with HAL; use HAL;
+with HAL;                      use HAL;
+with OPAVES.Logging;           use OPAVES.Logging;
+with Board.BLE;                use Board.BLE;
+with STM32.USARTs;             use STM32.USARTs;
 with Ada.Unchecked_Conversion;
 with Interfaces;
+with Databases;
 with Databases.Instantiations;
---  with OPAVES.Comm;
 
 package body OPAVES.BLE is
    function Hex2Byte (C : Character) return UInt8;
@@ -38,7 +39,7 @@ package body OPAVES.BLE is
    procedure Setup_4871;
    --  Setup the BLE 4871 chip: set name and services
 
-   type Rx_State_Type is (Data_Unsync, Data_Sync, Command);
+   type Rx_State_Type is (Data_Unsync, Data_Sync, Command_Mode);
 
    procedure Send (S : String);
    --  Send a string to the BLE. Blocking operation.
@@ -46,7 +47,7 @@ package body OPAVES.BLE is
    Db_Int : Databases.Instantiations.Integer_Databases.Database_Access;
 
    Db_Speed_Id : Databases.Data_ID_Type;
-   Db_Dir_Id : Databases.Data_ID_Type;
+   Db_Dir_Id   : Databases.Data_ID_Type;
    --  Database identifiers
 
    protected Tx_Prot is
@@ -64,7 +65,16 @@ package body OPAVES.BLE is
       Ready : Boolean := False;
    end Tx_Prot;
 
+   -------------
+   -- Tx_Prot --
+   -------------
+
    protected body Tx_Prot is
+
+      ------------------
+      -- Tx_Interrupt --
+      ------------------
+
       procedure Tx_Interrupt is
       begin
          --  A character has been sent. Ack interrupt.
@@ -75,6 +85,10 @@ package body OPAVES.BLE is
          Ready := True;
       end Tx_Interrupt;
 
+      ----------
+      -- Send --
+      ----------
+
       procedure Send (C : Character) is
       begin
          pragma Assert (Ready = False);
@@ -84,16 +98,24 @@ package body OPAVES.BLE is
          Enable_Interrupts (BLE_UART, Transmit_Data_Register_Empty);
       end Send;
 
+      ----------
+      -- Wait --
+      ----------
+
       entry Wait when Ready is
       begin
          Ready := False;
       end Wait;
    end Tx_Prot;
 
+   ----------
+   -- Prot --
+   ----------
+
    protected Prot is
       pragma Interrupt_Priority;
 
-      function Get_Speed return Speed_Msg_Type;
+      function Last_Command return Remote_Command_Data;
 
       procedure Handler;
       pragma Attach_Handler (Handler, BLE_UART_Interrupt_Id);
@@ -117,9 +139,13 @@ package body OPAVES.BLE is
       Wait_Flag : Boolean := False;
       --  Flag for barrier
 
-      Speed : Speed_Msg_Type := (0, 0, Time_First);
+      Command : Remote_Command_Data := (0, 0, Time_First);
       --  Result
    end Prot;
+
+   --------------
+   -- Hex2Byte --
+   --------------
 
    function Hex2Byte (C : Character) return UInt8 is
    begin
@@ -131,6 +157,10 @@ package body OPAVES.BLE is
          return Bad_Byte;
       end if;
    end Hex2Byte;
+
+   --------------
+   -- To_Bytes --
+   --------------
 
    procedure To_Bytes (S : String; Arr : out UInt8_Array; Valid : out Boolean)
    is
@@ -160,7 +190,16 @@ package body OPAVES.BLE is
       end if;
    end To_Bytes;
 
+   ----------
+   -- Prot --
+   ----------
+
    protected body Prot is
+
+      -------------------
+      -- Handle_Packet --
+      -------------------
+
       procedure Handle_Packet is
          use Interfaces;
 
@@ -175,11 +214,12 @@ package body OPAVES.BLE is
          function To_Float32 is new Ada.Unchecked_Conversion
            (Uint8_Array_4, IEEE_Float_32);
          Res : UInt8_Array (1 .. 15);
-         Yaw : IEEE_Float_32;
+         Roll  : IEEE_Float_32;
+         Pitch : IEEE_Float_32;
          Ok : Boolean;
 
-         Speed_Int : Natural;
-         Dir_Int : Integer;
+         Speed_Int : Integer;
+         Dir_Int   : Integer;
       begin
          if Len /= 38 then
             return;
@@ -193,46 +233,60 @@ package body OPAVES.BLE is
          end if;
 
          --  Assuming same endianness (LE)
-         Yaw := To_Float32 (Res (10 .. 13));
-         if not Yaw'Valid or else Yaw not in -100.0 .. 100.0 then
+         Roll := To_Float32 (Res (2 .. 5));
+         if not Roll'Valid or else Roll not in -100.0 .. 100.0 then
             return;
          end if;
 
---         OPAVES.Comm.Write (IEEE_Float_32'Image (Yaw));
+         --  Assuming same endianness (LE)
+         Pitch := To_Float32 (Res (6 .. 9));
+         if not Roll'Valid or else Roll not in -100.0 .. 100.0 then
+            return;
+         end if;
 
-         Speed_Int := Natural (Res (15)) * 256 + Natural (Res (14));
-         Dir_Int := Integer (Yaw);
+         Speed_Int := Integer (-Pitch * 3.3333);
+         Dir_Int   := Integer (-Roll * 3.3333);
 
-         Speed := (Speed => Speed_Int, Dir => Dir_Int, Timestamp => Clock);
+         Command := (Speed => Speed_Int, Steering => Dir_Int, Timestamp => Clock);
 
          --  Write to the database
          Db_Int.Set (Db_Dir_Id, Dir_Int);
          Db_Int.Set (Db_Speed_Id, Speed_Int);
       end Handle_Packet;
 
+      --------------------
+      -- Handle_Message --
+      --------------------
+
       procedure Handle_Message is
       begin
          if Len > 7 and then Msg (1 .. 7) = "CONNECT" then
-            --  Connected
-            null;
+            Log_Line (Debug, "BLE connected");
          elsif Len > 3 and then Msg (1 .. 3) = "WC," then
-            --  Start/end notification request
-            null;
+            Log_Line (Debug, "Start/end notification request");
          elsif Len > 3 and then Msg (1 .. 3) = "WV," then
-            --  Write request
             Handle_Packet;
          elsif Len > 10 and then Msg (1 .. 10) = "DISCONNECT" then
-            --  Connected
-            null;
-         else
-            null;
+            Log_Line (Debug, "BLE disconnected");
+         elsif Len > 10 and then Msg (1 .. 10) = "CONN_PARAM" then
+            Log_Line (Debug, "BLE Connection param");
+         elsif Len > 0 then
+            Log_Line (Debug, "Unhandled BLE packet: '" & Msg (1 .. Len) & "'");
          end if;
       end Handle_Message;
+
+      ----------
+      -- Wait --
+      ----------
 
       entry Wait when Wait_Flag is
       begin
          Wait_Flag := False;
       end Wait;
+
+      ----------------
+      -- Read_Reply --
+      ----------------
 
       procedure Read_Reply (S : out String; Len : out Natural) is
       begin
@@ -246,12 +300,20 @@ package body OPAVES.BLE is
          Prot.Len := 0;
       end Read_Reply;
 
+      ----------------------
+      -- Set_Command_Mode --
+      ----------------------
+
       procedure Set_Command_Mode is
       begin
          Len := 0;
-         Rx_State := Command;
+         Rx_State := Command_Mode;
          Wait_Flag := False;
       end Set_Command_Mode;
+
+      -------------------
+      -- Set_Data_Mode --
+      -------------------
 
       procedure Set_Data_Mode is
       begin
@@ -259,6 +321,10 @@ package body OPAVES.BLE is
          Rx_State := Data_Unsync;
          Wait_Flag := False;
       end Set_Data_Mode;
+
+      ------------
+      -- Rx_Add --
+      ------------
 
       procedure Rx_Add (C : Character) is
       begin
@@ -269,8 +335,15 @@ package body OPAVES.BLE is
          end if;
       end Rx_Add;
 
+      -------------
+      -- Receive --
+      -------------
+
       procedure Receive (C : Character) is
+         Str : String (1 .. 1);
       begin
+         Str (1) := C;
+         Log_Line (Debug, "BLE receive '" & Str & "'");
          case Rx_State is
             when Data_Unsync =>
                if C = '%' then
@@ -294,7 +367,7 @@ package body OPAVES.BLE is
                else
                   Rx_Add (C);
                end if;
-            when Command =>
+            when Command_Mode =>
                Rx_Add (C);
                if C = '>' and then Len > 3
                  and then Msg (Len - 3 .. Len - 1) = "CMD"
@@ -303,6 +376,10 @@ package body OPAVES.BLE is
                end if;
          end case;
       end Receive;
+
+      -------------
+      -- Handler --
+      -------------
 
       procedure Handler is
       begin
@@ -322,19 +399,32 @@ package body OPAVES.BLE is
          end if;
       end Handler;
 
-      function Get_Speed return Speed_Msg_Type is
+      ---------------
+      -- Get_Speed --
+      ---------------
+
+      function Last_Command return Remote_Command_Data is
       begin
-         return Speed;
-      end Get_Speed;
+         return Command;
+      end Last_Command;
    end Prot;
+
+   ----------
+   -- Send --
+   ----------
 
    procedure Send (S : String) is
    begin
+      Log_Line (Debug, "SEND TO BLE module: " & S);
       for I in S'Range loop
          Tx_Prot.Send (S (I));
          Tx_Prot.Wait;
       end loop;
    end Send;
+
+   ----------------
+   -- Setup_4871 --
+   ----------------
 
    procedure Setup_4871 is
       T : Time;
@@ -355,26 +445,7 @@ package body OPAVES.BLE is
       Prot.Wait;
       Prot.Read_Reply (Reply, Reply_Len);
 
-      --  Get name
-      Send ("GN" & ASCII.CR);
-
-      Prot.Wait;
-      Prot.Read_Reply (Reply, Reply_Len);
-      if Reply_Len >= 11
-        and then Reply (1 .. 11) = " Crazyflie" & ASCII.CR
-      then
-         if False then
-            --  Factory reset
-            Send ("SF,1" & ASCII.CR);
-            return;
-         end if;
-
-         --  Already configured
-         Send ("---" & ASCII.CR);
-         Prot.Set_Data_Mode;
-
-         return;
-      end if;
+      --  Always configure the BLE parameters
 
       Send ("SS,00" & ASCII.CR);
       Prot.Wait;
@@ -395,11 +466,18 @@ package body OPAVES.BLE is
       Send ("SN,Crazyflie" & ASCII.CR);
       Prot.Wait;
       Prot.Read_Reply (Reply, Reply_Len);
+      Send ("SDN,Bitcraze" & ASCII.CR);
+      Prot.Wait;
+      Prot.Read_Reply (Reply, Reply_Len);
 
       --  Reboot
       Send ("R,1" & ASCII.CR);
       Prot.Set_Data_Mode;
    end Setup_4871;
+
+   ----------------
+   -- Initialize --
+   ----------------
 
    procedure Initialize is
       use Databases.Instantiations;
@@ -415,9 +493,13 @@ package body OPAVES.BLE is
       Setup_4871;
    end Initialize;
 
-   function Get_Speed return Speed_Msg_Type is
+   ---------------
+   -- Get_Speed --
+   ---------------
+
+   function Last_Command return Remote_Command_Data is
    begin
-      return Prot.Get_Speed;
-   end Get_Speed;
+      return Prot.Last_Command;
+   end Last_Command;
 
 end OPAVES.BLE;
