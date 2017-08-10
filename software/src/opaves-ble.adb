@@ -17,7 +17,7 @@
 ------------------------------------------------------------------------------
 
 with HAL;                      use HAL;
-with OPAVES.Logging;           use OPAVES.Logging;
+with Board.Logging;            use Board.Logging;
 with Board.BLE;                use Board.BLE;
 with STM32.USARTs;             use STM32.USARTs;
 with Ada.Unchecked_Conversion;

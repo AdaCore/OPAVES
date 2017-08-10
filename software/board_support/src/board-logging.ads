@@ -16,35 +16,46 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Logging_With_Categories;
+with Board.Comm;
 
-package body OPAVES.Logging is
+package Board.Logging is
 
-   package Log is new Logging_With_Categories
-     (Categories                    => Log_Category,
-      Priorities                    => Board.Comm.Message_Priority,
-      Default_Category              => Default_Category,
-      Default_Priority              => 0,
-      Categories_Enabled_By_Default => False,
-      Prefix_Enabled_By_Default     => False,
-      Log_Line_Backend              => Board.Comm.Send);
+   type Log_Category is (Info, Debug, Warning, Error);
 
-   procedure Log_Line (Cat : Log_Category; Str : String) renames Log.Log_Line;
-   procedure Log_Line (Str : String) renames Log.Log_Line;
-   procedure Enable (Cat : Log_Category) renames Log.Enable;
-   procedure Disable (Cat : Log_Category) renames Log.Disable;
+   procedure Log_Line (Cat : Log_Category; Str : String);
+   --  Log under the given category
 
-begin
+   procedure Log_Line (Str : String);
+   --  Log under the default category
 
-   for Cat in Log_Category loop
-      if Insert_Prefix (Cat) then
-         Log.Enable_Prefix (Cat);
-      end if;
+   procedure Enable (Cat : Log_Category);
+   --  Enable logging for the given category.
 
-      if Enabled_At_Init (Cat) then
-         Log.Enable (Cat);
-      end if;
+   procedure Disable (Cat : Log_Category);
+   --  Disable logging for the given category.
 
-      Log.Set_Priority (Cat, Priority (Cat));
-   end loop;
-end OPAVES.Logging;
+   -------------------
+   -- Configuration --
+   -------------------
+
+   Default_Category : constant Log_Category := Info;
+
+   Enabled_At_Init : constant array (Log_Category) of Boolean :=
+     (Info    => True,
+      Debug   => True,
+      Warning => True,
+      Error   => True);
+
+   Insert_Prefix : constant array (Log_Category) of Boolean :=
+     (Info    => False,
+      Debug   => True,
+      Warning => True,
+      Error   => True);
+
+   Priority : constant array (Log_Category) of Board.Comm.Message_Priority :=
+     (Info    => 0,
+      Debug   => 1,
+      Warning => 2,
+      Error   => 3);
+
+end Board.Logging;

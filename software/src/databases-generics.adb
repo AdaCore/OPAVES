@@ -25,6 +25,7 @@ package body Databases.Generics is
    New_Data_ID : Data_ID_Type := First_Data_ID;
 
    protected Database_PO is
+      pragma Interrupt_Priority;
 
       procedure Set
         (Data_ID : Data_ID_Type;

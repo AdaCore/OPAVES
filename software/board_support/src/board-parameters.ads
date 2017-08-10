@@ -44,6 +44,6 @@ package Board.Parameters is
    -- Wheels --
    ------------
 
-   Wheel_Diameter : constant := 0.045; -- In meter
+   Wheel_Diameter : constant := 0.044; -- In meter
 
 end Board.Parameters;
