@@ -24,6 +24,8 @@ with STM32.GPIO;    use STM32.GPIO;
 with STM32.I2C;     use STM32.I2C;
 with STM32.Setup;
 
+with Board.Logging; use Board.Logging;
+
 package body Board.Ranging is
 
    function I2C_Write
@@ -120,6 +122,8 @@ package body Board.Ranging is
                             Rear        => 42_000);
 
    begin
+      Logging.Log_Line (Debug, "Initializing range sensors...");
+
       --  Initialize the Reset lines
       STM32.Device.Enable_Clock (Pins);
       STM32.GPIO.Configure_IO
@@ -163,6 +167,7 @@ package body Board.Ranging is
                Dev.I2C_Address := Final_Addr;
             end if;
          else
+            Logging.Log_Line (Error, "Cannot get ID of range sensor " & Id'Img);
             Status := False;
          end if;
 
@@ -171,6 +176,9 @@ package body Board.Ranging is
             Dev_Id := Read_ID (Dev);
 
             if Dev_Id /= 16#EEAA# then
+               Logging.Log_Line (Error,
+                                 "Address change failed for range sensor " &
+                                   Id'Img);
                Status := False;
             end if;
          end if;
@@ -238,10 +246,13 @@ package body Board.Ranging is
          if Status then
             Set_Detection_Mode (Id, Accurate);
             S_Status (Id) := Ready;
+            Logging.Log_Line (Debug, "Range sensor " & Id'Img & " ready.");
          else
             Reset (Id).Clear;
             S_Status (Id) := Uninitialized;
+            Logging.Log_Line (Error, "Range sensor " & Id'Img & " init failed.");
          end if;
+
       end loop;
    end Init_Sensors;
 
