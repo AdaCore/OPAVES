@@ -80,7 +80,11 @@ package Board.Ranging is
 private
    use HAL;
 
-   I2C_ToF : STM32.I2C.I2C_Port renames STM32.Device.I2C_2;
+   I2C_ToF        : STM32.I2C.I2C_Port renames STM32.Device.I2C_2;
+   I2C_ToF_SDA    : STM32.GPIO.GPIO_Point renames STM32.Device.PB11;
+   I2C_ToF_SCL    : STM32.GPIO.GPIO_Point renames STM32.Device.PB10;
+   I2C_ToF_SDA_AF : STM32.GPIO_Alternate_Function renames STM32.Device.GPIO_AF_I2C2_4;
+   I2C_ToF_SCL_AF : STM32.GPIO_Alternate_Function renames STM32.Device.GPIO_AF_I2C2_4;
 
    -----------------------------
    -- Wrapper to the C object --

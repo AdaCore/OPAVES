@@ -22,6 +22,7 @@ with HAL.I2C;       use HAL.I2C;
 with STM32.Device;  use STM32.Device;
 with STM32.GPIO;    use STM32.GPIO;
 with STM32.I2C;     use STM32.I2C;
+with STM32.Setup;
 
 package body Board.Ranging is
 
@@ -80,34 +81,13 @@ package body Board.Ranging is
 
    procedure Init_I2C
    is
-      I2C2_SDA : GPIO_Point renames STM32.Device.PB11;
-      I2C2_SCL : GPIO_Point renames STM32.Device.PB10;
-      I2C_Conf : I2C_Configuration;
-      Points   : constant GPIO_Points := (I2C2_SDA, I2C2_SCL);
    begin
-      Enable_Clock (Points);
-
-      Configure_IO (Points,
-                    (Speed       => Speed_High,
-                     Mode        => Mode_AF,
-                     Output_Type => Open_Drain,
-                     Resistors   => Floating));
-      Configure_Alternate_Function (Points, GPIO_AF_I2C2_4);
-      Lock (Points);
-
-      Enable_Clock (I2C_ToF);
-      STM32.Device.Reset (I2C_ToF);
-
-      delay until Clock + Milliseconds (200);
-
-      I2C_Conf.Own_Address := 16#00#;
-      I2C_Conf.Addressing_Mode := Addressing_Mode_7bit;
-      I2C_Conf.General_Call_Enabled := False;
-      I2C_Conf.Clock_Stretching_Enabled := True;
-
-      I2C_Conf.Clock_Speed := 400_000;
-
-      I2C_ToF.Configure (I2C_Conf);
+      STM32.Setup.Setup_I2C_Master (Port        => I2C_ToF,
+                                    SDA         => I2C_ToF_SDA,
+                                    SCL         => I2C_ToF_SCL,
+                                    SDA_AF      => I2C_ToF_SDA_AF,
+                                    SCL_AF      => I2C_ToF_SCL_AF,
+                                    Clock_Speed => 400_000);
    end Init_I2C;
 
    ------------------
