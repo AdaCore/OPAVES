@@ -11,6 +11,7 @@ project OPAVES_MkI is
    for Create_Missing_Dirs use "True";
    for Target use "arm-eabi";
    for Runtime ("Ada") use "ravenscar-full-stm32f4";
+
    for Main use ("main.adb");
 
    package Compiler renames OPAVES_MkI_Board.Compiler;
@@ -45,5 +46,14 @@ project OPAVES_MkI is
      for Harness_Dir use "../tests_database";
      for Gnattest_Switches use ("-r");
   end Gnattest;
+
+   package CodePeer is
+      for Switches use ("-32bits",
+                        "-gnateT=" & OPAVES_MkI'Project_Dir & "/prove/target.atp");
+   end CodePeer;
+
+   package Check is
+      for Default_Switches ("Ada") use ("-rules", "-from=coding_standard");
+   end Check;
 
 end OPAVES_MkI;

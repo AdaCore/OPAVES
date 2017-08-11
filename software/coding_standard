@@ -1,0 +1,26 @@
++RBoolean_Relational_Operators
++RComplex_Inlined_Subprograms : 4  -- range [3 .. 10]
++RDeep_Inheritance_Hierarchies : 2  -- range [-1 .. 10]
++RDeeply_Nested_Generics : 2  -- range [1 .. 3]
++RDeeply_Nested_Inlining : 3  -- range [3 .. 5]
++RDirect_Calls_To_Primitives
++RFloat_Equality_Checks
++RGOTO_Statements
++RImproper_Returns
++RMetrics_Cyclomatic_Complexity : 5  -- range [5 .. 10]
++RMisnamed_Controlling_Parameters
++RMisnamed_Identifiers:Access_Suffix=_Access
++RMisnamed_Identifiers:Class_Access_Suffix=_Class
++RMisnamed_Identifiers:Class_Subtype_Suffix=_Class
++RNon_Tagged_Derived_Types
++ROverly_Nested_Control_Structures : 3  -- range [1 .. 10]
++RPredefined_Numeric_Types
++RRestrictions : No_Dependence => Ada.Containers
++RToo_Many_Parents : 2  -- range [1 .. 4]
++RUnassigned_OUT_Parameters
++RUnconstrained_Array_Returns
++RVisible_Components
++RMetrics_LSLOC : 40  -- range [0 .. 10_000]
++RNon_Qualified_Aggregates
++RRaising_Predefined_Exceptions
++RStyle_Checks : O
