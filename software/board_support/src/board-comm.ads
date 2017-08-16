@@ -33,10 +33,14 @@ is
                    Prio : Message_Priority)
      with Pre => Str'Length <= Max_Message_Lenght;
 
-   procedure Receive (Str : out String);
+   procedure Receive (Str : out String;
+                      Len : out Natural)
+   with Pre => Str'Length <= Max_Message_Lenght;
+
 private
 
-   Message_Queue_Length : constant := 20;
+   Out_Message_Queue_Length : constant := 20;
+   In_Message_Queue_Length : constant := 10;
 
    Baud_Rate : constant STM32.USARTs.Baud_Rates := 115_200;
    Device : STM32.USARTs.USART renames STM32.Device.USART_6;

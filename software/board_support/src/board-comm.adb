@@ -24,20 +24,17 @@ with Logging_With_Priority;
 
 package body Board.Comm is
 
-   package Log_Prio is new Logging_With_Priority
+   package Out_Queue is new Logging_With_Priority
      (Priorities                 => Message_Priority,
       Maximum_Message_Length     => Max_Message_Lenght,
-      Maximum_Number_Of_Messages => Message_Queue_Length);
+      Maximum_Number_Of_Messages => Out_Message_Queue_Length);
+
+   package In_Queue is new Logging_With_Priority
+     (Priorities                 => Message_Priority,
+      Maximum_Message_Length     => Max_Message_Lenght,
+      Maximum_Number_Of_Messages => In_Message_Queue_Length);
 
    procedure Initialize;
-
-   type Message is record
-      Prio : Message_Priority;
-      Data : String (1 .. Max_Message_Lenght);
-      Len  : Natural;
-   end record;
-
-   type Message_Access is access all Message;
 
    type Error_Conditions is new UInt8;
 
@@ -53,11 +50,10 @@ package body Board.Comm is
 
       procedure Send (Str : String; Prio : Message_Priority);
 
+      entry Receive (Str : out String;
+                     Len : out Natural);
+
       function Errors_Detected return Error_Conditions
-        with Unreferenced;
-
-
-      procedure Start_Receiving (Msg : not null Message_Access)
         with Unreferenced;
 
    private
@@ -70,19 +66,25 @@ package body Board.Comm is
 
       procedure Start_Sending;
 
-      Next_Out          : Positive;
-      Outgoing_Msg      : String (1 .. Max_Message_Lenght);
-      Outgoing_Msg_Len  : Natural := 0;
+      Next_Out           : Positive;
+      Outgoing_Msg       : String (1 .. Max_Message_Lenght);
+      Outgoing_Msg_Len   : Natural := 0;
 
-      Next_In           : Positive;
-      Incoming_Msg      : Message_Access;
+      Next_In            : Positive := 1;
+      Incoming_Msg       : String (1 .. Max_Message_Lenght);
+      Incoming_Msg_Len   : Natural := 0;
 
-      Errors            : Error_Conditions := No_Error_Detected;
+      In_Queue_Empty     : Boolean := True;
+      Errors             : Error_Conditions := No_Error_Detected;
 
       procedure IRQ_Handler;
       pragma Attach_Handler (IRQ_Handler, Transceiver_Interrupt_Id);
 
    end Controller;
+
+   ----------------
+   -- Initialize --
+   ----------------
 
    procedure Initialize is
       Configuration : GPIO_Port_Configuration;
@@ -108,6 +110,10 @@ package body Board.Comm is
       Set_Parity       (Device, No_Parity);
       Set_Flow_Control (Device, No_Flow_Control);
 
+      Enable_Interrupts (Device, Source => Parity_Error);
+      Enable_Interrupts (Device, Source => Error);
+      Enable_Interrupts (Device, Source => Received_Data_Not_Empty);
+
       Enable (Device);
    end Initialize;
 
@@ -123,7 +129,7 @@ package body Board.Comm is
 
       procedure Send (Str : String; Prio : Message_Priority) is
       begin
-         Log_Prio.Log_Line (Str, Prio);
+         Out_Queue.Log_Line (Str, Prio);
          Start_Sending;
       end Send;
       ---------------------
@@ -189,7 +195,7 @@ package body Board.Comm is
             if Next_Out > Outgoing_Msg_Len then
 
                --  Try to get the next message
-               Log_Prio.Pop (Outgoing_Msg, Outgoing_Msg_Len, Prio);
+               Out_Queue.Pop (Outgoing_Msg, Outgoing_Msg_Len, Prio);
                if Outgoing_Msg_Len = 0 then
 
                   --  There's no more messages to transmit
@@ -201,28 +207,46 @@ package body Board.Comm is
          end if;
       end Handle_Transmission;
 
+      -------------
+      -- Receive --
+      -------------
+
+      entry Receive (Str : out String;
+                     Len : out Natural)
+        when not In_Queue_Empty
+      is
+         Prio : Message_Priority;
+      begin
+         In_Queue.Pop (Str, Len, Prio);
+         In_Queue_Empty := In_Queue.Empty;
+      end Receive;
+
       ----------------------
       -- Handle_Reception --
       ----------------------
 
       procedure Handle_Reception is
          Received_Char : constant Character := Character'Val (Current_Input (Device));
-         pragma Unreferenced (Received_Char);
       begin
---           Incoming_Msg.Content (Next_In) := Received_Char;
---           if Received_Char = Incoming_Msg.Terminator or
---              Next_In = Incoming_Msg.Physical_Size
---           then --  reception complete
---              Incoming_Msg.Logical_Size := Next_In;
---              loop
---                 exit when not Status (Device, Read_Data_Register_Not_Empty);
---              end loop;
---              Disable_Interrupts (Device, Source => Received_Data_Not_Empty);
---              Set_True (Incoming_Msg.Reception_Complete);
---           else
---              Next_In := Next_In + 1;
---           end if;
-         null;
+         if Received_Char /= ASCII.CR then
+            Incoming_Msg (Next_In) := Received_Char;
+            Next_In := Next_In + 1;
+            Incoming_Msg_Len := Incoming_Msg_Len + 1;
+         end if;
+
+         if Next_In > Incoming_Msg'Last
+           or else
+            Received_Char = ASCII.CR
+         then
+            --  End of message
+
+            if Incoming_Msg_Len /= 0 then
+               In_Queue.Log_Line (Incoming_Msg (Incoming_Msg'First .. Incoming_Msg_Len), Prio => 0);
+               In_Queue_Empty := In_Queue.Empty;
+               Next_In := Incoming_Msg'First;
+               Incoming_Msg_Len := 0;
+            end if;
+         end if;
       end Handle_Reception;
 
       -----------------
@@ -262,7 +286,7 @@ package body Board.Comm is
             return;
          end if;
 
-         Log_Prio.Pop (Outgoing_Msg, Outgoing_Msg_Len, Prio);
+         Out_Queue.Pop (Outgoing_Msg, Outgoing_Msg_Len, Prio);
 
          if Outgoing_Msg_Len = 0 then
             --  There's nothing to transmit
@@ -276,20 +300,6 @@ package body Board.Comm is
          Enable_Interrupts (Device, Source => Transmit_Data_Register_Empty);
       end Start_Sending;
 
-      ---------------------
-      -- Start_Receiving --
-      ---------------------
-
-      procedure Start_Receiving (Msg : not null Message_Access) is
-      begin
-         Incoming_Msg := Msg;
-         Next_In := Incoming_Msg.Data'First;
-
-         Enable_Interrupts (Device, Source => Parity_Error);
-         Enable_Interrupts (Device, Source => Error);
-         Enable_Interrupts (Device, Source => Received_Data_Not_Empty);
-      end Start_Receiving;
-
    end Controller;
 
    ----------
@@ -301,12 +311,19 @@ package body Board.Comm is
       Controller.Send (Str & ASCII.CR & ASCII.LF, Prio);
    end Send;
 
-   procedure Receive (Str : out String) is
+   -------------
+   -- Receive --
+   -------------
+
+   procedure Receive (Str : out String;
+                      Len : out Natural)
+   is
    begin
       if Str'Length = 0 then
+         Len := 0;
          return;
       else
-         Str := "";
+         Controller.Receive (Str, Len);
       end if;
    end Receive;
 
