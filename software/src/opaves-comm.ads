@@ -17,5 +17,8 @@
 ------------------------------------------------------------------------------
 
 package OPAVES.Comm is
-   procedure Write (S : String);
+
+   task Communication_Task
+     with Priority => Communication_Task_Priority;
+
 end OPAVES.Comm;

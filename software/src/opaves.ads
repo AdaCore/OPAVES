@@ -16,5 +16,10 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
+with System; use System;
+
 package OPAVES with SPARK_Mode is
+
+   Communication_Task_Priority : constant Priority := Default_Priority + 1;
+
 end OPAVES;
