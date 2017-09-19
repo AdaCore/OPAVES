@@ -100,7 +100,7 @@ package body OPAVES.Comm is
    ------------------------
 
    task body Communication_Task is
-      Msg : String (1 .. Board.Comm.Max_Message_Lenght);
+      Msg : String (1 .. Board.Comm.Max_Message_Length);
       Len : Natural;
    begin
       loop

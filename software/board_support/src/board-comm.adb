@@ -26,12 +26,12 @@ package body Board.Comm is
 
    package Out_Queue is new Logging_With_Priority
      (Priorities                 => Message_Priority,
-      Maximum_Message_Length     => Max_Message_Lenght,
+      Maximum_Message_Length     => Max_Message_Length,
       Maximum_Number_Of_Messages => Out_Message_Queue_Length);
 
    package In_Queue is new Logging_With_Priority
      (Priorities                 => Message_Priority,
-      Maximum_Message_Length     => Max_Message_Lenght,
+      Maximum_Message_Length     => Max_Message_Length,
       Maximum_Number_Of_Messages => In_Message_Queue_Length);
 
    procedure Initialize;
@@ -67,11 +67,11 @@ package body Board.Comm is
       procedure Start_Sending;
 
       Next_Out           : Positive;
-      Outgoing_Msg       : String (1 .. Max_Message_Lenght);
+      Outgoing_Msg       : String (1 .. Max_Message_Length);
       Outgoing_Msg_Len   : Natural := 0;
 
       Next_In            : Positive := 1;
-      Incoming_Msg       : String (1 .. Max_Message_Lenght);
+      Incoming_Msg       : String (1 .. Max_Message_Length);
       Incoming_Msg_Len   : Natural := 0;
 
       In_Queue_Empty     : Boolean := True;

@@ -26,16 +26,16 @@ with Interfaces;
 package Board.Comm
 with Elaborate_Body
 is
-   Max_Message_Lenght : constant := 1024;
+   Max_Message_Length : constant := 1024;
 
    subtype Message_Priority is Interfaces.Unsigned_8;
    procedure Send (Str  : String;
                    Prio : Message_Priority)
-     with Pre => Str'Length <= Max_Message_Lenght;
+     with Pre => Str'Length <= Max_Message_Length;
 
    procedure Receive (Str : out String;
                       Len : out Natural)
-   with Pre => Str'Length <= Max_Message_Lenght;
+   with Pre => Str'Length <= Max_Message_Length;
 
 private
 
