@@ -16,8 +16,6 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with HAL; use HAL;
-
 package Databases is
 
    subtype Data_Name_Type is String (1 .. 16);
@@ -28,9 +26,11 @@ package Databases is
    --  Name should have between 1 and 16 characters: an exception will be
    --  raised otherwise.
 
-   type Database_ID_Type is private;
+   type Database_ID_Type is new Integer;
    --  Non-string based IDs for databases.
    --  Created when creating a new database instance.
+
+   Null_Database_ID : constant Database_ID_Type;
 
    type Data_ID_Type is new Integer;
    --  Non-string based IDs for data stored in databases.
@@ -51,6 +51,10 @@ package Databases is
    --  An exception is raised when attempting to register a Data_Name that
    --  already exists in the Database.
 
+   function Get_ID
+     (Database : Root_Database_Type) return Database_ID_Type is abstract;
+   --  Return the Database_ID associated with the given database.
+
    function Get_Data_ID
      (Database  : Root_Database_Type;
       Data_Name : Data_Name_Type) return Data_ID_Type is abstract;
@@ -59,14 +63,15 @@ package Databases is
 
    function Get
      (Database : Root_Database_Type;
-      Data_ID  : Data_ID_Type) return UInt8_Array is abstract;
-   --  Get the currently set value for given Data_ID in a raw data format
+      Data_ID  : Data_ID_Type) return String is abstract;
+   --  Get the image of the currently set value for the given Data_ID
 
    procedure Set
      (Database : in out Root_Database_Type;
       Data_ID  : Data_ID_Type;
-      Raw_Data : UInt8_Array) is abstract;
-   --  Set a raw data value for the given Data_ID
+      Image    : String) is abstract;
+   --  Set a value for the given Data_ID, converting the given Image to the
+   --  actual value.
 
    procedure Log_All_Data (Database : Root_Database_Type) is abstract;
    --  Log all the data contained in the Database
@@ -75,11 +80,12 @@ package Databases is
    --  Clear all the data contained in the database
 
 private
+
+   Null_Database_ID  : constant Database_ID_Type := -1;
+   First_Database_ID : constant Database_ID_Type := 1;
+
    Null_Data_ID  : constant Data_ID_Type := -1;
-
    First_Data_ID : constant Data_ID_Type := 1;
-
-   type Database_ID_Type is new Positive;
 
    type Root_Database_Array is
      array (Database_ID_Type range <>) of Root_Database_Access;

@@ -21,32 +21,61 @@ package body Databases.Instantiations is
 
    LOGGING_TASK_PERIOD : constant Time_Span := Seconds (2);
 
-   ------------------
-   -- Set_Raw_Data --
-   ------------------
+   ---------
+   -- Set --
+   ---------
 
-   procedure Set_Raw_Data
+   procedure Set
      (Database_ID : Database_ID_Type;
       Data_ID     : Data_ID_Type;
-      Raw_Data    : UInt8_Array) is
+      Image       : String) is
    begin
       Databases (Database_ID).Set
-        (Data_ID  => Data_ID,
-         Raw_Data => Raw_Data);
-   end Set_Raw_Data;
+        (Data_ID => Data_ID,
+         Image   => Image);
+   end Set;
 
-   ------------------
-   -- Get_Raw_Data --
-   ------------------
+   ---------
+   -- Get --
+   ---------
 
-   function Get_Raw_Data
+   function Get
      (Database_ID : Database_ID_Type;
       Data_ID     : Data_ID_Type)
-      return UInt8_Array
+      return String
    is
    begin
       return Databases (Database_ID).Get (Data_ID);
-   end Get_Raw_Data;
+   end Get;
+
+   -------------
+   -- Get_IDs --
+   -------------
+
+   function Get_IDs
+     (Data_Name   : Data_Name_Type;
+      Database_ID : out Database_ID_Type;
+      Data_ID     : out Data_ID_Type) return Boolean
+   is
+      Cur_Data_ID : Data_ID_Type;
+   begin
+      for Database of Databases loop
+         Cur_Data_ID := Database.Get_Data_ID (Data_Name);
+
+         if Cur_Data_ID /= Null_Data_ID then
+            Database_ID := Database.Get_ID;
+            Data_ID := Cur_Data_ID;
+
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   end Get_IDs;
+
+   ------------------
+   -- Logging_Task --
+   ------------------
 
    task body Logging_Task is
       Next_Period : Time;
@@ -63,6 +92,5 @@ package body Databases.Instantiations is
          Next_Period := Next_Period + LOGGING_TASK_PERIOD;
       end loop;
    end Logging_Task;
-
 
 end Databases.Instantiations;

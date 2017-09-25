@@ -31,6 +31,8 @@ generic
 
    with function Image (Data : Data_Type) return String;
 
+   with function Value (Image : String) return Data_Type;
+
 package Databases.Generics is
 
    type Database_Type is new Root_Database_Type with private;
@@ -40,9 +42,6 @@ package Databases.Generics is
    function Get_Database_Instance return Database_Access;
    --  Return the unique database instance for this package.
    --  Use this function in order to get/set values of the given Data_Type.
-
-   function ID (Database : Database_Type) return Database_ID_Type;
-   --  Return the ID of the database
 
    function Get
      (Database : Database_Type;
@@ -63,18 +62,21 @@ package Databases.Generics is
      (Database  : in out Database_Type;
       Data_Name : Data_Name_Type) return Data_ID_Type;
 
+   overriding function Get_ID
+     (Database : Database_Type) return Database_ID_Type;
+
    overriding function Get_Data_ID
      (Database  : Database_Type;
       Data_Name : Data_Name_Type) return Data_ID_Type;
 
    overriding function Get
      (Database : Database_Type;
-      Data_ID  : Data_ID_Type) return UInt8_Array;
+      Data_ID  : Data_ID_Type) return String;
 
    overriding procedure Set
      (Database : in out Database_Type;
       Data_ID  : Data_ID_Type;
-      Raw_Data : UInt8_Array);
+      Image    : String);
 
    overriding procedure Log_All_Data (Database : Database_Type);
 

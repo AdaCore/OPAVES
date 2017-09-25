@@ -119,6 +119,16 @@ package body Databases.Generics is
       return Data_ID;
    end Register;
 
+   ------------
+   -- Get_ID --
+   ------------
+
+   overriding function Get_ID
+     (Database : Database_Type) return Database_ID_Type is
+   begin
+      return Database.ID;
+   end Get_ID;
+
    -----------------
    -- Get_Data_ID --
    -----------------
@@ -143,10 +153,9 @@ package body Databases.Generics is
    overriding procedure Set
      (Database : in out Database_Type;
       Data_ID  : Data_ID_Type;
-      Raw_Data : UInt8_Array)
+      Image    : String)
    is
-      Data : Data_Type with Address => Raw_Data'Address, Warnings => Off;
-
+      Data : constant Data_Type := Value (Image);
    begin
       Database.Set
         (Data_ID => Data_ID,
@@ -159,14 +168,11 @@ package body Databases.Generics is
 
    overriding function Get
      (Database : Database_Type;
-      Data_ID  : Data_ID_Type) return UInt8_Array
+      Data_ID  : Data_ID_Type) return String
    is
-      Data_Size : constant Natural := Data_Type'Size / 8;
-      Data      : constant Data_Type := Database.Get (Data_ID);
-      Raw_Data  : UInt8_Array (1 .. Data_Size)
-        with Address => Data'Address, Warnings => Off;
+      Data : constant Data_Type := Database.Get (Data_ID);
    begin
-      return Raw_Data;
+      return Image (Data);
    end Get;
 
    ------------------
@@ -203,15 +209,6 @@ package body Databases.Generics is
 
       New_Data_ID := First_Data_ID;
    end Clear_All_Data;
-
-   --------
-   -- ID --
-   --------
-
-   function ID (Database : Database_Type) return Database_ID_Type is
-   begin
-      return Database.ID;
-   end ID;
 
    ---------
    -- Get --
