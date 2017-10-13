@@ -1,4 +1,5 @@
 with "board_support/OPAVES_MkI_Board.gpr";
+with "Certyflie/crazyflie_support/crazyflie_support.gpr";
 
 project OPAVES_MkI is
 

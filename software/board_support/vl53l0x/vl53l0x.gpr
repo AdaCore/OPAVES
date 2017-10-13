@@ -1,4 +1,4 @@
-with "../../Ada_Drivers_Library/arch/ARM/STM32/stm32f40x";
+with "../../Certyflie/Ada_Drivers_Library/arch/ARM/STM32/stm32f40x.gpr";
 
 project VL53L0x is
 
