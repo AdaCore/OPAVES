@@ -17,13 +17,18 @@
 ------------------------------------------------------------------------------
 
 with Last_Chance_Handler;
+
 with System;
 
 with Ada.Real_Time; use Ada.Real_Time;
 with Board.LEDs;    use Board.LEDs;
+with Board.Logging;
 
 procedure Main is
 begin
+
+   Board.Logging.Log_Line
+     ("O'PAVES: Open Platform for Autonomous VEhicle Systems");
 
    Board.LEDs.Initialize;
 
