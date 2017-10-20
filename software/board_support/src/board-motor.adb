@@ -80,7 +80,6 @@ package body Board.Motor is
 
       --  Initial state
       Disable;
-      Set_Direction (Forward);
       Set_Throttle (0.0);
    end Initialize;
 
@@ -116,30 +115,24 @@ package body Board.Motor is
       Standby_Pin.Clear;
    end Disable;
 
-   -------------------
-   -- Set_Direction --
-   -------------------
-
-   procedure Set_Direction (Dir : Direction) is
-   begin
-      case Dir is
-         when Forward =>
-            In2_Pin.Set;
-            In1_Pin.Clear;
-         when Backward =>
-            In2_Pin.Clear;
-            In1_Pin.Set;
-      end case;
-   end Set_Direction;
-
    ------------------
    -- Set_Throttle --
    ------------------
 
    procedure Set_Throttle (Throt : Throttle) is
    begin
-      Modulator_1.Set_Duty_Cycle (Percentage (Throt));
-      Modulator_2.Set_Duty_Cycle (Percentage (Throt));
+      if Throt >= 0.0 then
+         --  Forward
+         In2_Pin.Set;
+         In1_Pin.Clear;
+      else
+         --  Backward
+         In2_Pin.Clear;
+         In1_Pin.Set;
+      end if;
+
+      Modulator_1.Set_Duty_Cycle (Percentage (abs Throt));
+      Modulator_2.Set_Duty_Cycle (Percentage (abs Throt));
    end Set_Throttle;
 
 end Board.Motor;
