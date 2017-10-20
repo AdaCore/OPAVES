@@ -58,17 +58,20 @@ package Board.Motor is
    --  Set throttle value
 
 private
-   In1_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PC4;
-   In2_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PA7;
+   In1_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PB4;
+   In2_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PB8;
 
-   Standby_Pin : STM32.GPIO.GPIO_Point         renames STM32.Device.PA5;
+   Standby_Pin : STM32.GPIO.GPIO_Point         renames STM32.Device.PB5;
    --  Standby is active low
 
-   PWM_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PA6;
-   PWM_Pin_AF  : STM32.GPIO_Alternate_Function renames STM32.Device.GPIO_AF_TIM13_9;
+   PWM_1_Pin   : STM32.GPIO.GPIO_Point         renames STM32.Device.PA2;
+   PWM_2_Pin   : STM32.GPIO.GPIO_Point         renames STM32.Device.PA3;
+   PWM_Pin_AF  : STM32.GPIO_Alternate_Function renames STM32.Device.GPIO_AF_TIM9_3;
 
-   PWM_Timer      : STM32.Timers.Timer         renames STM32.Device.Timer_13;
-   PWM_Channel    : STM32.Timers.Timer_Channel      := STM32.Timers.Channel_1;
+   PWM_Timer      : STM32.Timers.Timer         renames STM32.Device.Timer_9;
+   PWM_1_Channel  : STM32.Timers.Timer_Channel      := STM32.Timers.Channel_1;
+   PWM_2_Channel  : STM32.Timers.Timer_Channel      := STM32.Timers.Channel_2;
    PWM_Frequency  : constant                        := 25_000; -- Hertz
-   Modulator      : STM32.PWM.PWM_Modulator;
+   Modulator_1    : STM32.PWM.PWM_Modulator;
+   Modulator_2    : STM32.PWM.PWM_Modulator;
 end Board.Motor;
