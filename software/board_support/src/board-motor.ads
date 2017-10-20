@@ -23,8 +23,7 @@ private with STM32.Device;
 
 package Board.Motor is
 
-   type Direction is (Forward, Backward);
-   subtype Throttle is Float range 0.0 .. 100.0;
+   subtype Throttle is Float range -100.0 .. 100.0;
 
    procedure Initialize
      with Post => Initialized and then not Enabled;
@@ -48,14 +47,10 @@ package Board.Motor is
    --  Disable the motor. This coresponds to the standby mode on the motor
    --  driver chip.
 
-   procedure Set_Direction (Dir : Direction)
-     with Pre => Initialized;
-   --  Set direction of the motor Forwards means that the motor will make the
-   --  car move forward.
-
    procedure Set_Throttle (Throt : Throttle)
      with Pre => Initialized;
-   --  Set throttle value
+   --  Set thottle of the motors. A value above zero means that the motor will
+   --  make the car move forward.
 
 private
    In1_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PB4;
