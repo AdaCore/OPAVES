@@ -42,7 +42,8 @@ package body Board.Motor is
       Enable_Clock (In1_Pin);
       Enable_Clock (In2_Pin);
       Enable_Clock (Standby_Pin);
-      Enable_Clock (PWM_Pin);
+      Enable_Clock (PWM_1_Pin);
+      Enable_Clock (PWM_2_Pin);
 
       IO_Conf.Mode        := Mode_Out;
       IO_Conf.Output_Type := Push_Pull;
@@ -60,13 +61,20 @@ package body Board.Motor is
       --  Timer  --
       Configure_PWM_Timer (PWM_Timer'Access, PWM_Frequency);
 
-      Modulator.Attach_PWM_Channel
+      Modulator_1.Attach_PWM_Channel
         (PWM_Timer'Access,
-         PWM_Channel,
-         PWM_Pin,
+         PWM_1_Channel,
+         PWM_1_Pin,
          PWM_Pin_AF);
 
-      Modulator.Enable_Output;
+      Modulator_2.Attach_PWM_Channel
+        (PWM_Timer'Access,
+         PWM_2_Channel,
+         PWM_2_Pin,
+         PWM_Pin_AF);
+
+      Modulator_1.Enable_Output;
+      Modulator_2.Enable_Output;
 
       Init_Done := True;
 
@@ -130,7 +138,8 @@ package body Board.Motor is
 
    procedure Set_Throttle (Throt : Throttle) is
    begin
-      Modulator.Set_Duty_Cycle (Percentage (Throt));
+      Modulator_1.Set_Duty_Cycle (Percentage (Throt));
+      Modulator_2.Set_Duty_Cycle (Percentage (Throt));
    end Set_Throttle;
 
 end Board.Motor;

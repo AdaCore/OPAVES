@@ -48,11 +48,11 @@ package Board.Steering is
      with Pre => Initialized;
 private
 
-   PWM_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PB5;
-   PWM_Pin_AF  : STM32.GPIO_Alternate_Function renames STM32.Device.GPIO_AF_TIM3_2;
+   PWM_Pin     : STM32.GPIO.GPIO_Point         renames STM32.Device.PA5;
+   PWM_Pin_AF  : STM32.GPIO_Alternate_Function renames STM32.Device.GPIO_AF_TIM2_1;
 
-   PWM_Timer   : STM32.Timers.Timer            renames STM32.Device.Timer_3;
-   PWM_Channel : STM32.Timers.Timer_Channel         := STM32.Timers.Channel_2;
+   PWM_Timer   : STM32.Timers.Timer            renames STM32.Device.Timer_2;
+   PWM_Channel : STM32.Timers.Timer_Channel         := STM32.Timers.Channel_1;
    PWM_Period  : constant                           := 1000;
 
    PWM_Frequency : constant := 20; -- Hertz
