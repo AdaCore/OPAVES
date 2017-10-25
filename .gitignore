@@ -21,3 +21,12 @@
 *.ci
 *.cswi
 *~
+
+#Software
+software/obj
+software/board_support/obj
+software/board_support/vl53l0x/obj/
+
+#GNATtest
+software/tests_database/*.stderr
+software/tests_database/*.stdout
