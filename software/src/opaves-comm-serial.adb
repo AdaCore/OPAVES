@@ -21,7 +21,7 @@ with Board.Logging;            use Board.Logging;
 with Databases;                use Databases;
 with Databases.Instantiations; use Databases.Instantiations;
 
-package body OPAVES.Comm is
+package body OPAVES.Comm.Serial is
 
    Write_Value_Cmd : constant String := "WRITE_VALUE:";
    Read_Value_Cmd : constant String := "READ_VALUE:";
@@ -245,4 +245,4 @@ package body OPAVES.Comm is
       end loop;
    end Communication_Task;
 
-end OPAVES.Comm;
+end OPAVES.Comm.Serial;

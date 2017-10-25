@@ -16,6 +16,16 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-package OPAVES.Comm is
+with CRTP;    use CRTP;
+with Syslink; use Syslink;
 
-end OPAVES.Comm;
+package OPAVES.Comm.CRTP is
+
+   CRTP_Rx_Task : CRTP_Rx_Task_Type (CRTP_Task_Priority);
+   CRTP_Tx_Task : CRTP_Tx_Task_Type (CRTP_Task_Priority);
+
+   Syslink_Task : Syslink_Task_Type (Syslink_Task_Priority);
+
+   procedure Initialize;
+
+end OPAVES.Comm.CRTP;

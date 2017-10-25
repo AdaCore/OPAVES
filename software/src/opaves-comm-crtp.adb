@@ -16,6 +16,28 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-package OPAVES.Comm is
+with Console;          use Console;
+with CRTP_Service;     use CRTP_Service;
+with Platform_Service; use Platform_Service;
+with Link_Interface;   use Link_Interface;
 
-end OPAVES.Comm;
+package body OPAVES.Comm.CRTP is
+
+   ----------------
+   -- Initialize --
+   ----------------
+
+   procedure Initialize is
+   begin
+      --  Initialize the link layer (Radiolink by default in Config.ads).
+      Link_Init;
+
+      --  Initialize low and high level services.
+      CRTP_Service_Init;
+      Platform_Service_Init;
+
+      --  Initialize the console module.
+      Console_Init;
+   end Initialize;
+
+end OPAVES.Comm.CRTP;

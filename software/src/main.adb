@@ -16,28 +16,38 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Last_Chance_Handler;
-
-with System;
-
 with Ada.Real_Time; use Ada.Real_Time;
+with Last_Chance_Handler;
+pragma Unreferenced (Last_Chance_Handler);
+
 with Board.LEDs;    use Board.LEDs;
 with Board.Logging;
 
+with LEDS; use LEDS;
+with OPAVES.Comm.CRTP;
+with OPAVES.Commander;
+
+with Board.Motor;
+with Board.Steering;
+
 procedure Main is
 begin
+   LEDS.LEDS_Init;
 
    Board.Logging.Log_Line
      ("O'PAVES: Open Platform for Autonomous VEhicle Systems");
 
    Board.LEDs.Initialize;
+   LEDS.Set_System_State (Ready);
 
-   Turn_On (Green);
+   Board.Motor.Initialize;
+   Board.Motor.Enable;
 
-   for Cnt in 1 .. 1_000 loop
-      Toggle (Green);
-      delay until Clock + Milliseconds (500);
-   end loop;
+   Board.Steering.Initialize;
+   Board.Steering.Enable;
+
+   OPAVES.Comm.CRTP.Initialize;
+   OPAVES.Commander.Initialize;
 
    delay until Ada.Real_Time.Time_Last;
 
