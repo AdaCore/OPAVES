@@ -16,6 +16,8 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-package OPAVES.Comm is
+package OPAVES.Commander is
 
-end OPAVES.Comm;
+   procedure Initialize;
+
+end OPAVES.Commander;

@@ -1,3 +1,4 @@
+
 ------------------------------------------------------------------------------
 --                                                                          --
 --                                  O'PAVES                                 --
@@ -16,6 +17,9 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-package OPAVES.Comm is
+package OPAVES.Comm.Serial is
 
-end OPAVES.Comm;
+   task Communication_Task
+     with Priority => Communication_Task_Priority;
+
+end OPAVES.Comm.Serial;
