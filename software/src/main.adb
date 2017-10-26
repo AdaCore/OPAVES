@@ -20,7 +20,6 @@ with Ada.Real_Time; use Ada.Real_Time;
 with Last_Chance_Handler;
 pragma Unreferenced (Last_Chance_Handler);
 
-with Board.LEDs;    use Board.LEDs;
 with Board.Logging;
 
 with LEDS; use LEDS;
@@ -31,13 +30,14 @@ with Board.Motor;
 with Board.Steering;
 
 procedure Main is
+   COMMANDS_PERIOD_MS : constant Time_Span := Milliseconds (2);
+   Next_Period        : Time;
 begin
    LEDS.LEDS_Init;
 
    Board.Logging.Log_Line
-     ("O'PAVES: Open Platform for Autonomous VEhicle Systems");
+     ("O'PAVES: Open Platform for Autonomous Vehicle Systems");
 
-   Board.LEDs.Initialize;
    LEDS.Set_System_State (Ready);
 
    Board.Motor.Initialize;
@@ -49,8 +49,14 @@ begin
    OPAVES.Comm.CRTP.Initialize;
    OPAVES.Commander.Initialize;
 
-   delay until Ada.Real_Time.Time_Last;
+   Next_Period := Clock + COMMANDS_PERIOD_MS;
 
-   Last_Chance_Handler.Last_Chance_Handler (Msg  => System.Null_Address,
-                                            Line => 0);
+   loop
+      delay until Next_Period;
+
+      Board.Motor.Set_Throttle (OPAVES.Commander.Get_Throttle_Command);
+      Board.Steering.Set_Steering (OPAVES.Commander.Get_Steering_Command);
+
+      Next_Period := Next_Period + COMMANDS_PERIOD_MS;
+   end loop;
 end Main;
