@@ -16,13 +16,13 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with CRTP; use CRTP;
-with HAL;  use HAL;
-with Board.Logging; use Board.Logging;
-with Board.Steering; use Board.Steering;
-with Board.Motor; use Board.Motor;
-with LEDS; use LEDS;
-with Types; use Types;
+with Ada.Real_Time;            use Ada.Real_Time;
+
+with CRTP;                     use CRTP;
+with Databases;                use Databases;
+with Databases.Instantiations; use Databases.Instantiations;
+with HAL;                      use HAL;
+with Types;                    use Types;
 
 package body OPAVES.Commander is
 
@@ -31,6 +31,15 @@ package body OPAVES.Commander is
 
    MIN_CRTP_THRUST : constant := -52_000.0;
    MAX_CRTP_THRUST : constant := 52_000.0;
+
+   MAX_INACTIVITY_PERIOD : constant Time_Span := Milliseconds (500);
+   Last_Update           : Time;
+
+   Float_DB : constant Float_Databases.Database_Access :=
+                       Float_Databases.Get_Database_Instance;
+
+   Throttle_Data_ID : Data_ID_Type;
+   Steering_Data_ID : Data_ID_Type;
 
    type CRTP_Commands_Type is record
       Roll   : T_Degrees;
@@ -53,6 +62,17 @@ package body OPAVES.Commander is
    procedure CRTP_Get_UInt16_Data is new CRTP_Get_Data (UInt16);
    --  Get UInt16 data from a CRTP Packet.
 
+   function Get_Inactivity_Time return Time_Span;
+   --  Get the inactivity time between the last time we received commands and
+   --  the current time.
+
+   procedure Watchdog;
+   --  Used to reset the commands when we did not receive any commands during
+   --  a certain time.
+
+   procedure Watchdog_Reset;
+   --  Reset the watchdog.
+
    function Convert_Commands
      (CRTP_Commands : CRTP_Commands_Type) return OPAVES_Commands_Type;
    --  Convert the CRTP commands to OPAVES commands
@@ -72,9 +92,81 @@ package body OPAVES.Commander is
 
    procedure Initialize is
    begin
+      Last_Update := Clock;
+
+      Throttle_Data_ID := Float_DB.Register (Data_Name => Create ("THROTTLE"));
+      Steering_Data_ID := Float_DB.Register (Data_Name => Create ("STEERING"));
+
       CRTP_Register_Callback
         (CRTP_PORT_COMMANDER, Commander_CRTP_Handler'Access);
    end Initialize;
+
+   --------------------------
+   -- Get_Throttle_Command --
+   --------------------------
+
+   function Get_Throttle_Command return Throttle is
+      Throt_F : constant Float :=
+                  Float_DB.all.Get (Data_ID => Throttle_Data_ID);
+   begin
+      Watchdog;
+
+      return Throttle (Throt_F);
+   end Get_Throttle_Command;
+
+   --------------------------
+   -- Get_Steering_Command --
+   --------------------------
+
+   function Get_Steering_Command return Steering_Value is
+      Steering_F : constant Float :=
+                     Float_DB.all.Get (Data_ID => Steering_Data_ID);
+   begin
+      return Steering_Value (Steering_F);
+   end Get_Steering_Command;
+
+   -------------------------
+   -- Get_Inactivity_Time --
+   -------------------------
+
+   function Get_Inactivity_Time return Time_Span
+   is
+      Current_Time : constant Time := Clock;
+   begin
+      return Current_Time - Last_Update;
+   end Get_Inactivity_Time;
+
+   --------------
+   -- Watchdog --
+   --------------
+
+   procedure Watchdog is
+      Time_Since_Last_Update : Time_Span;
+   begin
+      Time_Since_Last_Update := Get_Inactivity_Time;
+
+      if Time_Since_Last_Update > MAX_INACTIVITY_PERIOD then
+         CRTP_Set_Is_Connected (False);
+
+         Float_DB.Set
+           (Data_ID => Throttle_Data_ID,
+            Data    => 0.0);
+         Float_DB.Set
+           (Data_ID => Steering_Data_ID,
+            Data    => 0.0);
+      end if;
+   end Watchdog;
+
+   --------------------
+   -- Watchdog_Reset --
+   --------------------
+
+   procedure Watchdog_Reset is
+   begin
+      CRTP_Set_Is_Connected (True);
+
+      Last_Update := Clock;
+   end Watchdog_Reset;
 
    ----------------------
    -- Convert_Commands --
@@ -87,10 +179,11 @@ package body OPAVES.Commander is
 
       --  Invert the pitch to get the throttle direction (backward or forward)
       Throtlle_Dir    : constant Throttle :=
-                          (if CRTP_Commands.Pitch < 0.0 then 1.0 else -1.0);
+                          (if CRTP_Commands.Pitch < 0.001 then -1.0 else 1.0);
    begin
+      --  We should invert the roll received from CRTP
       OPAVES_Commands.Steering := Get_Mapped_Value
-        (Input      => CRTP_Commands.Roll,
+        (Input      => -CRTP_Commands.Roll,
          Input_Min  => MIN_CRTP_ROLL,
          Input_Max  => MAX_CRTP_ROLL,
          Output_Min => Steering_Value'First,
@@ -147,20 +240,16 @@ package body OPAVES.Commander is
       CRTP_Get_Float_Data (Handler, 5, CRTP_Commands.Pitch, Has_Succeed);
       CRTP_Get_UInt16_Data (Handler, 13, CRTP_Commands.Thrust, Has_Succeed);
 
-      Log_Line ("Thrust = " & CRTP_Commands.Thrust'Img);
-      Log_Line ("Pitch = " & CRTP_Commands.Pitch'Img);
-      Log_Line ("Roll = " & CRTP_Commands.Roll'Img);
-
       OPAVES_Commands := Convert_Commands (CRTP_Commands);
 
-      Log_Line ("Throt = " & OPAVES_Commands.Throt'Img);
-      Log_Line ("Steering = " & OPAVES_Commands.Steering'Img);
-      Log_Line ("");
+      Float_DB.Set
+        (Data_ID => Throttle_Data_ID,
+         Data    => OPAVES_Commands.Throt);
+      Float_DB.Set
+        (Data_ID => Steering_Data_ID,
+         Data    => OPAVES_Commands.Steering);
 
-      Board.Motor.Set_Throttle (OPAVES_Commands.Throt);
-      Board.Steering.Set_Steering (OPAVES_Commands.Steering);
-
-      Toggle_LED (LEDS.LED_Green_L);
+      Watchdog_Reset;
    end Commander_CRTP_Handler;
 
 end OPAVES.Commander;

@@ -16,8 +16,17 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
+
+with Board.Steering; use Board.Steering;
+with Board.Motor;    use Board.Motor;
+
 package OPAVES.Commander is
 
    procedure Initialize;
+   --  Initialize the commander module
+
+   function Get_Throttle_Command return Throttle;
+   function Get_Steering_Command return Steering_Value;
+   --  Getters for the received commands
 
 end OPAVES.Commander;
