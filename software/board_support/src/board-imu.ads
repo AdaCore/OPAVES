@@ -26,8 +26,6 @@ with Bosch_BNO055;
 
 package Board.IMU is
 
-   IMU_Error : exception;
-
    type Value_3D is record
       X, Y, Z : Float;
    end record;
@@ -37,13 +35,26 @@ package Board.IMU is
       Acceleration : Value_3D;
    end record;
 
+   type IMU_Status is
+     (Uninitialized,
+      Ready,
+      Error_Not_Present,
+      Error_Not_Calibrated,
+      Error_System);
+
    procedure Initialize;
 
-   function Read return IMU_Data;
+   function Status return IMU_Status;
+
+   function Read return IMU_Data
+     with Pre => Status = Ready;
 
 private
 
    IMU_I2C : STM32.I2C.I2C_Port renames STM32.Device.I2C_1;
+   The_Status : IMU_Status := Uninitialized;
+
+   function Status return IMU_Status is (The_Status);
 
    --  COM3 low => Address is 16#28# (+ the r/w bit as bit0)
    IO      : aliased BNO055_I2C_IO.IO_Port :=

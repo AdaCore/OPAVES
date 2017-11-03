@@ -16,23 +16,27 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Real_Time; use Ada.Real_Time;
-
 package Sensors is
 
    IMU_Read_Frequency : constant := 100;
    --  Read the IMU at 100Hz
+
+   task Sensors_Task;
 
    procedure Initialize
      with Post => Sensors_Initialized;
 
    function Sensors_Initialized return Boolean;
 
-   function Next_Read_Time return Time
-     with Pre => Sensors_Initialized;
-   --  time when next sensor data is available
+private
 
-   procedure Update_Sensors
-     with Pre => Sensors_Initialized;
+   type On_Board_Sensors is
+     (Ranging_Front_Left,
+      Ranging_Front_Center,
+      Ranging_Front_Right,
+      Ranging_Side_Right,
+      Ranging_Rear,
+      IMU,
+      VBat);
 
 end Sensors;

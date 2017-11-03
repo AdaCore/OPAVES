@@ -24,6 +24,7 @@ with STM32.GPIO;    use STM32.GPIO;
 with STM32.I2C;     use STM32.I2C;
 with STM32.Setup;
 
+with Board.LEDs;
 with Board.Logging; use Board.Logging;
 
 package body Board.Ranging is
@@ -143,6 +144,8 @@ package body Board.Ranging is
       --  panel on the STM32F469-disco board (on the same I2C bus).
       Final_Addr := 16#54#;
 
+      Board.LEDs.Toggle (Board.LEDs.Green);
+
       for Id in Sensors'Range loop
          Dev := Sensors (Id)'Access;
          Dev.I2C_Address := 16#52#; --  Value at startup
@@ -176,9 +179,9 @@ package body Board.Ranging is
             Dev_Id := Read_ID (Dev);
 
             if Dev_Id /= 16#EEAA# then
-               Logging.Log_Line (Error,
-                                 "Address change failed for range sensor " &
-                                   Id'Img);
+               Logging.Log_Line
+                 (Error,
+                  "Address change failed for range sensor " & Id'Img);
                Status := False;
             end if;
          end if;
@@ -204,6 +207,7 @@ package body Board.Ranging is
          end if;
 
          if Status then
+            --  This loop is used to perform calibration
 --              Status := Perform_Offset_Calibration
 --                (Dev, 90.0, Offset_Micro (Id)) = Error_None;
 --              case Id is
@@ -246,14 +250,19 @@ package body Board.Ranging is
          if Status then
             Set_Detection_Mode (Id, Accurate);
             S_Status (Id) := Ready;
+
             Logging.Log_Line (Debug, "Range sensor " & Id'Img & " ready.");
+
          else
             Reset (Id).Clear;
             S_Status (Id) := Uninitialized;
-            Logging.Log_Line (Error, "Range sensor " & Id'Img & " init failed.");
+            Logging.Log_Line
+              (Error, "Range sensor " & Id'Img & " init failed.");
          end if;
 
       end loop;
+
+      Board.LEDs.Turn_Off (Board.LEDs.Green);
    end Init_Sensors;
 
    --------------------
@@ -285,9 +294,6 @@ package body Board.Ranging is
             Sigma_Limit) = Error_None;
       end if;
 
-      Delays (Sensor) := Timing;
-      Timings (Sensor) := Clock;
-
       if Status then
          Status := Set_Measurement_Timing_Budget_Microseconds
            (Sensors (Sensor)'Access,
@@ -318,6 +324,9 @@ package body Board.Ranging is
          Delays (Sensor) := Time_Span_Zero;
          Timings (Sensor) := Time_Last;
          S_Status (Sensor) := Error;
+      else
+         Delays (Sensor) := Timing;
+         Timings (Sensor) := Clock + Timing;
       end if;
 
       return Status;
@@ -374,31 +383,15 @@ package body Board.Ranging is
    ----------------
 
    procedure Next
-     (Sensor : out Range_Sensor_Id;
-      Time   : out Ada.Real_Time.Time)
+     (Time : out Ada.Real_Time.Time)
    is
-      Status : Boolean;
    begin
       Time   := Time_Last;
-      Sensor := Invalid;
 
       for Id in Timings'Range loop
          if S_Status (Id) in Valid_Status then
-            if S_Status (Id) = Ready then
-               Status :=
-                 Perform_Single_Measurement (Sensors (Id)'Access) = Error_None;
-
-               if not Status then
-                  S_Status (Id) := Error;
-               else
-                  Timings (Id) := Clock + Delays (Id);
-                  S_Status (Id) := Reading;
-               end if;
-            end if;
-
             if Timings (Id) < Time then
                Time   := Timings (Id);
-               Sensor := Id;
             end if;
          end if;
       end loop;
@@ -424,7 +417,7 @@ package body Board.Ranging is
       end loop;
 
       Err := Get_Ranging_Measurement_Data (Dev, Measure);
-      S_Status (Sensor) := Ready;
+      Timings (Sensor) := Clock + Delays (Sensor);
 
       if Err /= Error_None then
          return Infinity;
@@ -438,6 +431,24 @@ package body Board.Ranging is
          return Millimeter (Measure.Range_Millimeter);
       end if;
    end Read;
+
+   ------------
+   -- Status --
+   ------------
+
+   function Status (Sensor : Sensor_Location) return Sensor_Status
+   is
+   begin
+      if S_Status (Sensor) /= Ready then
+         return S_Status (Sensor);
+      end if;
+
+      if Timings (Sensor) > Clock then
+         return Busy;
+      else
+         return Ready;
+      end if;
+   end Status;
 
    --------------------------
    -- Lock_Sequence_Access --

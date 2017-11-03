@@ -16,8 +16,11 @@
 -- of the license.                                                          --
 ------------------------------------------------------------------------------
 
-with Board.Ranging; use Board.Ranging;
-with Board.IMU;     use Board.IMU;
+with Ada.Real_Time;            use Ada.Real_Time;
+with Ada.Synchronous_Task_Control;
+
+with Board.Ranging;            use Board.Ranging;
+with Board.IMU;
 
 with Databases;                use Databases;
 with Databases.Instantiations; use Databases.Instantiations;
@@ -32,36 +35,50 @@ package body Sensors is
       Acc_Y,
       Acc_Z);
 
+   Wait_Init           : Ada.Synchronous_Task_Control.Suspension_Object;
+
    Initialized         : Boolean := False;
    IMU_Delay           : constant Time_Span :=
                            Seconds (1) / IMU_Read_Frequency;
 
-   Ranging_Read_Time   : Time;
-   Ranging_Next_Sensor : Range_Sensor_Id;
-   IMU_Read_Time       : Time;
-
    The_DB              : constant Float_Databases.Database_Access :=
                            Float_Databases.Get_Database_Instance;
+   Status_DB           : constant Boolean_Databases.Database_Access :=
+                           Boolean_Databases.Get_Database_Instance;
 
+   Sensor_Status_IDs   : array (On_Board_Sensors) of Data_ID_Type;
    Ranging_Data_IDs    : array (Sensor_Location) of Data_ID_Type;
    IMU_Data_IDs        : array (IMU_Data_Identifier) of Data_ID_Type;
 
-   function Data_Name (Ranging_Location : Sensor_Location) return String
-   is (case Ranging_Location is
-          when Front_Left  => "ranging_front_left",
-          when Front       => "ranging_front_center",
-          when Front_Right => "ranging_front_right",
-          when Side_Right  => "ranging_side_right",
-          when Rear        => "ranging_rear_center");
+   function Data_Name
+     (Sensor : On_Board_Sensors) return Data_Name_Type
+   is (case Sensor is
+          when Ranging_Front_Left   => Create ("ranging_fl"),
+          when Ranging_Front_Center => Create ("ranging_fc"),
+          when Ranging_Front_Right  => Create ("ranging_fr"),
+          when Ranging_Side_Right   => Create ("ranging_sr"),
+          when Ranging_Rear         => Create ("ranging_rc"),
+          when IMU                  => Create ("imu"),
+          when VBat                 => Create ("vbat"));
 
-   function Data_Name (IMU_Data_ID : IMU_Data_Identifier) return String
+   function Data_Name
+     (Ranging_Location : Sensor_Location) return Data_Name_Type
+   is (case Ranging_Location is
+          when Front_Left  => Create ("ranging_fl"),
+          when Front       => Create ("ranging_fc"),
+          when Front_Right => Create ("ranging_fr"),
+          when Side_Right  => Create ("ranging_sr"),
+          when Rear        => Create ("ranging_rc"));
+
+   function Data_Name
+     (IMU_Data_ID : IMU_Data_Identifier) return Data_Name_Type
    is (case IMU_Data_ID is
-          when Angle_X => "imu_angle_x",
-          when Angle_Y => "imu_angle_y",
-          when Angle_Z => "imu_angle_z",
-          when Acc_X   => "imu_acceleration_x",
-          when Acc_Y   => "imu_acceleration_y",
-          when Acc_Z   => "imu_acceleration_z");
+          when Angle_X => Create ("imu_angle_x"),
+          when Angle_Y => Create ("imu_angle_y"),
+          when Angle_Z => Create ("imu_angle_z"),
+          when Acc_X   => Create ("imu_acc_x"),
+          when Acc_Y   => Create ("imu_acc_y"),
+          when Acc_Z   => Create ("imu_acc_z"));
 
    ----------------
    -- Initialize --
@@ -69,12 +86,17 @@ package body Sensors is
 
    procedure Initialize
    is
+      use type Board.IMU.IMU_Status;
    begin
 
       Board.Ranging.Initialize;
       Board.IMU.Initialize;
 
       --  Initialize the databases
+      for ID in On_Board_Sensors'Range loop
+         Sensor_Status_IDs (ID) := Status_DB.Register (Data_Name (ID));
+      end loop;
+
       for ID in Sensor_Location'Range loop
          Ranging_Data_IDs (ID) := The_DB.Register (Data_Name (ID));
       end loop;
@@ -83,11 +105,29 @@ package body Sensors is
          IMU_Data_IDs (ID)     := The_DB.Register (Data_Name (ID));
       end loop;
 
-      --  Initialize the read timings
-      IMU_Read_Time := Clock + IMU_Delay;
-      Next (Ranging_Next_Sensor, Ranging_Read_Time);
+      Status_DB.Set
+        (Sensor_Status_IDs (Ranging_Front_Center),
+         Board.Ranging.Status (Board.Ranging.Front) = Board.Ranging.Ready);
+      Status_DB.Set
+        (Sensor_Status_IDs (Ranging_Front_Left),
+         Board.Ranging.Status (Board.Ranging.Front_Left) = Board.Ranging.Ready);
+      Status_DB.Set
+        (Sensor_Status_IDs (Ranging_Front_Right),
+         Board.Ranging.Status (Board.Ranging.Side_Right) = Board.Ranging.Ready);
+      Status_DB.Set
+        (Sensor_Status_IDs (Ranging_Side_Right),
+         Board.Ranging.Status (Board.Ranging.Front_Right) = Board.Ranging.Ready);
+      Status_DB.Set
+        (Sensor_Status_IDs (Ranging_Rear),
+         Board.Ranging.Status (Board.Ranging.Rear) = Board.Ranging.Ready);
+      Status_DB.Set
+        (Sensor_Status_IDs (IMU),
+         Board.IMU.Status = Board.IMU.Ready);
+      Status_DB.Set
+        (Sensor_Status_IDs (VBat), False); --  Not there yet
 
       Initialized := True;
+      Ada.Synchronous_Task_Control.Set_True (Wait_Init);
    end Initialize;
 
    ------------------------
@@ -99,33 +139,33 @@ package body Sensors is
       return Initialized;
    end Sensors_Initialized;
 
-   --------------------
-   -- Next_Read_Time --
-   --------------------
-
-   function Next_Read_Time return Time is
-   begin
-      if IMU_Read_Time < Ranging_Read_Time then
-         return IMU_Read_Time;
-      else
-         return Ranging_Read_Time;
-      end if;
-   end Next_Read_Time;
-
-   --------------------
-   -- Update_Sensors --
-   --------------------
-
-   procedure Update_Sensors
+   task body Sensors_Task
    is
-      Now : constant Time := Clock;
+      use type Board.IMU.IMU_Status;
+      Ranging_Read_Time   : Time;
+      IMU_Read_Time       : Time;
+      IMU_Values          : Board.IMU.IMU_Data;
+      Distance            : Millimeter;
+
    begin
-      if IMU_Read_Time <= Now then
-         declare
-            IMU_Values : Board.IMU.IMU_Data;
-         begin
+      --  Wait for the sensors to be initialized
+      Ada.Synchronous_Task_Control.Suspend_Until_True (Wait_Init);
+
+      if Board.IMU.Status = Board.IMU.Ready then
+         IMU_Read_Time := Clock + IMU_Delay;
+      else
+         IMU_Read_Time := Ada.Real_Time.Time_Last;
+      end if;
+
+      Next (Ranging_Read_Time);
+
+      loop
+         --  Initialize the read timings
+         if IMU_Read_Time < Ranging_Read_Time then
+            delay until IMU_Read_Time;
+
             IMU_Values    := Board.IMU.Read;
-            IMU_Read_Time := Now + IMU_Delay;
+            IMU_Read_Time := Clock + IMU_Delay;
 
             for Id in IMU_Data_Identifier'Range loop
                case Id is
@@ -155,22 +195,24 @@ package body Sensors is
                         Data    => IMU_Values.Acceleration.Z);
                end case;
             end loop;
-         end;
-      end if;
 
-      loop
-         exit when Ranging_Read_Time > Now;
+            IMU_Read_Time := IMU_Read_Time + IMU_Delay;
+         else
+            delay until Ranging_Read_Time;
 
-         declare
-            Distance : constant Millimeter := Read (Ranging_Next_Sensor);
-         begin
-            The_DB.Set
-              (Data_ID => Ranging_Data_IDs (Ranging_Next_Sensor),
-               Data    => Float (Distance) / 1000.0);
-         end;
+            for S in Board.Ranging.Sensor_Location'Range loop
+               if Status (S) = Ready then
+                  Distance := Read (S);
 
-         Next (Ranging_Next_Sensor, Ranging_Read_Time);
+                  The_DB.Set
+                    (Data_ID => Ranging_Data_IDs (S),
+                     Data    => Float (Distance) / 1000.0);
+               end if;
+            end loop;
+
+            Board.Ranging.Next (Ranging_Read_Time);
+         end if;
       end loop;
-   end Update_Sensors;
+   end Sensors_Task;
 
 end Sensors;

@@ -46,7 +46,7 @@ package Board.Ranging is
      (Uninitialized,
       Error,
       Ready,
-      Reading);
+      Busy);
 
    type Sensor_Detection_Mode is
      (Fast,       --  Fast short range detection
@@ -58,8 +58,7 @@ package Board.Ranging is
 
    type Herz is new Natural;
 
-   procedure Initialize
-   with Post => (for all S in Sensor_Location => Status (S) = Ready);
+   procedure Initialize;
 
    procedure Set_Detection_Mode
      (Sensor : Sensor_Location;
@@ -68,13 +67,11 @@ package Board.Ranging is
    function Status (Sensor : Sensor_Location) return Sensor_Status;
 
    procedure Next
-     (Sensor : out Range_Sensor_Id;
-      Time   : out Ada.Real_Time.Time)
-     with Pre => (for all S in Sensor_Location => Status (S) = Ready);
-   --  Return the minimal delay between two consecutive sensor updates
+     (Time : out Ada.Real_Time.Time);
+   --  The absolute time at which at least a sensor can be read
 
    function Read (Sensor : Sensor_Location) return Millimeter
-     with Pre => Status (Sensor) = Reading;
+     with Pre => Status (Sensor) = Ready;
    --  Return the value measured by the sensor.
 
 private
@@ -118,7 +115,7 @@ private
    --  Default value is changed at initialisation
 
    subtype Invalid_Status is Sensor_Status range Uninitialized .. Error;
-   subtype Valid_Status is Sensor_Status range Ready .. Reading;
+   subtype Valid_Status is Sensor_Status range Ready .. Busy;
 
    Delays  : array (Sensor_Location) of Ada.Real_Time.Time_Span :=
                (others => Ada.Real_Time.Time_Span_Zero);
@@ -126,9 +123,6 @@ private
                (others => Ada.Real_Time.Time_Last);
    S_Status : array (Sensor_Location) of Sensor_Status :=
                 (others => Uninitialized);
-
-   function Status (Sensor : Sensor_Location) return Sensor_Status
-   is (S_Status (Sensor));
 
    --------------------------------
    -- Interface to the C library --

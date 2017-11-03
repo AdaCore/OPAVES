@@ -21,11 +21,13 @@ with System;
 
 with Ada.Real_Time; use Ada.Real_Time;
 with Board.LEDs;    use Board.LEDs;
+with Sensors;
 
 procedure Main is
 begin
 
    Board.LEDs.Initialize;
+   Sensors.Initialize;
 
    Turn_On (Green);
 
@@ -33,6 +35,8 @@ begin
       Toggle (Green);
       delay until Clock + Milliseconds (500);
    end loop;
+
+   delay until Ada.Real_Time.Time_Last;
 
    Last_Chance_Handler.Last_Chance_Handler (Msg  => System.Null_Address,
                                             Line => 0);

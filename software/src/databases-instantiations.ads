@@ -61,15 +61,23 @@ package Databases.Instantiations is
       Value       => Float'Value,
       Init_Data   => 0.0,
       Max_Nb_Data => 20);
+   package Boolean_Databases is new Databases.Generics
+     (Boolean,
+      Image       => Boolean'Image,
+      Value       => Boolean'Value,
+      Init_Data   => False,
+      Max_Nb_Data => 10);
 
 private
    First_ID : constant Database_ID_Type := First_Database_ID;
    Last_ID  : constant Database_ID_Type := Get_Last_Database_ID;
 
-   Databases : constant Root_Database_Array (First_ID .. First_ID + 1) :=
+   Databases : constant Root_Database_Array (First_ID .. First_ID + 2) :=
                  (First_ID     => Root_Database_Access
                     (Integer_Databases.Get_Database_Instance),
                   First_ID + 1 => Root_Database_Access
-                    (Float_Databases.Get_Database_Instance));
+                    (Float_Databases.Get_Database_Instance),
+                  First_ID + 2 => Root_Database_Access
+                    (Boolean_Databases.Get_Database_Instance));
 
 end Databases.Instantiations;

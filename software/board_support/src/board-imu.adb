@@ -83,7 +83,9 @@ package body Board.IMU is
 
       --  Now confingure the IMU itself
       if Device.Device_Id /= I_Am_BNO055 then
-         raise IMU_Error with "IMU is missing";
+         The_Status := Error_Not_Present;
+
+         return;
       end if;
 
       --  Configure with default values:
@@ -105,11 +107,17 @@ package body Board.IMU is
          System_Error);
 
       if Self_Test /= All_Tests_Passed then
-         raise IMU_Error with "Not all tests passed";
+         Board.LEDs.Turn_On (Board.LEDs.Red);
+         The_Status := Error_Not_Calibrated;
+
+         return;
       end if;
 
       if System_Error /= No_Error then
-         raise IMU_Error with "IMU: System error " & System_Error'Img;
+         Board.LEDs.Turn_On (Board.LEDs.Red);
+         The_Status := Error_System;
+
+         return;
       end if;
 
       --  Wait for the gyroscope to calibrate:
@@ -118,7 +126,8 @@ package body Board.IMU is
       while not Device.Calibration_Complete
         ((1 => Gyroscope))
       loop
-         if Clock - Start > Milliseconds (200) then
+         if Clock - Start > Milliseconds (150) then
+            Start := Clock;
             Board.LEDs.Toggle (Board.LEDs.Green);
          end if;
       end loop;
