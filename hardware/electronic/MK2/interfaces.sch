@@ -55,7 +55,7 @@ encoding utf-8
 Sheet 6 6
 Title "O'PAVES Mk-II"
 Date ""
-Rev "A"
+Rev "B"
 Comp "AdaCore"
 Comment1 "Licensed under CERN OHL v.1.2 or later"
 Comment2 ""
