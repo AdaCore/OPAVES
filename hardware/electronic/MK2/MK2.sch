@@ -55,7 +55,7 @@ encoding utf-8
 Sheet 1 6
 Title "O'PAVES Mk-II"
 Date ""
-Rev "A"
+Rev "B"
 Comp "AdaCore"
 Comment1 "Licensed under CERN OHL v.1.2 or later"
 Comment2 ""
@@ -68,14 +68,12 @@ U 5874F60A
 F0 "Motor" 60
 F1 "motor.sch" 60
 F2 "VMOTOR" I L 1750 5750 60 
-F3 "Encoder_A" O R 3550 5900 60 
-F4 "Encoder_B" O R 3550 6050 60 
-F5 "PWMA" I L 1750 6150 60 
-F6 "IN1" I L 1750 6350 60 
-F7 "IN2" I L 1750 6550 60 
-F8 "Standby" I L 1750 6750 60 
-F9 "VLOGIC" I L 1750 5600 60 
-F10 "PWMB" I L 1750 6000 60 
+F3 "PWMA" I L 1750 6150 60 
+F4 "IN1" I L 1750 6350 60 
+F5 "IN2" I L 1750 6550 60 
+F6 "Standby" I L 1750 6750 60 
+F7 "VLOGIC" I L 1750 5600 60 
+F8 "PWMB" I L 1750 6000 60 
 $EndSheet
 $Sheet
 S 900  1700 1800 1800
@@ -227,8 +225,6 @@ Wire Wire Line
 Wire Wire Line
 	7650 3550 6500 3550
 Wire Wire Line
-	3550 5900 3950 5900
-Wire Wire Line
 	750  3750 750  6750
 Wire Wire Line
 	750  6750 1750 6750
@@ -268,8 +264,6 @@ Wire Wire Line
 	2700 3250 2900 3250
 Text Label 2900 3250 0    60   ~ 0
 VMOTOR
-Wire Wire Line
-	3550 6050 4100 6050
 $Sheet
 S 8200 4600 1800 1800
 U 58866A88
@@ -288,20 +282,18 @@ F3 "VBAT_SENSE" I L 4700 3250 60
 F4 "MCU_NRST" O R 6500 4200 60 
 F5 "Distance_SCL" B R 6500 2650 60 
 F6 "Distance_SDA" B R 6500 2800 60 
-F7 "Encoder_A" I L 4700 4650 60 
-F8 "Encoder_B" I L 4700 4800 60 
-F9 "Motor_PWMA" O L 4700 4200 60 
-F10 "Motor_IN1" O L 4700 4050 60 
-F11 "Motor_IN2" O L 4700 3900 60 
-F12 "Motor_Standby" O L 4700 3750 60 
-F13 "Enable_FR" O R 6500 3250 60 
-F14 "Enable_FC" O R 6500 3100 60 
-F15 "Enable_FL" O R 6500 2950 60 
-F16 "Enable_BC" O R 6500 3550 60 
-F17 "Enable_SR" O R 6500 3400 60 
-F18 "Steering_PWM" O L 4700 4500 60 
-F19 "5V" I L 4700 2850 60 
-F20 "Motor_PWMB" O L 4700 4350 60 
+F7 "Motor_PWMA" O L 4700 4200 60 
+F8 "Motor_IN1" O L 4700 4050 60 
+F9 "Motor_IN2" O L 4700 3900 60 
+F10 "Motor_Standby" O L 4700 3750 60 
+F11 "Enable_FR" O R 6500 3250 60 
+F12 "Enable_FC" O R 6500 3100 60 
+F13 "Enable_FL" O R 6500 2950 60 
+F14 "Enable_BC" O R 6500 3550 60 
+F15 "Enable_SR" O R 6500 3400 60 
+F16 "Steering_PWM" O L 4700 4500 60 
+F17 "5V" I L 4700 2850 60 
+F18 "Motor_PWMB" O L 4700 4350 60 
 $EndSheet
 Wire Wire Line
 	4400 2300 4400 2850
@@ -309,14 +301,6 @@ Wire Wire Line
 	4400 2850 4700 2850
 Wire Wire Line
 	3950 4500 4700 4500
-Wire Wire Line
-	4700 4650 3950 4650
-Wire Wire Line
-	3950 4650 3950 5900
-Wire Wire Line
-	4100 6050 4100 4800
-Wire Wire Line
-	4100 4800 4700 4800
 Wire Wire Line
 	1750 5750 1350 5750
 Wire Wire Line
