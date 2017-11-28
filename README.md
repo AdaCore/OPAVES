@@ -14,4 +14,7 @@ Follow us on [Twitter](https://twitter.com/openpaves) or
 
 ---
 
-![Kicad 3D render](doc/media/kicad_render/MK-I.png)
+## How to build the O'PAVES car?
+Please follow the instructions [here](doc/build_instructions.md).
+
+![O'PAVES Mk-I](doc/media/OPAVES_Mk-I.jpg)
