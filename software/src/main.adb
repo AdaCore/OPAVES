@@ -25,6 +25,8 @@ with Board.Logging;
 with LEDS; use LEDS;
 with OPAVES.Comm.CRTP;
 with OPAVES.Commander;
+with OPAVES.Comm.Serial;
+pragma Unreferenced (OPAVES.Comm.Serial);
 
 with Board.Motor;
 with Board.Steering;

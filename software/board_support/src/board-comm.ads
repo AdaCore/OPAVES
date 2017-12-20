@@ -42,7 +42,7 @@ private
    Out_Message_Queue_Length : constant := 20;
    In_Message_Queue_Length : constant := 10;
 
-   Baud_Rate : constant STM32.USARTs.Baud_Rates := 115_200;
+   Baud_Rate : constant STM32.USARTs.Baud_Rates := 9600;
    Device : STM32.USARTs.USART renames STM32.Device.USART_3;
 
    TX_Pin : STM32.GPIO.GPIO_Point renames STM32.Device.PC10;
