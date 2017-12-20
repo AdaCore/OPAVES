@@ -26,7 +26,7 @@ package body Databases is
 
    function Create (Name : String) return Data_Name_Type is
    begin
-      if Name'Length in 1 .. 16 then
+      if Name'Length in 1 .. Data_Name_Type'Length then
          declare
             Data_Name : Data_Name_Type := (others => ' ');
          begin

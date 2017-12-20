@@ -181,10 +181,15 @@ package body OPAVES.Comm.Serial is
       Database_ID : Database_ID_Type;
       Data_ID     : Data_ID_Type;
    begin
-      Success := Get_IDs
-        (Data_Name   => Create (Str),
-         Database_ID => Database_ID,
-         Data_ID     => Data_ID);
+
+      if Str'Length in 1 .. Data_Name_Type'Length  then
+         Success := Get_IDs
+           (Data_Name   => Create (Str),
+            Database_ID => Database_ID,
+            Data_ID     => Data_ID);
+      else
+         Success := False;
+      end if;
 
       if Success then
          Log_Line
