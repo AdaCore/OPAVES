@@ -20,6 +20,6 @@
 package OPAVES.Comm.Serial is
 
    task Communication_Task
-     with Priority => Communication_Task_Priority;
+     with Priority => Serial_Comm_Task_Priority;
 
 end OPAVES.Comm.Serial;

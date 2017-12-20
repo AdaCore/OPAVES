@@ -20,7 +20,8 @@ with System; use System;
 
 package OPAVES with SPARK_Mode is
 
-   CRTP_Task_Priority    : constant Priority := Default_Priority + 1;
-   Syslink_Task_Priority : constant Priority := Default_Priority + 2;
+   CRTP_Task_Priority        : constant Priority := Default_Priority + 1;
+   Syslink_Task_Priority     : constant Priority := Default_Priority + 2;
+   Serial_Comm_Task_Priority : constant Priority := Default_Priority;
 
 end OPAVES;
