@@ -1,7 +1,7 @@
 with "board_support/OPAVES_MkI_Board.gpr";
 with "Certyflie/crazyflie_support/crazyflie_support.gpr";
 
-project OPAVES_MkI is
+project OPAVES_MkII is
 
    type Modes is ("Compile", "Analyze");
    Mode : Modes := External ("MODE", "Compile");
@@ -24,7 +24,7 @@ project OPAVES_MkI is
          when "Analyze" =>
             for Global_Configuration_Pragmas use "prove/spark.adc";
             for Global_Compilation_Switches ("Ada") use
-              ("-gnateT=" & OPAVES_MkI'Project_Dir & "/prove/target.atp");
+              ("-gnateT=" & OPAVES_MkII'Project_Dir & "/prove/target.atp");
       end case;
    end Builder;
 
@@ -50,11 +50,11 @@ project OPAVES_MkI is
 
    package CodePeer is
       for Switches use ("-32bits",
-                        "-gnateT=" & OPAVES_MkI'Project_Dir & "/prove/target.atp");
+                        "-gnateT=" & OPAVES_MkII'Project_Dir & "/prove/target.atp");
    end CodePeer;
 
    package Check is
       for Default_Switches ("Ada") use ("-rules", "-from=coding_standard");
    end Check;
 
-end OPAVES_MkI;
+end OPAVES_MkII;
